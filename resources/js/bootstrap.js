@@ -17,9 +17,11 @@ try {
     require('select2');
     require('dropzone');
     require('@fortawesome/fontawesome-free/js/all');
-
+    // window.FontAwesomeConfig = {
+    //     searchPseudoElements: true
+    // }
     window.swal = require('sweetalert2');
-} catch (e) {}
+} catch (e) { }
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
