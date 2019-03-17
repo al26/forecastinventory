@@ -1,4 +1,4 @@
-@extends('inventory::layouts.master')
+@extends('layouts.admin')
 
 @section('content')
     <h1>Hello World</h1>
