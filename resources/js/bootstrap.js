@@ -12,6 +12,13 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+    require('datatables.net-bs4/js/dataTables.bootstrap4');
+    // require('summernote/dist/summernote-bs4');
+    require('select2');
+    require('dropzone');
+    require('@fortawesome/fontawesome-free/js/all');
+
+    window.swal = require('sweetalert2');
 } catch (e) {}
 
 /**
