@@ -12,5 +12,8 @@ const mix = require('laravel-mix');
  */
 
 mix.react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css')
-   .sass('resources/vendor/sufee/scss/admin.scss', 'public/css');
+    .react('resources/js/admin.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/vendor/sufee/scss/admin.scss', 'public/css')
+    .options({ processCssUrls: false })
+    .copyDirectory('resources/vendor/sufee/images', 'public/img', false);
