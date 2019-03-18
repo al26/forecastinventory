@@ -1,9 +1,10 @@
 <header id="header" class="header">
-    <div class="header-menu">
-        <div class="col-sm-7">
+    <div class="header-menu d-none d-md-block">
+        <div class="col-7">
             <a id="menuToggle" class="menutoggle float-left"><i class="fas fa-tasks"></i></a>
+
             <div class="header-left">
-                <button class="search-trigger"><i class="fas fa-search"></i></button>
+                {{-- <button class="search-trigger"><i class="fas fa-search"></i></button>
                 <div class="form-inline">
                     <form class="search-form">
                         <input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search">
@@ -73,10 +74,14 @@
                             </span>
                         </a>
                     </div>
+                </div> --}}
+                <div class="page-title">
+                    <h3 class="m-0 p-0">@yield('title')</h3>
                 </div>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-5">
+            {{--
             <div class="user-area dropdown float-right">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar rounded-circle" src="{{asset('img/admin.jpg')}}" alt="User Avatar">
@@ -87,7 +92,22 @@
                     <a class="nav-link" href="#"><i class="fw fas fa-cog"></i>Settings</a>
                     <a class="nav-link" href="#"><i class="fw fas fa-power-off"></i>Logout</a>
                 </div>
+            </div> --}}
+
+            <div class="float-right mt-2">
+                <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();" data-toggle="tooltip" data-placement="top" title="Logout">
+                    <i class="fw fas fa-sign-out-alt" data-fa-transform="grow-15"></i>
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
             </div>
+            <div class="d-flex align-items-end justify-content-end">
+                <p class="m-0 my-2 mr-3">{{@Auth::user()->name}}</p>
+            </div>
+            {{--
             <div class="language-select dropdown" id="language-select">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="language" aria-haspopup="true" aria-expanded="true">
                         <i class="flag-icon flag-icon-us"></i>
@@ -106,7 +126,7 @@
                         <i class="flag-icon flag-icon-it"></i>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </header>
