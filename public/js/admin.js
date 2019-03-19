@@ -68756,6 +68756,11 @@ $(document).ready(function () {
   // 	$('.user-menu').parent().removeClass('open');
   // 	$('.user-menu').parent().toggleClass('open');
   // });
+
+  $('.table').DataTable();
+});
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
 });
 
 isNumberKey = function isNumberKey(evt) {
