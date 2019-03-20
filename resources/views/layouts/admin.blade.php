@@ -41,7 +41,8 @@
     @include('layouts.partials.admin.navbar')
     @includeWhen(@$breadcrumb, 'layouts.partials.admin.breadcrumb')
         <div class="content mt-3">
-    @include('layouts.partials.admin.alert') @yield('content')
+    @include('layouts.partials.admin.alert')
+    @yield('content')
         </div>
     </div>
 
