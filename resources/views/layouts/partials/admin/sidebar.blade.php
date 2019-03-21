@@ -14,7 +14,6 @@
                 <li class="active">
                     <a href=""> <i class="menu-icon fas fa-tachometer-alt"></i> Dashboard </a>
                 </li>
-
                 <h3 class="menu-title">Manage Inventory</h3>
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-box-open"></i> Inventory Lists</a>

@@ -12,9 +12,20 @@
 */
 
 Route::get('/', function () {
-    return view('layouts.admin');
-})->middleware('auth');
+    return redirect()->route('login');
+});
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+    foreach (\App\Role::getNames() as $key => $value) {
+        $role = $value['name'];
+        Route::group(
+            ['middleware' => ['role:'.$role]], function () use($role) {
+                Route::get($role, "UserController@".$role)->name($role.".dashboard");
+        });
+    }    
+});
