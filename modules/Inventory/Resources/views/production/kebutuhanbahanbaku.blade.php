@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Data Hasil Forcasting')
+@section('title','Data Kebutuhan Bahan Baku')
 @section('content')
 <!-- Right Panel -->
 <!-- begin content -->
@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <strong class="card-title">Data Table</strong>
+                    <strong class="card-title">Data Kebutuhan Bahan Baku</strong>
                 </div>
                 <div class="card-body">
                     <table id="bootstrap-data-table" class="table table-striped table-bordered">

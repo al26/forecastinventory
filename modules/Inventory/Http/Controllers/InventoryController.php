@@ -78,6 +78,19 @@ class InventoryController extends Controller
     }
 
     public function forcasting(){
-        return view('forcasting::admin.forcasting');
+        return view('inventory::administrator.forecasting');
     }
+    public function kebutuhanbahanbaku(){
+        return view('inventory::production.kebutuhanbahanbaku');
+    }
+    public function persediaanbahanbaku(){
+        return view('inventory::production.persediaanbahanbaku');
+    }
+    public function hasilforcasting(){
+        return view('inventory::production.hasilforcasting');
+    }
+    public function pembelianbahanbaku(){
+        return view('inventory::logistic.pembelianbahanbaku');
+    }
+    
 }
