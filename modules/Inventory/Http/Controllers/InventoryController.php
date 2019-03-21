@@ -76,4 +76,8 @@ class InventoryController extends Controller
     {
         //
     }
+
+    public function forcasting(){
+        return view('forcasting::admin.forcasting');
+    }
 }
