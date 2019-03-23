@@ -11,6 +11,9 @@
 |
 */
 
-Route::prefix('forecast')->group(function() {
-    Route::get('/', 'ForecastController@index');
+Route::group(['middleware' => ['auth', 'role:administrator']], function () {
+    Route::prefix('administrator/forecast')->group(function() {
+        Route::get('/', 'ForecastController@index');
+    });
 });
+

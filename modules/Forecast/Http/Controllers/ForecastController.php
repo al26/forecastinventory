@@ -5,75 +5,41 @@ namespace Modules\Forecast\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Forecast\Entities\ForecastAccuracy;
 
 class ForecastController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
-    {
-        return view('forecast::index');
+    function __construct() {
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('forecast::create');
+
+    public function index() {
+        $data['moving_avg'] = $this->movingAvg(30);
+        die(var_dump($data));
+        return view('forecast::index', $data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
+
+    public function movingAvg($xt, $n_last_period = 3) {
+        // get last 3 period sell history
+        $data = [1,2,3];
+        $ft = avg($data);
+        // die(var_dump($ft));
+
+
+        $log = ForecastAccuracy::addLog("moving_average", $ft, $xt);
+        if(isset($log)) {
+            $data = ForecastAccuracy::forView('moving_average');
+            // $data->mad = $this->avg($data->error_abs);
+            // $data->mse = $this->avg($data->error_square);
+            // $data->mape = $this->avg($data->error_abs_percent);
+        }
+
+        return $data;
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('forecast::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('forecast::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function avg(array $data) {
+        return array_sum($data) / count($data);
     }
 }
