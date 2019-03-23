@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Forecast\Entities\ForecastAccuracy;
+use Illuminate\Support\Facades\Session;
 
 class ForecastController extends Controller
 {
@@ -15,31 +16,26 @@ class ForecastController extends Controller
 
 
     public function index() {
-        $data['moving_avg'] = $this->movingAvg(30);
-        die(var_dump($data));
+        $data['moving_avg'] = $this->movingAvg(20);
+        Session::flash('message', 'Forecasted');
+        Session::flash('type', 'info');
         return view('forecast::index', $data);
     }
 
 
     public function movingAvg($xt, $n_last_period = 3) {
         // get last 3 period sell history
-        $data = [1,2,3];
-        $ft = avg($data);
-        // die(var_dump($ft));
+        $history = [51,5,32];
+        $ft = avg($history);
 
-
+        // dd($ft);
+        
         $log = ForecastAccuracy::addLog("moving_average", $ft, $xt);
-        if(isset($log)) {
-            $data = ForecastAccuracy::forView('moving_average');
-            // $data->mad = $this->avg($data->error_abs);
-            // $data->mse = $this->avg($data->error_square);
-            // $data->mape = $this->avg($data->error_abs_percent);
+        if($log) {
+            $data['raw'] = ForecastAccuracy::getRaw();
+            $data['calculation'] =ForecastAccuracy::getCalculation();
         }
 
-        return $data;
-    }
-
-    public function avg(array $data) {
-        return array_sum($data) / count($data);
+        return (object)$data;
     }
 }
