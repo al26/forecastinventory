@@ -40,14 +40,9 @@
     <div id="right-panel" class="right-panel">
     @include('layouts.partials.admin.navbar')
     @includeWhen(@$breadcrumb, 'layouts.partials.admin.breadcrumb')
-    <div class="content mt-3">
-        <div class="animated fadeIn">
-            <div class="row">
-                <div class="col-md-12">
-                @include('layouts.partials.admin.alert')
-                @yield('content')
-                </div>
-            </div>
+        <div class="content mt-3">
+            @include('layouts.partials.admin.alert') 
+            @yield('content')
         </div>
     </div>
 
