@@ -7,7 +7,7 @@ use Spatie\Permission\Models\Permission;
 class RolePermissionSeeder extends Seeder
 {
 
-    protected $roles = ['administrator', 'production', 'logistic'];
+    
     protected $permissions = [
         "view-sale-history", "input-sale-history", "update-sale-history", "delete-sale-history",
         "view-product", "add-product", "update-product", "delete-product",
@@ -21,9 +21,7 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->roles as $r) {
-            Role::create(['name' => $r]); 
-        }
+        
         
         foreach ($this->permissions as $p) {
             Permission::create(['name' => $p]);

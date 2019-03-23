@@ -16,6 +16,7 @@ class InventoryDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call(BahanbakuTableSeeder::class);
+        $this->call(ProductTableSeeder::class);
     }
 }

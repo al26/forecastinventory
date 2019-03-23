@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Modules\Inventory\Database\Seeders\BahanbakuTableSeeder;
+use Modules\Inventory\Entities\pembelian_bahanbaku;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,8 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        
         $this->call(UsersTableSeeder::class);
-        $this->call(RolePermissionSeeder::class);
         $this->call(UserRoleSeeder::class);
+        $this->call(RolePermissionSeeder::class);
+        // $this->call(BahanbakuTableSeeder::class);
+        // $this->call(pembelian_bahanbaku::class);
     }
 }
