@@ -256,7 +256,9 @@ aside.left-panel {
                 width: 100%;
 
                 &:hover,
-                &:hover .menu-icon {
+                &:hover .menu-icon,
+                &:active,
+                &:active .menu-icon {
                     color: #fff !important;
                 }
 
@@ -367,7 +369,8 @@ aside.left-panel {
 .navbar .navbar-nav>.active>a,
 .navbar .navbar-nav>.active>a:focus,
 .navbar .navbar-nav>.active>a:hover {
-    color: #d7d9e3 !important;
+    color: #fff !important;
+    font-weight: bolder;
 }
 
 .navbar-nav li span.count {

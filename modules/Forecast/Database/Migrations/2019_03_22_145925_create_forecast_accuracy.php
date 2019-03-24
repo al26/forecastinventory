@@ -32,6 +32,6 @@ class CreateForecastAccuracy extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('');
+        Schema::dropIfExists('forecast_accuracy');
     }
 }

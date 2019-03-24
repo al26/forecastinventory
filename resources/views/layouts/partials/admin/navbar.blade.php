@@ -94,7 +94,7 @@
                 </div>
             </div> --}}
 
-            <div class="float-right mt-2">
+            {{-- <div class="float-right mt-2">
                 <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();" data-toggle="tooltip" data-placement="top" title="Logout">
                     <i class="fw fas fa-sign-out-alt" data-fa-transform="grow-15"></i>
@@ -103,9 +103,9 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
-            </div>
+            </div> --}}
             <div class="d-flex align-items-end justify-content-end">
-                <p class="m-0 my-2 mr-3">{{@Auth::user()->name}}</p>
+                <p class="m-0 my-2 mr-3 text-body font-weight-bolder">Hai, {{@Auth::user()->name}} !</p>
             </div>
             {{--
             <div class="language-select dropdown" id="language-select">
