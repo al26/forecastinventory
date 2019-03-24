@@ -27,9 +27,9 @@
                 @foreach ($data as $key => $value)
                 <tr>
                     <td>{{++$key}}</td>
-                    <td>{{$value->nama_bahanbaku}}</td>
-                    <td>{{$value->jenis_bahanbaku}}</td>
-                    <td>{{$value->jumlah_stock}}</td>
+                    <td>{{$value->material_name}}</td>
+                    <td>{{$value->material_type}}</td>
+                    <td>{{$value->material_stock}}</td>
                     <td>
                         <a href="" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i></a>
                         <a href="" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i></a>

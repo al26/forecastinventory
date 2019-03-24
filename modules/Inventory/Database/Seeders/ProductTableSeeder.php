@@ -17,10 +17,10 @@ class ProductTableSeeder extends Seeder
     {
         
         Model::unguard();
-        DB::table('product')->insert([
-            ['nama_product' => "Kain Batik", 'jenis_product' => 'Kain'],
-            ['nama_product' => "Baju Batik", 'jenis_product' => 'Baju'],
-            ['nama_product' => "Celana Batik", 'jenis_product' => 'Celana'],
+        DB::table('products')->insert([
+            ['product_name' => "Kain Batik", 'product_type' => 'Kain'],
+            ['product_name' => "Baju Batik", 'product_type' => 'Baju'],
+            ['product_name' => "Celana Batik", 'product_type' => 'Celana'],
         ]);
     }
 }
