@@ -1,0 +1,66 @@
+table {
+    &.dataTable {
+        border-collapse: collapse !important;
+        thead {
+            th[rowspan="2"] {
+                &.sorting:before, 
+                &.sorting:after,
+                &.sorting_asc:before,
+                &.sorting_asc:after,
+                &.sorting_desc:before,
+                &.sorting_desc:after,
+                &.sorting_asc_disabled:before,
+                &.sorting_asc_disabled:after,
+                &.sorting_desc_disabled:before,
+                &.sorting_desc_disabled:after {
+                    bottom: 40% !important;               
+                }
+            }
+            th {
+                &.sorting:before, 
+                &.sorting:after,
+                &.sorting_asc:before,
+                &.sorting_asc:after,
+                &.sorting_desc:before,
+                &.sorting_desc:after,
+                &.sorting_asc_disabled:before,
+                &.sorting_asc_disabled:after,
+                &.sorting_desc_disabled:before,
+                &.sorting_desc_disabled:after {
+                    bottom: .7em !important;               
+                }
+            }
+        }
+    }
+}
+
+// custom responsive datatable
+@include media-breakpoint-down(sm) {
+	.dataTables_wrapper {
+		> div:nth-child(3) > div[class*="col-"] {
+			padding: 0 !important;
+
+			> .dataTables_paginate {
+				float: left;
+			}
+			
+			> .dataTables_info {
+				float: left;
+				margin-bottom: .5rem;
+			}
+		}
+
+		> div:nth-child(1) > div[class*="col-"] {
+			padding: 0 !important;
+
+			> .dataTables_filter {
+				float: left;
+			}
+			
+			> .dataTables_length {
+				float: left;
+				margin-bottom: .5rem;
+			}
+		}
+	}
+}

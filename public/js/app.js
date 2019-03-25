@@ -93412,11 +93412,11 @@ try {
 
   __webpack_require__(/*! dropzone */ "./node_modules/dropzone/dist/dropzone.js");
 
-  __webpack_require__(/*! @fortawesome/fontawesome-free/js/all */ "./node_modules/@fortawesome/fontawesome-free/js/all.js"); // window.FontAwesomeConfig = {
-  //     searchPseudoElements: true
-  // }
+  __webpack_require__(/*! @fortawesome/fontawesome-free/js/all */ "./node_modules/@fortawesome/fontawesome-free/js/all.js");
 
-
+  window.FontAwesomeConfig = {
+    searchPseudoElements: true
+  };
   window.swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 } catch (e) {}
 /**
