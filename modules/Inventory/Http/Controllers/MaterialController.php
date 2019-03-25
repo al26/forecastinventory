@@ -58,10 +58,22 @@ class MaterialController extends Controller
     
     public function purchasedata(){
         $databuyment = DB::table('materials_buyment')
-                        ->select('materials_buyment.buyment_date as tanggal_beli','materials.material_name as bahan_baku','materials_buyment.buyment_total as Jumlah','materials_buyment.buyment_price as Nominal')
+                        ->select('materials_buyment.buyment_code as kode_pembelian','materials_buyment.buyment_date as tanggal_beli','materials.material_name as bahan_baku','materials_buyment.buyment_total as Jumlah','materials_buyment.buyment_price as Nominal')
                         ->leftJoin('materials', 'materials.material_code', '=', 'materials_buyment.material_code')->get();
          
         return view('inventory::logistic.databuyment')->with('data',$databuyment);
+    }
+    public function purchasedelete($id){
+        $databuyment = DB::table('materials_buyment')->where('buyment_code','=',$id)->delete();
+        if($databuyment){
+            Session::flash('message', 'Berhasil Menghapus data pembelian'); 
+            Session::flash('type', 'info'); 
+            return redirect()->route('purchasedata');
+        }else{
+            Session::flash('message', 'Gagal menghapus data pembelian'); 
+            Session::flash('type', 'danger'); 
+            return redirect()->route('purchasedata');
+        }
     }
 
 }

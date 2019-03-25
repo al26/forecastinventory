@@ -27,8 +27,11 @@ Route::prefix('production/inventory')->group(function() {
 });
 Route::prefix('logistic/inventory')->group(function() {
     Route::group(['middleware' => ['role:logistic']], function () {  
+        Route::get('/','MaterialController@purchasedata');
         Route::get('/purchasingmaterial','MaterialController@formpurchasingmaterial')->name('purchasingmaterial');
         Route::post('/savepurchase','MaterialController@savepurchase')->name('savepurchase');
         Route::get('/purchasedata','MaterialController@purchasedata')->name('purchasedata');
+        Route::delete('/purchasedelete/{id}','MaterialController@purchasedelete')->name('purchasedelete');
+
     });
 });

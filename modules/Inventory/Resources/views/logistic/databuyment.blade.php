@@ -34,7 +34,11 @@
                     <td>{{$value->Nominal}}</td>
                     <td>
                         <a href="" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                        <a href="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                        <form action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
+                            <input class="btn btn-danger btn-sm" type="submit" value="&#128465;" />	
+                            <input type="hidden" name="_method" value="delete" />
+                            @csrf
+                        </form>
                     </td>
                 </tr>
                 @endforeach
