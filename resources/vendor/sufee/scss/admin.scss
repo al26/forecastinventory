@@ -21,7 +21,7 @@
 // Font Awesome
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
-
+@import "../../../sass/customDataTable";
 @import "variables";
 @import "gauge";
 @import "switches";
@@ -30,6 +30,15 @@
 @import "../../animate.css/animate.min.css";
 // Animate.css
 // @import '~animate.css/animate.min.css';
+
+@font-face {
+    font-family: 'Font Awesome 5 Free';
+    font-style: normal;
+    font-weight: 900;
+    src: url("../webfonts/fa-solid-900.eot");
+    src: url("../webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-solid-900.woff2") format("woff2"), url("../webfonts/fa-solid-900.woff") format("woff"), url("../webfonts/fa-solid-900.ttf") format("truetype"), url("../webfonts/fa-solid-900.svg#fontawesome") format("svg"); 
+}
+
 
 .bg-flat-color-1 {
     background: #20a8d8;
@@ -158,7 +167,11 @@ textarea {
 }
 
 aside.left-panel {
-    background: $menu-bg;
+    // background: $blue;
+    background: -webkit-linear-gradient(90deg,darken($blue, 10%),$blue);
+    background: -o-linear-gradient(90deg,darken($blue, 10%),$blue);
+    background: linear-gradient(90deg,darken($blue, 10%),$blue);
+    background: -ms-linear-gradient(90deg,darken($blue, 10%),$blue);
     display: table-cell;
     height: 100vh;
     min-height: 100%;
@@ -169,7 +182,12 @@ aside.left-panel {
 }
 
 .navbar {
-    background: #272c33;
+    // background: $blue;
+    // background: -webkit-linear-gradient(90deg,darken($blue, 10%),$blue);
+    // background: -o-linear-gradient(90deg,darken($blue, 10%),$blue);
+    // background: linear-gradient(90deg,darken($blue, 10%),$blue);
+    // background: -ms-linear-gradient(90deg,darken($blue, 10%),$blue);
+    background: transparent;
     border-radius: 0;
     border: none;
     display: block;
@@ -183,7 +201,7 @@ aside.left-panel {
     }
 
     .navbar-brand {
-        border-bottom: 1px solid #4e4e52;
+        border-bottom: 1px solid $header-bg;
         color: #f1f2f7 !important;
         font-family: $font-family-sans-serif;
         font-size: 22px;
@@ -246,10 +264,10 @@ aside.left-panel {
 
             >a {
                 background: none !important;
-                color: #c8c9ce !important;
+                color: darken($header-bg, 10%) !important;
                 display: inline-block;
                 font-family: $font-family-sans-serif;
-                font-size: 14px;
+                font-size: 16px;
                 line-height: 30px;
                 padding: 10px 0;
                 position: relative;
@@ -263,7 +281,7 @@ aside.left-panel {
                 }
 
                 .menu-icon {
-                    color: #8b939b;
+                    color: darken($header-bg, 10%);
                     float: left;
                     margin-top: 8px;
                     width: 55px;
@@ -291,29 +309,34 @@ aside.left-panel {
                 a {
                     line-height: 30px;
 
-                    // &:before {
-                    //     content: ">";
-                    //     color: #c8c9ce;
-                    //     font-family: 'Font Awesome 5 Free';
-                    //     font-size: 16px;
-                    //     position: absolute;
-                    //     top: 10px;
-                    //     right: 0;
-                    //     text-align: right;
-                    //     -webkit-transition: all 0.25s ease;
-                    //     -moz-transition: all 0.25s ease;
-                    //     -ms-transition: all 0.25s ease;
-                    //     -o-transition: all 0.25s ease;
-                    //     transition: all 0.25s ease;
-                    // }
+                    &:before {
+                        content: "\f054";
+                        color: $header-bg;
+                        font-family: 'Font Awesome 5 Free';
+                        font-size: 16px;
+                        font-weight: 900;
+                        position: absolute;
+                        top: 10px;
+                        right: 0;
+                        text-align: right;
+                        -webkit-transition: all 0.25s ease;
+                        -moz-transition: all 0.25s ease;
+                        -ms-transition: all 0.25s ease;
+                        -o-transition: all 0.25s ease;
+                        transition: all 0.25s ease;
+                    }
 
-                    // &:hover:before {
-                    //     color: #fff;
-                    // }
+                    &:hover:before {
+                        color: #fff;
+                    }
                 }
 
                 .sub-menu {
-                    background: $menu-bg;
+                    // background: -webkit-linear-gradient(90deg,darken($blue, 10%),$blue);
+                    // background: -o-linear-gradient(90deg,darken($blue, 10%),$blue);
+                    // background: linear-gradient(90deg,darken($blue, 10%),$blue);
+                    // background: -ms-linear-gradient(90deg,darken($blue, 10%),$blue);
+                    background: transparent;
                     border: none;
                     box-shadow: none;
                     overflow-y: hidden;
@@ -325,12 +348,12 @@ aside.left-panel {
 
                     i,
                     svg {
-                        color: #c8c9ce;
+                        color: darken($header-bg, 10%);
                         float: left;
                         padding: 0;
                         position: absolute;
                         left: 0;
-                        font-size: 14px;
+                        font-size: 16px;
                         top: 9px;
                     }
 
@@ -347,13 +370,17 @@ aside.left-panel {
                             text-align: left;
                             width: 25px;
                         }
+
+                        &.active .menu-icon {
+                            color: $header-bg !important;
+                        }
                     }
                 }
 
                 &.show {
-                    // a:before {
-                    //     content: "\f107";
-                    // }
+                    a:before {
+                        content: "\f078";
+                    }
 
                     .sub-menu {
                         max-height: 1000px;
@@ -485,7 +512,7 @@ body.open {
                         li {
                             a {
                                 display: block;
-                                font-size: 14px;
+                                font-size: 16px;
                                 max-width: inherit;
                                 padding: 2px 15px 2px 25px;
                                 width: 100%;
@@ -604,7 +631,7 @@ header.fixed-top {
 }
 
 .menutoggle {
-    background: #e74c3c;
+    background: $blue;
     border-radius: 50%;
     color: #fff !important;
     cursor: pointer;
@@ -1914,21 +1941,21 @@ header .form-inline {
 
             a {
                 border-radius: 0 !important;
-                color: #272c33;
+                color: $blue;
             }
 
             &.active {
                 a {
-                    background: #272c33;
-                    border-color: #272c33;
+                    background: $blue;
+                    border-color: $blue;
                     color: #fff;
                 }
             }
 
             &:hover {
                 a {
-                    background: #272c33;
-                    border-color: #272c33;
+                    background: $blue;
+                    border-color: $blue;
                     color: #fff;
                 }
             }
