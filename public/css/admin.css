@@ -16945,6 +16945,7 @@ body.open .navbar .navbar-brand.hidden {
   padding-left: 0;
 }
 .open aside.left-panel .navbar .navbar-nav li.menu-item-has-children .sub-menu {
+  background: #007bff;
   display: block;
   left: inherit;
   right: -180px;
