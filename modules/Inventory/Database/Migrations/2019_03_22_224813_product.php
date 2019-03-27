@@ -13,10 +13,10 @@ class Product extends Migration
      */
     public function up()
     {
-        Schema::create('product', function (Blueprint $table) {
-            $table->bigIncrements('kode_product');
-            $table->string('nama_product');
-            $table->string('jenis_product');
+        Schema::create('products', function (Blueprint $table) {
+            $table->bigIncrements('product_code');
+            $table->string('product_name');
+            $table->string('product_type');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class Product extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('products');
     }
 }

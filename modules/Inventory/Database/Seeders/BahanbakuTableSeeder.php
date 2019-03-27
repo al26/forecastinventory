@@ -17,14 +17,14 @@ class BahanbakuTableSeeder extends Seeder
     {
         
         Model::unguard();
-        DB::table('bahanbaku')->insert([
-            ['nama_bahanbaku' => "Kain Mori", 'jenis_bahanbaku' => 'Habis Pakai','jumlah_stock' => 10],
-            ['nama_bahanbaku' => "Canting", 'jenis_bahanbaku' => 'Tidak Habis Pakai','jumlah_stock' => 10],
-            ['nama_bahanbaku' => "Malam", 'jenis_bahanbaku' => 'Habis Pakai','jumlah_stock' => 10],
-            ['nama_bahanbaku' => "Pewarna", 'jenis_bahanbaku' => 'Habis Pakai','jumlah_stock' => 10],
-            ['nama_bahanbaku' => "Wajan", 'jenis_bahanbaku' => 'Tidak Habis Pakai','jumlah_stock' => 10],
-            ['nama_bahanbaku' => "Kompor", 'jenis_bahanbaku' => 'Tidak Habis Pakai','jumlah_stock' => 10],
-            ['nama_bahanbaku' => "Gawangan", 'jenis_bahanbaku' => 'Tidak Habis Pakai','jumlah_stock' => 10],
+        DB::table('materials')->insert([
+            ['material_name' => "Kain Mori", 'material_type' => 'Habis Pakai','material_stock' => 10],
+            ['material_name' => "Canting", 'material_type' => 'Tidak Habis Pakai','material_stock' => 10],
+            ['material_name' => "Malam", 'material_type' => 'Habis Pakai','material_stock' => 10],
+            ['material_name' => "Pewarna", 'material_type' => 'Habis Pakai','material_stock' => 10],
+            ['material_name' => "Wajan", 'material_type' => 'Tidak Habis Pakai','material_stock' => 10],
+            ['material_name' => "Kompor", 'material_type' => 'Tidak Habis Pakai','material_stock' => 10],
+            ['material_name' => "Gawangan", 'material_type' => 'Tidak Habis Pakai','material_stock' => 10],
         ]);
     }
 }

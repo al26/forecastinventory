@@ -8,7 +8,7 @@
 <div class="card">
     <div class="card-header">
         <strong class="card-title">Data Pembelian Bahan Baku</strong>
-        <a href="{{route('pembelianbahanbaku')}}" class="btn btn-primary btn-sm float-right">Tambah Data
+        <a href="{{route('purchasingmaterial')}}" class="btn btn-primary btn-sm float-right">Tambah Data
             Baru</a>
     </div>
     <div class="card-body">
@@ -33,8 +33,12 @@
                     <td>{{$value->Jumlah}}</td>
                     <td>{{$value->Nominal}}</td>
                     <td>
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i></a>
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i></a>
+                        <a href="" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                        <form action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
+                            <input class="btn btn-danger btn-sm" type="submit" value="&#128465;" />	
+                            <input type="hidden" name="_method" value="delete" />
+                            @csrf
+                        </form>
                     </td>
                 </tr>
                 @endforeach

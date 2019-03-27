@@ -13,11 +13,11 @@ class Bahanbaku extends Migration
      */
     public function up()
     {
-        Schema::create('bahanbaku', function (Blueprint $table) {
-            $table->bigIncrements('kode_bahanbaku');
-            $table->string('jenis_bahanbaku');
-            $table->string('nama_bahanbaku');
-            $table->integer('jumlah_stock')->unsigned();
+        Schema::create('materials', function (Blueprint $table) {
+            $table->bigIncrements('material_code');
+            $table->string('material_type');
+            $table->string('material_name');
+            $table->integer('material_stock')->unsigned();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class Bahanbaku extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahanbaku');
+        Schema::dropIfExists('materials');
     }
 }

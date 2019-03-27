@@ -13,13 +13,13 @@ class PembalianBahanbaku extends Migration
      */
     public function up()
     {
-        Schema::create('pembelian_bahanbaku', function (Blueprint $table) {
-            $table->bigIncrements('kode_pembelian');
-            $table->bigInteger('kode_bahanbaku')->unsigned();
-            $table->foreign('kode_bahanbaku')->references('kode_bahanbaku')->on('bahanbaku');
-            $table->integer('jumlah_pembelian');
-            $table->integer('nominal_pembelian');
-            $table->dateTime('tanggal_pembelian');
+        Schema::create('materials_buyment', function (Blueprint $table) {
+            $table->bigIncrements('buyment_code');
+            $table->bigInteger('material_code')->unsigned();
+            $table->foreign('material_code')->references('material_code')->on('materials');
+            $table->integer('buyment_total');
+            $table->integer('buyment_price');
+            $table->dateTime('buyment_date');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class PembalianBahanbaku extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pembelian_bahanbaku');
+        Schema::dropIfExists('materials_buyment');
     }
 }

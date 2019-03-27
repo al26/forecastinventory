@@ -10,7 +10,7 @@
     <div class="card-header">
         <strong> Pembelian Bahan Baku</strong>
     </div>
-    <form action="{{route('savepembelian')}}" method="post" class="form-horizontal">
+    <form action="{{route('savepurchase')}}" method="post" class="form-horizontal">
         @csrf
         <div class="card-body card-block">
 
@@ -31,7 +31,7 @@
                     <select name="bahanbaku" id="select" class="form-control">
                         <option value="">Pilih Bahan Baku</option>
                         @foreach ($data as $item)
-                        <option value="{{$item->kode_bahanbaku}}">{{$item->nama_bahanbaku}}</option>
+                        <option value="{{$item->material_code}}">{{$item->material_name}}</option>
                         @endforeach
                     </select>
                     <small class="form-text text-danger">{{ $errors->error->first('bahanbaku') }}</small>
