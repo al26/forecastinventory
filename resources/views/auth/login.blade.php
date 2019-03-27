@@ -9,16 +9,16 @@
             <h2 class="text-center m-3 text-white font-weight-bolder">Forcastinventory</h2>
             <div class="card">
                 <div class="card-body bg-white p-3">
-                    <h3 class="text-center m-3 font-weight-bolder"><i class="fas fa-door-open text-primary mx-2"></i>Sign In</h3>
+                    <h3 class="text-center m-3 font-weight-bolder"><i class="fas fa-door-open text-primary mx-2"></i>Silahkan Masuk</h3>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">
-                            <label for="email">{{ __('E-Mail Address') }}</label>
-                            <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}"
+                            <label for="username">{{ __('Username') }}</label>
+                            <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}"
                                 required autofocus> 
-                            @if ($errors->has('email'))
+                            @if ($errors->has('username'))
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('email') }}</strong>
+                                    <strong>{{ $errors->first('username') }}</strong>
                                 </span> 
                             @endif
                         </div>
@@ -39,7 +39,7 @@
                                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old( 'remember') ? 'checked' : '' }}>
 
                                 <label class="form-check-label" for="remember">
-                                    {{ __('Remember Me') }}
+                                    {{ __('Ingat Saya') }}
                                 </label>
                                 {{-- @if (Route::has('password.request'))
                                     <a class="btn btn-link float-right py-0" href="{{ route('password.request') }}">
@@ -51,7 +51,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block">
-                                {{ __('Login') }}
+                                {{ __('Masuk') }}
                             </button> 
                         </div>
                     </form>

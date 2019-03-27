@@ -17,9 +17,9 @@ try {
     require('select2');
     require('dropzone');
     require('@fortawesome/fontawesome-free/js/all');
-    // window.FontAwesomeConfig = {
-    //     searchPseudoElements: true
-    // }
+    window.FontAwesomeConfig = {
+        searchPseudoElements: true
+    }
     window.swal = require('sweetalert2');
 } catch (e) { }
 
