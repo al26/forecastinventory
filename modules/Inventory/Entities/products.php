@@ -4,9 +4,9 @@ namespace Modules\Inventory\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class products extends Model
+class Products extends Model
 {
     public $timestamps = false;
     protected $table = 'products';
-    protected $fillable = ['product_name','product_type'];
+    protected $fillable = ['product_name', 'product_type'];
 }
