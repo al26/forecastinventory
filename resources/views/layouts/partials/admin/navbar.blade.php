@@ -75,9 +75,9 @@
                         </a>
                     </div>
                 </div> --}}
-                <div class="page-title">
+                {{-- <div class="page-title">
                     <h3 class="m-0 p-0">@yield('title')</h3>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="col-5">
