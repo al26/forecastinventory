@@ -15,7 +15,7 @@ class CreateSellHistoriesTable extends Migration
     {
         Schema::create('sell_histories', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('product_code');
+            $table->bigInteger('product_code')->unsigned();
             $table->foreign('product_code')->references('product_code')->on('products')->onDelete('cascade');
             $table->bigInteger('amount');
             $table->timestamps();
