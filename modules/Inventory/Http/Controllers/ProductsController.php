@@ -1,0 +1,10 @@
+<?php
+
+namespace Modules\Inventory\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
+
+class ProductsController extends Controller
+{ }
