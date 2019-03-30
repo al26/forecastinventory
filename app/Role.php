@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
+
 
 class Role extends Model
 {
@@ -10,6 +12,6 @@ class Role extends Model
     protected $primaryKey = 'id';
 
     public function scopeGetNames($query) {
-        return $query->select('name')->get()->toArray();
+        return Schema::hasTable('roles') && $query->select('name')->get()->toArray();
     }
 }

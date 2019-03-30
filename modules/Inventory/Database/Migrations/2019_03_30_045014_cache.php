@@ -27,6 +27,6 @@ class Cache extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('cache');
+        Schema::dropIfExists('cache');
     }
 }
