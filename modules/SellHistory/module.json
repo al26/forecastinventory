@@ -1,0 +1,14 @@
+{
+    "name": "SellHistory",
+    "alias": "sellhistory",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\SellHistory\\Providers\\SellHistoryServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
