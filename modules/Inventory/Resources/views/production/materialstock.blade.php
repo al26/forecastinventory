@@ -9,7 +9,7 @@
 <div class="card">
     <div class="card-header">
         <strong class="card-title">Data Persediaan Bahan Baku</strong>
-        <a href="#" class="btn btn-primary btn-sm float-right">Tambah Data Baru</a>
+        {{-- <a href="#" class="btn btn-primary btn-sm float-right">Tambah Data Baru</a> --}}
     </div>
     <div class="card-body">
         <table id="bootstrap-data-table" class="table table-striped table-bordered">

@@ -15,12 +15,13 @@ class ProductTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
         Model::unguard();
         DB::table('products')->insert([
             ['product_name' => "Kain Batik", 'product_type' => 'Kain'],
-            ['product_name' => "Baju Batik", 'product_type' => 'Baju'],
-            ['product_name' => "Celana Batik", 'product_type' => 'Celana'],
+            ['product_name' => "Kain Tritik", 'product_type' => 'Kain'],
+            ['product_name' => "Selendang Batik", 'product_type' => 'Selendang'],
+            ['product_name' => "Selendang Tritik", 'product_type' => 'Selendang'],
         ]);
     }
 }

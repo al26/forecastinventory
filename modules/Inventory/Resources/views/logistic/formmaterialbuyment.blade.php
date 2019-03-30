@@ -10,14 +10,21 @@
     <div class="card-header">
         <strong> Pembelian Bahan Baku</strong>
     </div>
+    @if (isset($dataBuyment))
+    <form action="{{route('updatepurchase',$dataBuyment[0]->buyment_code)}}" method="post" class="form-horizontal">    
+        @method('patch')
+    @else
     <form action="{{route('savepurchase')}}" method="post" class="form-horizontal">
+    
+        
+    @endif
         @csrf
         <div class="card-body card-block">
 
             <div class="row form-group">
                 <div class="col col-md-2"><label for="text-input" class=" form-control-label">Tanggal
                         beli</label></div>
-                <div class="col-12 col-md-3"><input type="date" id="text-input" name="tanggal_beli"
+                <div class="col-12 col-md-3"><input type="date" id="text-input" value="" name="tanggal_beli"
                         class="form-control">
                     <small class="form-text text-danger">{{ $errors->error->first('tanggal_beli') }}</small>
                     {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
@@ -31,7 +38,10 @@
                     <select name="bahanbaku" id="select" class="form-control">
                         <option value="">Pilih Bahan Baku</option>
                         @foreach ($data as $item)
-                        <option value="{{$item->material_code}}">{{$item->material_name}}</option>
+                        <option value="{{$item->material_code}}" <?php 
+                           echo ($item->material_code === $dataBuyment[0]->material_code ? 'selected'  :'' )
+                        ?>
+                        >{{$item->material_name}}</option>
                         @endforeach
                     </select>
                     <small class="form-text text-danger">{{ $errors->error->first('bahanbaku') }}</small>
@@ -41,7 +51,7 @@
 
             <div class="row form-group">
                 <div class="col col-md-2"><label for="text-input" class=" form-control-label">Nominal</label></div>
-                <div class="col-12 col-md-5"><input type="text" id="text-input" name="nominal" class="form-control">
+                <div class="col-12 col-md-5"><input type="text" id="text-input" value="{{$dataBuyment[0]->buyment_price}}" name="nominal" class="form-control">
                     <small class="form-text text-danger">{{ $errors->error->first('nominal') }}</small>
                     {{-- <small class="form-text text-muted">kolom ini untuk nominal/jumlah harga bahan baku</small> --}}
                 </div>
@@ -49,7 +59,7 @@
             <div class="row form-group">
                 <div class="col col-md-2"><label for="text-input" class=" form-control-label">Jumlah
                         Stock</label></div>
-                <div class="col-12 col-md-5"><input type="text" id="text-input" name="jumlah_stock"
+                <div class="col-12 col-md-5"><input type="text" id="text-input" value="{{$dataBuyment[0]->buyment_total}}" name="jumlah_stock"
                         class="form-control">
                     <small class="form-text text-danger">{{ $errors->error->first('jumlah_stock') }}</small>
                     {{-- <small class="form-text text-muted">form ini untuk jumlah barang yang dibeli</small> --}}
