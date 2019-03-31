@@ -5,6 +5,11 @@ namespace Modules\SellHistory\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Inventory\Entities\Products;
+use Modules\SellHistory\Entities\SellHistory;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 
 class SellHistoryController extends Controller
 {
@@ -14,7 +19,15 @@ class SellHistoryController extends Controller
      */
     public function index()
     {
-        return view('sellhistory::index');
+        Cache::flush();
+        $data['title'] = ucwords('data penjualan');
+        $data['products'] = Products::select('product_code', 'product_name')->get();
+        $data['sell_histories'] = Cache::rememberForever('CacheSellHistory',  function () {
+            // return SellHistory::select('product_code', 'period', 'amount')->get();
+            return SellHistory::productSellHistory();
+        });
+        // dd($data);
+        return view('sellhistory::index', $data);
     }
 
     /**
@@ -23,7 +36,11 @@ class SellHistoryController extends Controller
      */
     public function create()
     {
-        return view('sellhistory::create');
+        $data['title'] = ucwords('tambah data penjualan');
+        $data['products'] = Products::select('product_code', 'product_name')->get();
+        $data['last_period'] = SellHistory::select('period')->orderBy('id', 'desc')->take(1);
+        // dd($data);
+        return view('sellhistory::create', $data);
     }
 
     /**
@@ -33,7 +50,38 @@ class SellHistoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request = $request->sh;
+        $validator = Validator::make($request, [
+            'period.required'       => 'Kolom periode wajib diisi.',
+            'period.numeric'        => 'Periode harus berupa angka.',
+            'product_code.required' => 'Kolom produk wajib diisi.',
+            'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
+        ]);
+
+        if(!$validator->fails()) {
+            $sh = new SellHistory;
+            $sh->period = $request['period'];
+            $sh->product_code = $request['product_code'];
+            $sh->amount = $request['amount'];
+    
+            // DB::beginTransaction();
+            if($sh->save()) {
+                // DB::commit();
+                Session::flash('type', 'success');
+                Session::flash('message', 'Berhasil menambah data penjualan periode '.$request['period']);
+                return redirect()->route('sh.index');
+            }
+            // DB::rollback();
+            Session::flash('type', 'danger');
+            Session::flash('message', 'Gagal menambah data penjualan periode '.$request['period']);
+            return redirect()->back();
+        }
+
+        return redirect()->back()
+                         ->withErrors($validator)
+                         ->withInput();
+
+
     }
 
     /**

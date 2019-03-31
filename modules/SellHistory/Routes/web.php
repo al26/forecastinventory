@@ -11,6 +11,10 @@
 |
 */
 
-Route::prefix('sellhistory')->group(function() {
-    Route::get('/', 'SellHistoryController@index');
+Route::group(['prefix' => 'administrator', 'middleware' => ['auth', 'role:administrator']], function () {
+    Route::prefix('sell-history')->group(function() {
+        Route::get('/', 'SellHistoryController@index')->name('sh.index');
+        Route::get('/add', 'SellHistoryController@create')->name('sh.create');
+        Route::post('/', 'SellHistoryController@store')->name('sh.store');
+    });
 });
