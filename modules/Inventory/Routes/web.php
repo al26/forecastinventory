@@ -23,9 +23,9 @@ Route::prefix('production/inventory')->group(function () {
 
         Route::get('/materialstock', 'MaterialController@materialstock');
 
-        Route::get('/product', 'ProductsController@getDataProduct');
+        Route::get('/product', 'ProductsController@getDataProduct')->name('productview');
         Route::get('/adddataproduct', 'ProductsController@addDataProduct')->name('adddataproduct');
-        Route::put('/saveproduct', 'ProductsController@saveproduct')->name('savedataproduct');
+        Route::post('/saveproduct', 'ProductsController@saveproduct')->name('savedataproduct');
     });
 });
 Route::prefix('logistic/inventory')->group(function () {
