@@ -68769,6 +68769,28 @@ isNumberKey = function isNumberKey(evt) {
   return true;
 };
 
+swalDelete = function swalDelete(trigger, e) {
+  var uri = $(trigger).attr('href');
+  var text = $(trigger).attr('delete-text');
+  var form = $(trigger).find('form');
+  console.log(form);
+  e.preventDefault();
+  swal({
+    title: text,
+    text: "Data yang telah dihapus tidak dapat dikembalikan.",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3490dc',
+    cancelButtonColor: '#e3342f',
+    confirmButtonText: 'Hapus',
+    cancelButtonText: 'Batal'
+  }).then(function (result) {
+    if (result.value) {
+      form.submit();
+    }
+  });
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
