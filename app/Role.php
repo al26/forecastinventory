@@ -11,7 +11,8 @@ class Role extends Model
     protected $table = 'roles';
     protected $primaryKey = 'id';
 
-    public function scopeGetNames($query) {
-        return Schema::hasTable('roles') && $query->select('name')->get()->toArray();
+    public function scopeGetNames($query)
+    {
+        return Schema::hasTable('roles') ? $query->select('name')->get()->toArray() : [];
     }
 }
