@@ -17,6 +17,7 @@ class CreateSellHistoriesTable extends Migration
             $table->increments('id');
             $table->bigInteger('product_code')->unsigned();
             $table->foreign('product_code')->references('product_code')->on('products')->onDelete('cascade');
+            $table->string('period');
             $table->bigInteger('amount');
             $table->timestamps();
         });
