@@ -33,11 +33,16 @@
                     <td>{{$value->Jumlah}}</td>
                     <td>{{$value->Nominal}}</td>
                     <td>
-                        <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                            <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                            
+                            <a class="btn btn-danger btn-sm" href="{{ route('purchasedelete',$value->kode_pembelian) }}" onclick="event.preventDefault();
+                            document.getElementById('deleteMaterial').submit();">
+                            <i class="menu-icon fas fa-sign-out-alt"></i>
+                            
+                        </a>
 
-                        <form action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
-                            <input class="btn btn-danger btn-sm" type="submit" value="&#128465;" />	
-                            <input type="hidden" name="_method" value="delete" />
+                        <form id="deleteMaterial" action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
+                            @method('delete')
                             @csrf
                         </form>
                     </td>

@@ -25,9 +25,11 @@ Route::group(['middleware' => ['auth']], function () {
         foreach (\App\Role::getNames() as $key => $value) {
             $role = $value['name'];
             Route::group(
-                ['middleware' => ['role:'.$role]], function () use($role) {
-                    Route::get($role, "UserController@".$role)->name($role.".dashboard");
-            });
-        }    
+                ['middleware' => ['role:' . $role]],
+                function () use ($role) {
+                    Route::get($role, "UserController@" . $role)->name($role . ".dashboard");
+                }
+            );
+        }
     }
 });

@@ -10,3 +10,4 @@ class Materials_buyment extends Model
     public $timestamps = false;
     protected $table = 'materials_buyment';
 }
+    
