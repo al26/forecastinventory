@@ -19,8 +19,13 @@ Route::prefix('administrator/inventory')->group(function () {
 Route::prefix('production/inventory')->group(function () {
     Route::group(['middleware' => ['role:production']], function () {
         Route::get('/materialneeds', 'InventoryController@materialneeds');
-        Route::get('/materialstock', 'MaterialController@materialstock');
         Route::get('/forcastingresult', 'InventoryController@forcastingresult');
+
+        Route::get('/materialstock', 'MaterialController@materialstock');
+
+        Route::get('/product', 'ProductsController@getDataProduct');
+        Route::get('/adddataproduct', 'ProductsController@addDataProduct')->name('adddataproduct');
+        Route::put('/saveproduct', 'ProductsController@saveproduct')->name('savedataproduct');
     });
 });
 Route::prefix('logistic/inventory')->group(function () {

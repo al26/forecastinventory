@@ -15,10 +15,11 @@ class Productmaterialneed extends Migration
     {
         Schema::create('productmaterialneed', function (Blueprint $table) {
             $table->primary(['material_code', 'product_code']);
-            $table->unsignedInteger('material_code');
-            $table->unsignedInteger('product_code');
+            $table->bigInteger('material_code')->unsigned();
+            $table->bigInteger('product_code')->unsigned();
             $table->foreign('material_code')->references('material_code')->on('materials')->onDelete('cascade');
             $table->foreign('product_code')->references('product_code')->on('products')->onDelete('cascade');
+            $table->double('material_need', 8, 2);
         });
     }
 
