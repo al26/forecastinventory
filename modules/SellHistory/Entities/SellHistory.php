@@ -14,7 +14,7 @@ class SellHistory extends Model
 
     public function scopeProductSellHistory($query) {
         return $query
-              ->select('sell_histories.period', 'sell_histories.product_code', 'products.product_name', 'sell_histories.amount')
+              ->select('sell_histories.id','sell_histories.period', 'sell_histories.product_code', 'products.product_name', 'sell_histories.amount')
               ->join('products', 'sell_histories.product_code', '=', 'products.product_code')
               ->get();
     }

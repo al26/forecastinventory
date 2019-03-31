@@ -49,3 +49,25 @@ isNumberKey = function (evt) {
 		return false;
 	return true;
 }
+
+swalDelete = function(trigger, e) {
+	let uri = $(trigger).attr('href');
+	let text = $(trigger).attr('delete-text');
+	let form = $(trigger).find('form');
+	console.log(form);
+	e.preventDefault();
+	swal({
+		title: text,
+		text: "Data yang telah dihapus tidak dapat dikembalikan.",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3490dc',
+		cancelButtonColor: '#e3342f',
+		confirmButtonText: 'Hapus',
+		cancelButtonText: 'Batal'
+	}).then((result) => {
+		if (result.value) {
+			form.submit(); 
+		}
+	})
+}
