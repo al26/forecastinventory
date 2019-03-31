@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +15,7 @@
 
 Route::get('/', function () {
     return redirect()->route('login');
+    // Cache::flush();
 });
 
 

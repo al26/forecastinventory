@@ -33,11 +33,11 @@
                     <td>{{$value->Jumlah}}</td>
                     <td>{{$value->Nominal}}</td>
                     <td>
-                            <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                            <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                             
                             <a class="btn btn-danger btn-sm" href="{{ route('purchasedelete',$value->kode_pembelian) }}" onclick="event.preventDefault();
                             document.getElementById('deleteMaterial').submit();">
-                            <i class="menu-icon fas fa-sign-out-alt"></i>
+                            <i class="fas fa-fw fa-trash-alt"></i>
                             
                         </a>
 
