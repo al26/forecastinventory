@@ -14,7 +14,7 @@ class ProductsController extends Controller
     public function getDataProduct()
     {
         $dataproduct = Cache::rememberForever('CacheProduct',  function () {
-            return DB::table('products')->select('product_name', 'product_type')->get();
+            return DB::table('products')->select('product_code','product_name', 'product_type')->get();
         });
         return view('inventory::production.productview')->with('data', $dataproduct);
     }
@@ -47,9 +47,28 @@ class ProductsController extends Controller
             Cache::flush();
             return redirect()->route('productview');
         }
-       
-
     }
+    public function deleteproduct($id){
+
+        if ($this->HandleDeleteProduct($id)) {
+            Session::flash('message', 'Berhasil Menghapus data Product');
+            Session::flash('type', 'info');
+            Cache::flush();
+            DB::commit();
+            return redirect()->route('productview');
+        } else {
+            Session::flash('message', 'Gagal menghapus data Product');
+            Session::flash('type', 'danger');
+            Cache::flush();
+            DB::rollBack();
+            return redirect()->route('productview');
+        }
+    }
+    public function editproduct($id){
+        echo "$id masuk ke edit form";
+    }
+
+
     protected function beginInsertData(Request $request){
         DB::beginTransaction();
         $id = DB::table('products')->insertGetId(
@@ -59,7 +78,7 @@ class ProductsController extends Controller
             ]
         );
         
-        $c = DB::table('materials')->count();
+        $c = DB::table('materials')->max('material_code');
         $datamaping = $this->Mappingdata($c,$request);
 
         foreach ($datamaping as $key => $value) {
@@ -69,7 +88,6 @@ class ProductsController extends Controller
         }
         return ($id && $insertMaterialNeed ? true : false);
     }
-
     protected function Mappingdata($c,$request){
         $arrayMap = [];
         for($i=1; $i<=$c; $i++){
@@ -83,5 +101,12 @@ class ProductsController extends Controller
             }
         return $arrayMap;        
     }
+    protected function HandleDeleteProduct($id)
+    {
+        DB::beginTransaction();
+        $dataProduct = DB::table('products')->where('product_code', '=',$id)->delete();
+        return ($dataProduct ? true : false);
+    }
+
     
 }
