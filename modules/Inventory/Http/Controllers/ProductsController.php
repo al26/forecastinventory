@@ -20,16 +20,7 @@ class ProductsController extends Controller
     }
     public function addDataProduct()
     {
-        
-        $dataTypeProduct = Cache::rememberForever('CacheDataProductTypeForInsertProduct',  function () {    
-            return  DB::table('products')->select('product_type')->groupBy('product_type')->get();
-        });
-        
-        $dataMaterialProduct = Cache::rememberForever('CacheDataProductForInsertProduct',  function () {    
-            return DB::table('materials')->select('material_code', 'material_name', 'unit')->get();
-        });
-        
-        return view('inventory::production.form-new-product')->with('datamaterial', $dataMaterialProduct)->with('dataproduct',$dataTypeProduct);
+        return view('inventory::production.form-new-product')->with('datamaterial', $this->dataMaterialProduct())->with('dataproduct',$this->dataTypeProduct());
     }
     public function saveproduct(Request $request){
         
@@ -65,11 +56,24 @@ class ProductsController extends Controller
         }
     }
     public function editproduct($id){
-        echo "$id masuk ke edit form";
+        $dataedit = DB::table('products')->select('product_code','product_name','product_type')->where('product_code', '=',$id)->get();
+        $datamaterial = DB::table('productmaterialneed as pmn')
+            ->joinsub()
+            ->rightJoin('materials as m', 'pmn.material_code', '=', 'm.material_code')
+            ->select('pmn.material_need as material_need','pmn.material_code as material_code')
+            ->where('pmn.product_code', '=', $id)
+            ->get();
+        return $datamaterial ;
+        die();
+        return view('inventory::production.form-new-product')
+                ->with('dataproduct',$this->dataTypeProduct())
+                ->with('datamaterial', $this->dataMaterialProduct())
+                ->with('dataedit',$dataedit)
+                ->with('materialneed',$datamaterial);
     }
 
 
-    protected function beginInsertData(Request $request){
+    private function beginInsertData(Request $request){
         DB::beginTransaction();
         $id = DB::table('products')->insertGetId(
             [
@@ -88,7 +92,7 @@ class ProductsController extends Controller
         }
         return ($id && $insertMaterialNeed ? true : false);
     }
-    protected function Mappingdata($c,$request){
+    private function Mappingdata($c,$request){
         $arrayMap = [];
         for($i=1; $i<=$c; $i++){
             if($request->$i !== null){
@@ -101,11 +105,23 @@ class ProductsController extends Controller
             }
         return $arrayMap;        
     }
-    protected function HandleDeleteProduct($id)
+    private function HandleDeleteProduct($id)
     {
         DB::beginTransaction();
         $dataProduct = DB::table('products')->where('product_code', '=',$id)->delete();
         return ($dataProduct ? true : false);
+    }
+    private function dataTypeProduct(){
+        $dataTypeProduct = Cache::rememberForever('CacheDataProductTypeForInsertProduct',  function () {    
+            return  DB::table('products')->select('product_type')->groupBy('product_type')->get();
+        });
+        return $dataTypeProduct;
+    }
+    private function dataMaterialProduct(){
+        $dataMaterialProduct = Cache::rememberForever('CacheDataProductForInsertProduct',  function () {    
+            return DB::table('materials')->select('material_code', 'material_name', 'unit')->get();
+        });
+        return $dataMaterialProduct;
     }
 
     

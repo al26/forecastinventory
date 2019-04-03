@@ -40,10 +40,7 @@
                         <select name="bahanbaku" id="select" class="form-control">
                             <option value="">Pilih Bahan Baku</option>
                             @foreach ($data as $item)
-                            <option value="{{$item->material_code}}" <?php
-                        echo(isset($dataBuyment[0]->material_code) ?   
-                            ($item->material_code === $dataBuyment[0]->material_code ? 'selected'  :'' ) : "")
-                        ?>>{{$item->material_name}}</option>
+                            <option value="{{$item->material_code}}" <?php echo(isset($dataBuyment[0]->material_code) ? ($item->material_code === $dataBuyment[0]->material_code ? 'selected'  :'' ) : "")?>>{{$item->material_name}}</option>
                             @endforeach
                         </select>
                         <small class="form-text text-danger">{{ $errors->error->first('bahanbaku') }}</small>
@@ -55,7 +52,7 @@
                     <div class="col col-md-2"><label for="text-input" class=" form-control-label">Nominal</label></div>
                     <div class="col-12 col-md-5"><input type="text" id="text-input"
                             value="<?php echo (isset($dataBuyment[0]->buyment_price)? $dataBuyment[0]->buyment_price : "")?>"
-                            name="nominal" class="form-control">
+                            name="nominal" class="form-control" onkeypress="javascript:return isNumberKey(event);">
                         <small class="form-text text-danger">{{ $errors->error->first('nominal') }}</small>
                         {{-- <small class="form-text text-muted">kolom ini untuk nominal/jumlah harga bahan baku</small> --}}
                     </div>
