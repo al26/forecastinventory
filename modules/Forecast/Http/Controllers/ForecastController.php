@@ -16,6 +16,7 @@ class ForecastController extends Controller
 
 
     public function index() {
+        ForecastAccuracy::getCalculation('moving-average', 1);
         $data['moving_avg'] = $this->movingAvg(20);
         Session::flash('message', 'Forecasted');
         Session::flash('type', 'info');

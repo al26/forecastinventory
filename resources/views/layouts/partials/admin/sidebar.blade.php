@@ -40,15 +40,13 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
+                    <a class="" href="{{ route('logout') }}" onclick="javascript:confirmLogout(this, event);" confirmation-text="Anda yakin akan keluar dari aplikasi ?">
                         <i class="menu-icon fas fa-sign-out-alt"></i>
                         Logout
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
                 </li>
             </ul>
         </div>

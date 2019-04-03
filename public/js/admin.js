@@ -68773,16 +68773,35 @@ swalDelete = function swalDelete(trigger, e) {
   var uri = $(trigger).attr('href');
   var text = $(trigger).attr('delete-text');
   var form = $(trigger).find('form');
-  console.log(form);
   e.preventDefault();
   swal({
     title: text,
     text: "Data yang telah dihapus tidak dapat dikembalikan.",
     type: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#3490dc',
-    cancelButtonColor: '#e3342f',
+    confirmButtonColor: '#e3342f',
+    cancelButtonColor: '#3490dc',
     confirmButtonText: 'Hapus',
+    cancelButtonText: 'Batal'
+  }).then(function (result) {
+    if (result.value) {
+      form.submit();
+    }
+  });
+};
+
+confirmLogout = function confirmLogout(trigger, e) {
+  var uri = $(trigger).attr('href');
+  var text = $(trigger).attr('confirmation-text');
+  var form = $(trigger).find('form');
+  e.preventDefault();
+  swal({
+    title: text,
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e3342f',
+    cancelButtonColor: '#3490dc',
+    confirmButtonText: 'Keluar',
     cancelButtonText: 'Batal'
   }).then(function (result) {
     if (result.value) {
