@@ -57,19 +57,21 @@ class ProductsController extends Controller
     }
     public function editproduct($id){
         $dataedit = DB::table('products')->select('product_code','product_name','product_type')->where('product_code', '=',$id)->get();
-        $datamaterial = DB::table('productmaterialneed as pmn')
-            ->joinsub()
-            ->rightJoin('materials as m', 'pmn.material_code', '=', 'm.material_code')
-            ->select('pmn.material_need as material_need','pmn.material_code as material_code')
-            ->where('pmn.product_code', '=', $id)
-            ->get();
-        return $datamaterial ;
-        die();
+        
+        $condition = DB::table('productmaterialneed as p')
+                   ->select('*')
+                   ->where('p.product_code','=',$id);
+        
+        $dataeditmaterial = DB::table('materials as m')
+                    ->select('m.material_code','m.material_name','m.unit','condition.material_need')
+                    ->leftJoinSub($condition, 'condition', function ($join) {
+                        $join->on('m.material_code', '=', 'condition.material_code');
+                    })->get();
+        
         return view('inventory::production.form-new-product')
                 ->with('dataproduct',$this->dataTypeProduct())
-                ->with('datamaterial', $this->dataMaterialProduct())
-                ->with('dataedit',$dataedit)
-                ->with('materialneed',$datamaterial);
+                ->with('datamaterial',$dataeditmaterial)
+                ->with('dataedit',$dataedit);
     }
 
 
