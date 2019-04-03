@@ -35,16 +35,18 @@
                     <td>
                             <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                             
-                            <a class="btn btn-danger btn-sm" href="{{ route('purchasedelete',$value->kode_pembelian) }}" onclick="event.preventDefault();
-                            document.getElementById('deleteMaterial').submit();">
-                            <i class="fas fa-fw fa-trash-alt"></i>
-                            
+                            <a delete-text="Hapus data pembelian ?"
+                             class="btn btn-danger btn-sm" 
+                             href="{{ route('purchasedelete',$value->kode_pembelian) }}" 
+                             onclick="javascript:swalDelete(this, event);">
+                            <i class="fas fa-fw fa-trash-alt"></i> 
+                            <form id="deleteMaterial" action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
+                                    @method('delete')
+                                    @csrf
+                                </form>
                         </a>
 
-                        <form id="deleteMaterial" action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
-                            @method('delete')
-                            @csrf
-                        </form>
+                        
                     </td>
                 </tr>
                 @endforeach
