@@ -11,20 +11,18 @@
         <strong>Penambahan Product Baru</strong>
     </div>
     @if (isset($dataBuyment))
-    <form action="{{route('updatepurchase',$dataBuyment[0]->buyment_code)}}" method="post" class="form-horizontal">
+    <form action="{{route('updateproduct')}}" method="post" class="form-horizontal">
         @method('patch')
-        @else
-        <form action="{{route('savedataproduct')}}" method="post" class="form-horizontal">
-
-
-            @endif
-            @csrf
+    @else
+    <form action="{{route('savedataproduct')}}" method="post" class="form-horizontal">
+    @endif
+        @csrf
             <div class="card-body card-block">
 
                 <div class="row form-group">
                     <div class="col col-md-2"><label for="text-input" class=" form-control-label">Nama Product</label>
                     </div>
-                    <div class="col-12 col-md-3"><input type="text" id="text-input" value="" placeholder="nama produk" name="nama_product"
+                    <div class="col-12 col-md-3"><input type="text" id="text-input" value="<?php echo (isset($dataedit[0]->product_name)? $dataedit[0]->product_name : "")?>" placeholder="nama produk" name="nama_product"
                             class="form-control">
                         <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
                         {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
@@ -38,7 +36,7 @@
                         <select name="tipe_product" id="select" class="form-control">
                             <option value="">Pilih Jenis Product</option>
                             @foreach ($dataproduct as $item => $value)
-                                <option value="{{$value->product_type}}">{{$value->product_type}}</option>
+                                <option value="{{$value->product_type}}" <?php echo(isset($dataedit[0]->product_type) ? ($value->product_type === $dataedit[0]->product_type ? 'selected'  :'' ) : "")?>>{{$value->product_type}}</option>
                             @endforeach
                         </select>
                         <small class="form-text text-danger">{{ $errors->error->first('tipe_product') }}</small>
@@ -57,8 +55,8 @@
                 <div class="col col-md-2">
                 <label for="select" class=" form-control-label">{{$value->material_name}}</label>
                 </div>
-                <div class="col-12 col-md-3"><input type="text" id="text-input" value="" placeholder="{{$value->unit}}" name="{{$value->material_code}}"
-                            class="form-control">
+                <div class="col-12 col-md-3">
+                    <input type="text" id="text-input" value="{{ isset($materialneed[$item]) && !is_null($value->material_code) && ($value->material_code === $materialneed[$item]->material_code) ? $materialneed[$item]->material_need  : ""}}" placeholder="{{$value->unit}}" name="{{$value->material_code}}" class="form-control">
                         <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
                         {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
                     </div>
