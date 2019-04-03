@@ -7,18 +7,23 @@ class ForecastAccuracy extends Model
 {
     protected $table = 'forecast_accuracy';
     protected $primaryKey = 'id';
-    protected $fillable = ['method', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent'];
+    protected $fillable = ['sell_history_id','method', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent'];
 
 
-    public function scopeAddLog($query, $method, $ft, $xt, &$obj_return = false) {
+    public function sellHistory() {
+        return $this->belongsTo('Modules\SellHistory\Entities\SellHistory');
+    }
+
+    public function scopeAddLog($query, $method, $ft, $xt, $sh, &$obj_return = false) {
         $ft = (float)$ft;
         $xt = (float)$xt;
-        $error = $ft-$xt;
+        $error = $method === 'moving-average' ? $ft-$xt : $xt-$ft;
         $error = (float)$error;
         $errorAbs= abs($error);
         $percentage = ($error/$xt)*100;
         $percentage = (float)$percentage;
         $data = $query->create([
+            'sell_history_id'   => $sh,
             'method'            => $method,
             'error'             => $error,
             'error_abs'         => $errorAbs,
@@ -31,9 +36,11 @@ class ForecastAccuracy extends Model
             if(isset($obj_return) && $obj_return) {
                 return $data;
             }
+
+            return true;
         }  
 
-        return true;
+        return false;
     }
 
     public function scopeGetRaw($query) {
@@ -53,7 +60,7 @@ class ForecastAccuracy extends Model
             }   
         }
         
-        $query = $query->select('id', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent');
+        $query = $query->select('id', 'sell_history_id', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent');
         if($method && $id) {
             $return = $query->where('method', $method)
                             ->where('id', $id)
@@ -72,7 +79,18 @@ class ForecastAccuracy extends Model
         return $needs_array ? $return->toArray() : $return;
     }
 
-    public function scopeGetCalculation($query, &$needs_array = false) {
+    public function scopeGetCalculation($query, $method, $product_code, &$needs_array = false) {
+        $limit = $this->sellHistory()->countProductActivePeriod($product_code);
+        dd($limit);
+        $toCalculate = $query->select('period','product_code','error_abs', 'error_square', 'error_abs_percent')
+                             ->join('sell_histories', 'forecast_accuracy.sell_history_id', '=', 'sell_histories.id')
+                             ->where('method', $method)
+                             ->where('product_code', $product_code)
+                             ->take($limit);
+        dd($toCalculate->get());
+
+
+
         $data['mad'] = $query->avg('error_abs');
         $data['mse'] = $query->avg('error_square');
         $data['mape'] = $query->avg('error_abs_percent');

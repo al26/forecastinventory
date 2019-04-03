@@ -21,9 +21,9 @@ class SellHistoryController extends Controller
     {
         Cache::flush();
         $data['title'] = ucwords('data penjualan');
-        $data['products'] = Products::select('product_code', 'product_name')->get();
+        $data['products'] = Products::select('product_id', 'product_name')->get();
         $data['sell_histories'] = Cache::rememberForever('CacheSellHistory',  function () {
-            // return SellHistory::select('product_code', 'period', 'amount')->get();
+            // return SellHistory::select('product_id', 'period', 'amount')->get();
             return SellHistory::productSellHistory();
         });
         // dd($data);
@@ -37,8 +37,8 @@ class SellHistoryController extends Controller
     public function create()
     {
         $data['title'] = ucwords('tambah data penjualan');
-        $data['products'] = Products::select('product_code', 'product_name')->get();
-        $data['last_period'] = SellHistory::select('period')->orderBy('id', 'desc')->take(1);
+        $data['products'] = Products::select('product_id', 'product_name')->get();
+        $data['last_period'] = SellHistory::getLastPeriod();
         // dd($data);
         return view('sellhistory::create', $data);
     }
@@ -51,37 +51,49 @@ class SellHistoryController extends Controller
     public function store(Request $request)
     {
         $request = $request->sh;
-        $validator = Validator::make($request, [
+        $validator = Validator::make($request,[
+            "period" => "required|numeric",
+            "amount" => "required",
+            "product_id" => [
+                "required",
+                function ($attribute, $value, $fail) {
+                    if ($value === '0') {
+                        $fail('Silahkah pilih produk yang tersedia.');
+                    }
+                },
+            ]
+        ], [
             'period.required'       => 'Kolom periode wajib diisi.',
             'period.numeric'        => 'Periode harus berupa angka.',
-            'product_code.required' => 'Kolom produk wajib diisi.',
+            'product_id.required' => 'Kolom produk wajib diisi.',
             'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
         ]);
 
         if(!$validator->fails()) {
             $sh = new SellHistory;
             $sh->period = $request['period'];
-            $sh->product_code = $request['product_code'];
+            $sh->quarter = $request['quarter'];
+            $sh->product_id = $request['product_id'];
             $sh->amount = $request['amount'];
     
             // DB::beginTransaction();
             if($sh->save()) {
                 // DB::commit();
+                Cache::flush();
                 Session::flash('type', 'success');
-                Session::flash('message', 'Berhasil menambah data penjualan periode '.$request['period']);
+                Session::flash('message', 'Berhasil menambah data penjualan periode');
                 return redirect()->route('sh.index');
             }
             // DB::rollback();
             Session::flash('type', 'danger');
-            Session::flash('message', 'Gagal menambah data penjualan periode '.$request['period']);
+            Session::flash('message', 'Gagal menambah data penjualan periode');
             return redirect()->back();
         }
 
+        // dd($validator->errors());
         return redirect()->back()
-                         ->withErrors($validator)
+                         ->withErrors($validator->errors())
                          ->withInput();
-
-
     }
 
     /**
@@ -101,7 +113,10 @@ class SellHistoryController extends Controller
      */
     public function edit($id)
     {
-        return view('sellhistory::edit');
+        $data['title'] = ucwords('ubah data penjualan');
+        $data['products'] = Products::select('product_id', 'product_name')->get();
+        $data['sell_history'] = SellHistory::productSellHistory(['id' => $id]);
+        return view('sellhistory::edit', $data);
     }
 
     /**
@@ -112,7 +127,50 @@ class SellHistoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request = $request->sh;
+        $validator = Validator::make($request,[
+            "period" => "required|numeric",
+            "quarter" => "required|numeric",
+            "amount" => "required",
+            "product_id" => [
+                "required",
+                function ($attribute, $value, $fail) {
+                    if ($value === '0') {
+                        $fail('Silahkah pilih produk yang tersedia.');
+                    }
+                },
+            ]
+        ], [
+            'period.required'       => 'Kolom periode wajib diisi.',
+            'period.numeric'        => 'Periode harus berupa angka.',
+            'product_id.required' => 'Kolom produk wajib diisi.',
+            'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
+        ]);
+
+        if(!$validator->fails()) {
+            $sh = SellHistory::find($id);
+            $sh->period = $request['period'];
+            $sh->product_id = $request['product_id'];
+            $sh->amount = $request['amount'];
+    
+            // DB::beginTransaction();
+            if($sh->save()) {
+                // DB::commit();
+                Cache::flush();
+                Session::flash('type', 'success');
+                Session::flash('message', 'Berhasil mengubah data penjualan');
+                return redirect()->route('sh.index');
+            }
+            // DB::rollback();
+            Session::flash('type', 'danger');
+            Session::flash('message', 'Gagal mengubah data penjualan periode');
+            return redirect()->back();
+        }
+
+        // dd($validator->errors());
+        return redirect()->back()
+                         ->withErrors($validator->errors())
+                         ->withInput();
     }
 
     /**
@@ -122,6 +180,19 @@ class SellHistoryController extends Controller
      */
     public function destroy($id)
     {
-        return "delete $id";
+        $d = SellHistory::find($id);
+        if ($d->delete()) {
+            Session::flash('message', "Berhasil menghapus data penjualan");
+            Session::flash('type', "success");
+        } else {
+            Session::flash('message', "Gagal menghapus data penjualan");
+            Session::flash('type', "danger");
+        }
+
+        return redirect()->route('sh.index');
+    }
+
+    public function getLastPeroidOfProduct(Request $request, $product) {
+        return SellHistory::getLastPeriod(['product_id' => $product]);
     }
 }

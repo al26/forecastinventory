@@ -14,7 +14,9 @@ class CreateForecastAccuracy extends Migration
     public function up()
     {
         Schema::create('forecast_accuracy', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
+            $table->bigInteger('sell_history_id')->unsigned();
+            $table->foreign('sell_history_id')->references('id')->on('sell_histories')->onDelete('cascade');
             $table->string('method');
             $table->float('error', 8, 2);
             $table->float('error_abs', 8, 2);
