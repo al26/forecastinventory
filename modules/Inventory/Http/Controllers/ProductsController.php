@@ -11,20 +11,22 @@ use Illuminate\Support\Facades\Session;
 
 class ProductsController extends Controller
 {
-    public function getDataProduct()
-    {
+    public function getDataProduct(){
         $dataproduct = Cache::rememberForever('CacheProduct',  function () {
-            return DB::table('products')->select('product_code','product_name', 'product_type')->get();
+            return DB::table('products')->select('id','product_name', 'product_type')->get();
         });
         return view('inventory::production.productview')->with('data', $dataproduct);
     }
-    public function addDataProduct()
-    {
-        return view('inventory::production.form-new-product')->with('datamaterial', $this->dataMaterialProduct())->with('dataproduct',$this->dataTypeProduct());
+    public function addDataProduct(){
+        $data['datamaterial']=$this->dataMaterialProduct();
+        $data['dataproduct']=$this->dataTypeProduct();
+        return view('inventory::production.form-new-product',$data);
+                // ->with('datamaterial', $this->dataMaterialProduct())
+                // ->with('dataproduct',$this->dataTypeProduct());
     }
     public function saveproduct(Request $request){
         
-        if($this->beginInsertData($request)){
+        if($this->handleInsertData($request)){
             
             Session::flash('message', 'Berhasil Menambah data product');
             Session::flash('type', 'info');
@@ -56,26 +58,56 @@ class ProductsController extends Controller
         }
     }
     public function editproduct($id){
-        $dataedit = DB::table('products')->select('product_code','product_name','product_type')->where('product_code', '=',$id)->get();
+        $dataedit = DB::table('products')->select('id','product_name','product_type')->where('id', '=',$id)->get();
         
         $condition = DB::table('productmaterialneed as p')
                    ->select('*')
-                   ->where('p.product_code','=',$id);
+                   ->where('p.product_id','=',$id);
         
         $dataeditmaterial = DB::table('materials as m')
                     ->select('m.material_code','m.material_name','m.unit','condition.material_need')
                     ->leftJoinSub($condition, 'condition', function ($join) {
                         $join->on('m.material_code', '=', 'condition.material_code');
                     })->get();
-        
-        return view('inventory::production.form-new-product')
-                ->with('dataproduct',$this->dataTypeProduct())
-                ->with('datamaterial',$dataeditmaterial)
-                ->with('dataedit',$dataedit);
+        $data['dataproduct']=$this->dataTypeProduct();
+        $data['datamaterial']=$dataeditmaterial;
+        $data['dataedit']=$dataedit;
+        return view('inventory::production.form-new-product',$data);
+                // ->with('dataproduct',$this->dataTypeProduct())
+                // ->with('datamaterial',$dataeditmaterial)
+                // ->with('dataedit',$dataedit);
+    }
+    public function updateproduct(Request $request,$id){
+       
+        if($this->handleUpdateData($request,$id)){
+            Session::flash('message', 'Berhasil Mengubah data product');
+            Session::flash('type', 'info');
+            DB::commit();
+            Cache::flush();
+            return redirect()->route('productview');
+        }else{
+            DB::rollBack();
+            Session::flash('message', 'Gagal Mengubah data product');
+            Session::flash('type', 'danger');
+            Cache::flush();
+            return redirect()->route('productview');
+        }
     }
 
-
-    private function beginInsertData(Request $request){
+    private function handleUpdateData(Request $request, $id){
+        DB::beginTransaction();
+        DB::table('products')->where('id', $id)->update(['product_name' => $request->nama_product,'product_type'=>$request->tipe_product]);
+        DB::table('productmaterialneed')->where('product_id',$id)->delete();
+        $c = DB::table('materials')->max('material_code');
+        $datamaping = $this->Mappingdata($c,$request);
+        foreach ($datamaping as $key => $value) {
+            $updateMaterialNeed = DB::table('productmaterialneed')->insert(
+                    ['material_code'=>$value['code_material'],'product_id'=>$id,'material_need'=>$value['kebutuhan_material']]
+                );
+            }
+            return ($id && $updateMaterialNeed ? true : false);
+    }
+    private function handleInsertData(Request $request){
         DB::beginTransaction();
         $id = DB::table('products')->insertGetId(
             [
@@ -89,7 +121,7 @@ class ProductsController extends Controller
 
         foreach ($datamaping as $key => $value) {
         $insertMaterialNeed = DB::table('productmaterialneed')->insert(
-                ['material_code'=>$value['code_material'], 'product_code'=>$id,'material_need'=>$value['kebutuhan_material']]
+                ['material_code'=>$value['code_material'], 'product_id'=>$id,'material_need'=>$value['kebutuhan_material']]
             );
         }
         return ($id && $insertMaterialNeed ? true : false);
@@ -107,10 +139,9 @@ class ProductsController extends Controller
             }
         return $arrayMap;        
     }
-    private function HandleDeleteProduct($id)
-    {
+    private function HandleDeleteProduct($id){
         DB::beginTransaction();
-        $dataProduct = DB::table('products')->where('product_code', '=',$id)->delete();
+        $dataProduct = DB::table('products')->where('id', '=',$id)->delete();
         return ($dataProduct ? true : false);
     }
     private function dataTypeProduct(){

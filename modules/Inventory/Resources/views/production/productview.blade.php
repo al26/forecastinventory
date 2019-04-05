@@ -29,13 +29,13 @@
                     <td>{{$value->product_name}}</td>
                     <td>{{$value->product_type}}</td>
                     <td>
-                    <a href="{{route('editproduct',$value->product_code)}}" class="btn btn-primary btn-sm"><i class="fas fa-fw fa-edit"></i></a>
+                    <a href="{{route('editproduct',$value->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                         <a delete-text="Hapus data pembelian ?"
                              class="btn btn-danger btn-sm" 
-                             href="{{ route('deletedataproduct',$value->product_code) }}" 
+                             href="{{ route('deletedataproduct',$value->id) }}" 
                              onclick="javascript:swalDelete(this, event);">
                             <i class="fas fa-fw fa-trash-alt"></i> 
-                            <form id="deleteMaterial" action="{{route('deletedataproduct',$value->product_code)}}" method="post">
+                            <form id="deleteMaterial" action="{{route('deletedataproduct',$value->id)}}" method="post">
                                     @method('delete')
                                     @csrf
                                 </form>

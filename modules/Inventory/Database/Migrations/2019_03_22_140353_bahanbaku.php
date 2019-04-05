@@ -18,7 +18,7 @@ class Bahanbaku extends Migration
             $table->string('material_type');
             $table->string('material_name');
             $table->double('material_stock', 8, 2);
-            $table->string('Unit');
+            $table->string('unit');
             $table->timestamps();
         });
     }
