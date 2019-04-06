@@ -3,7 +3,6 @@
 namespace Modules\Inventory\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -73,9 +72,6 @@ class ProductsController extends Controller
         $data['datamaterial']=$dataeditmaterial;
         $data['dataedit']=$dataedit;
         return view('inventory::production.form-new-product',$data);
-                // ->with('dataproduct',$this->dataTypeProduct())
-                // ->with('datamaterial',$dataeditmaterial)
-                // ->with('dataedit',$dataedit);
     }
     public function updateproduct(Request $request,$id){
        

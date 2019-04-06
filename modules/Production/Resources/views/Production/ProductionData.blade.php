@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Data Pembelian Bahan Baku')
+@section('title',$title)
 @section('content')
 <!-- Right Panel -->
 <!-- begin content -->
@@ -7,8 +7,8 @@
 
 <div class="card">
     <div class="card-header">
-        <strong class="card-title">Data Pembelian Bahan Baku</strong>
-        <a href="{{route('purchasingmaterial')}}" class="btn btn-primary btn-sm float-right">Tambah Data
+    <strong class="card-title">{{$title}}</strong>
+    <a href="{{route('addproduction')}}" class="btn btn-primary btn-sm float-right">Tambah Data
             Baru</a>
     </div>
     <div class="card-body">
@@ -16,11 +16,10 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Tanggal Beli</th>
-                    <th>Bahan Baku</th>
-                    <th>Jumlah</th>
-                    <th>Harga</th>
-                    <th>Nominal</th>
+                    <th>Periode</th>
+                    <th>Product</th>
+                    <th>Jumlah Product</th>
+                    <th>Options</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,19 +27,18 @@
                 @foreach ($data as $key => $value)
                 <tr>
                     <td>{{++$key}}</td>
-                    <td>{{date('d-M-y',strtotime($value->tanggal_beli))}}</td>
-                    <td>{{$value->bahan_baku}}</td>
-                    <td>{{$value->Jumlah}}</td>
-                    <td>Rp{{number_format($value->Nominal,2,",",".")}}</td>
+                    <td>{{$value->periode}}</td>
+                    <td>{{$value->product_name}}</td>
+                    <td>{{$value->jumlah_product}}</td>
                     <td>
-                            <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
+                            <a href="{{route('editproduction',$value->id)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                             
                             <a delete-text="Hapus data pembelian ?"
                              class="btn btn-danger btn-sm" 
-                             href="{{ route('purchasedelete',$value->kode_pembelian) }}" 
+                             href="{{ route('deleteproduction',$value->id) }}" 
                              onclick="javascript:swalDelete(this, event);">
                             <i class="fas fa-fw fa-trash-alt"></i> 
-                            <form id="deleteMaterial" action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
+                            <form id="deleteMaterial" action="{{route('deleteproduction',$value->id)}}" method="post">
                                     @method('delete')
                                     @csrf
                                 </form>

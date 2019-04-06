@@ -52,7 +52,7 @@
                     <div class="col col-md-2"><label for="text-input" class=" form-control-label">Nominal</label></div>
                     <div class="col-12 col-md-5"><input type="text" id="text-input"
                             value="<?php echo (isset($dataBuyment[0]->buyment_price)? $dataBuyment[0]->buyment_price : "")?>"
-                            name="nominal" class="form-control" onkeypress="javascript:return isNumberKey(event);">
+                            name="nominal" class="form-control" onkeypress="javascript:return isNumberKey(event);" placeholder="Rupiah">
                         <small class="form-text text-danger">{{ $errors->error->first('nominal') }}</small>
                         {{-- <small class="form-text text-muted">kolom ini untuk nominal/jumlah harga bahan baku</small> --}}
                     </div>
@@ -62,7 +62,7 @@
                             Stock</label></div>
                     <div class="col-12 col-md-5"><input type="text" id="text-input"
                             value="<?php echo (isset($dataBuyment[0]->buyment_total) ? $dataBuyment[0]->buyment_total:"") ?>"
-                            name="jumlah_stock" class="form-control" onkeypress="javascript:return isNumberKey(event);">
+                            name="jumlah_stock" class="form-control" onkeypress="javascript:return isNumberKey(event);" placeholder="Jumlah">
                         <small class="form-text text-danger">{{ $errors->error->first('jumlah_stock') }}</small>
                         {{-- <small class="form-text text-muted">form ini untuk jumlah barang yang dibeli</small> --}}
                     </div>
