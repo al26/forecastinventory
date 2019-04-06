@@ -16,7 +16,7 @@ class CreateSellHistoriesTable extends Migration
         Schema::create('sell_histories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('period')->default("0");
             $table->string('quarter')->default("0");
             $table->bigInteger('amount');
