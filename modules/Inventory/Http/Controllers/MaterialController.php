@@ -20,7 +20,7 @@ class MaterialController extends Controller
     {
 
         $datamaterial = Cache::rememberForever('CacheMaterialStock',  function () {
-            return DB::table('materials')->select('material_type', 'material_name', 'material_stock')->get();
+            return DB::table('materials')->select('material_code','material_type', 'material_name', 'material_stock')->get();
         });
         return view('inventory::production.materialstock')->with('data', $datamaterial);
     }
@@ -127,6 +127,51 @@ class MaterialController extends Controller
             Cache::flush();
             return redirect()->route('purchasedata');
         }
+    }
+    public function getmaterialstock($id){
+        $material_type = DB::table('materials')->select('material_type')->groupBy('material_type')->get()->toArray();
+        $data['material'] = DB::table('materials')->select('material_type','material_code','material_name','material_stock','unit')->where('material_code','=',$id)->get();
+        $data['title'] = ucwords("ubah stock material");
+        return view('inventory::logistic.updatematerial',$data)->with('material_type',$material_type);
+    }
+    public function updatematerial(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            "nama_material" => "required",
+            "tipe_material" => "required",
+            "unit_material" => "required",
+            "material_stock" => "required|numeric"
+        ], [
+            'nama_material.required'  => ucwords('Kolom Bahanbaku wajib diisi.'),
+            'unit_material.required'  => ucwords('Kolom unit Bahanbaku wajib diisi.'),
+            'tipe_material.required'   => ucwords('Kolom Tipe bahanbaku wajib diisi.'),
+            'material_stock.required'  => ucwords('Kolom material wajib diisi.'),
+            'material_stock.numeric'  => ucwords('Kolom stock material berupa angka.')
+        ]);
+        if (!$validator->fails()) {
+            $result = $this->handleUpdate($request,$id);
+        } else {
+            return redirect()->back()
+                ->withErrors($validator->errors())
+                ->withInput();
+        }
+        if ($result) {
+            Session::flash('message', ucwords('Berhasil Mengubah data Bahanbaku'));
+            Session::flash('type', 'info');
+            DB::commit();
+            Cache::flush();
+            return redirect()->route('materialstock');
+        } else {
+            DB::rollBack();
+            Session::flash('message', ucwords('Gagal Mengubah data Bahanbaku'));
+            Session::flash('type', 'danger');
+            Cache::flush();
+            return redirect()->route('materialstock');
+        }
+    }
+    protected function handleUpdate($request,$id){
+        DB::beginTransaction();
+        $materialupdate = DB::table('materials')->where('material_code','=',$id)->update(['material_stock'=>$request->material_stock,'material_name'=>$request->nama_material,'material_type'=>$request->tipe_material,'unit'=>$request->unit_material]);
+        return ($materialupdate?"true":"false");
     }
     protected function HandlePurchaseDelete($id)
     {
