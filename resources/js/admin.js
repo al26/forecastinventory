@@ -36,6 +36,8 @@ $(document).ready(function () {
 	// 	$('.user-menu').parent().toggleClass('open');
 	// });
 	$('.table').DataTable();
+
+	$('.select2').select2();
 });
 
 $(function () {
@@ -48,6 +50,9 @@ isNumberKey = function (evt) {
 	if (charCode > 31 && (charCode < 48 || charCode > 57))
 		return false;
 	return true;
+
+	// let regex = new RegExp("^\d{1,2}(?:\.\d{1,9})?$");
+	// console.log($(evt.target).val());
 }
 
 swalDelete = function(trigger, e) {
@@ -89,4 +94,28 @@ confirmLogout = function(trigger, e) {
 			form.submit(); 
 		}
 	})
+}
+
+chainSelect = function(trigger, target, baseUri) {
+	let source = $(trigger).val();
+	let url = baseUri +"/"+ source;
+
+	$.ajax({
+		type: "get",
+		url: url,
+		success: function(res) {
+			let innerHtml = "<option value='0'>-- Pilih Periode Penjualan --</option>";
+			if (res instanceof Array && res.length > 0) {
+				$.each(res, function(index, value) {
+					innerHtml += `<option value="${value.period}">${value.period}</option>`;
+				});
+			} 
+
+			$(target).html(innerHtml);
+		},
+		error: function (res) {
+			console.log(res);
+		}
+	})
+	
 }

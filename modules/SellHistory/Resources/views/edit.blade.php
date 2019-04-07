@@ -14,14 +14,11 @@
                         @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label for="select" class=" form-control-label">Produk</label>
+                                <label for="product_id" class=" form-control-label">Produk</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <select name="sh[product_id]" id="select" class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}" onchange='javascript:getLastPeriodOfProduct(this, "#period", "#quarter", "{{URL::to("ajax/sell-history")}}")'>
-                                    @foreach ($products as $product)
-                                        <option value="{{$product->product_id}}" {{($product->product_id === $sell_history->product_id) ? "selected" : ""}}>{{$product->product_name}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="hidden" name="sh[product_id]" value="{{$sell_history->product_id}}">
+                                <input type="text" readonly class="form-control-plaintext font-weight-bolder" id="product_id" value="{{$sell_history->product_code." - ".$sell_history->product_name}}">
                                 @if ($errors->has('product_id'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('product_id') }}</strong>

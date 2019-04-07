@@ -11,6 +11,11 @@
                 <div class="card-body card-block">
                     <form action="{{route('sh.store')}}" method="post" enctype="multipart/form-data" class="form-horizontal">
                         @csrf
+                        {{-- @php
+                            if (session()->getOldInput()) {
+                                dd(old('sh.product_id'));
+                            }
+                        @endphp --}}
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="select" class=" form-control-label">Produk</label>
@@ -19,7 +24,7 @@
                                 <select name="sh[product_id]" id="select" class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}" onchange='javascript:getLastPeriodOfProduct(this, "#period", "#quarter", "{{URL::to("ajax/sell-history")}}")'>
                                     <option value="0">-- Pilih Produk --</option>
                                     @foreach ($products as $product)
-                                        <option value="{{$product->product_id}}">{{$product->product_name}}</option>
+                                        <option value="{{$product->id}}" {{old('sh.product_id') && $product->id === intval(old('sh.product_id')) ? "selected" : ""}}>{{$product->product_name}}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('product_id'))
@@ -34,7 +39,7 @@
                                 <label for="period" class=" form-control-label">Periode</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="period" name="sh[period]" placeholder="periode penjualan" class="form-control{{ $errors->has('period') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);">
+                                <input type="text" id="period" name="sh[period]" placeholder="periode penjualan" class="form-control{{ $errors->has('period') ? ' is-invalid' : '' }}" value="{{old('sh.period')}}"  onkeypress="javascript:return isNumberKey(event);">
                                 @if ($errors->has('period'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('period') }}</strong>
@@ -47,7 +52,7 @@
                                 <label for="quarter" class=" form-control-label">Quarter</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="quarter" name="sh[quarter]" placeholder="quarter penjualan" class="form-control{{ $errors->has('quarter') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);">
+                                <input type="text" id="quarter" name="sh[quarter]" placeholder="quarter penjualan" class="form-control{{ $errors->has('quarter') ? ' is-invalid' : '' }}" value="{{old('sh.quarter')}}"  onkeypress="javascript:return isNumberKey(event);">
                                 @if ($errors->has('quarter'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('quarter') }}</strong>
@@ -60,7 +65,7 @@
                                 <label for="amount" class=" form-control-label">Jumlah Penjualan</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="amount" name="sh[amount]" placeholder="jumlah penjualan" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" onkeypress="javascript:return isNumberKey(event);">
+                                <input type="text" id="amount" name="sh[amount]" placeholder="jumlah penjualan" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" value="{{old('sh.amount')}}" onkeypress="javascript:return isNumberKey(event);">
                                 @if ($errors->has('amount'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('amount') }}</strong>

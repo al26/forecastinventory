@@ -18,10 +18,10 @@ class ProductTableSeeder extends Seeder
 
         Model::unguard();
         DB::table('products')->insert([
-            ['product_name' => "Kain Batik", 'product_type' => 'Kain'],
-            ['product_name' => "Kain Tritik", 'product_type' => 'Kain'],
-            ['product_name' => "Selendang Batik", 'product_type' => 'Selendang'],
-            ['product_name' => "Selendang Tritik", 'product_type' => 'Selendang'],
+            ['product_code' => 'KB01','product_name' => "Kain Batik", 'product_type' => 'Kain'],
+            ['product_code' => 'KT01','product_name' => "Kain Tritik", 'product_type' => 'Kain'],
+            ['product_code' => 'SB01','product_name' => "Selendang Batik", 'product_type' => 'Selendang'],
+            ['product_code' => 'ST01','product_name' => "Selendang Tritik", 'product_type' => 'Selendang'],
         ]);
     }
 }
