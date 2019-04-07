@@ -14,68 +14,35 @@
             Baru</a> --}}
     </div>
     <div class="card-body">
-        <table id="bootstrap-data-table" class="table table-striped table-bordered">
+        <table id="production-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Periode Produksi</th>
                     <th>Nama Produk</th>
                     <th>Jumlah Produksi</th>
-                    <th>Nama Material</th>
-                    <th>Kebutuhan Produk/Material</th>
-                    <th>Kebutuhan Total Material</th>
-                    <th>Stock Material</th>
-                    <th>Unit</th>
                     <th>Status</th>
                     
                 </tr>
             </thead>
             <tbody>
 
-                @foreach ($data as $key => $value)
-                @php
-                    $materialneed_total = floatval($value->kebutuhan_material)*floatval($value->jumlah_production);
-                @endphp
+                @foreach ($production as $key => $value)
                 <tr>
                     <td>{{++$key}}</td>
-                    <td>{{$value->periode_production}}</td>
+                    <td>{{$value->periode}}</td>
                     <td>{{$value->product_name}}</td>
-                    <td>{{$value->jumlah_production}}</td>
-                    <td>{{$value->material_name}}</td>
-                    <td>{{$value->kebutuhan_material}}</td>
-                    <td>{{$materialneed_total}}</td>
-                    <td>{{$value->stock_material}}</td>
-                    <td>{{$value->unit}}</td>
-                    {{-- </span> --}}
-                    {{-- <span class='badge bagde-sm   --}}
-                    
+                    <td>{{$value->jumlah_product}}</td>
                 <td>
-                    @if ($value->stock_material < $materialneed_total)
-                    <span class="badge badge-danger">Restock</span>
-                    @else
-                    <span class="badge badge-info">Cukup</span>
-                    @endif
-                      
-                </td>
-                
-                
-                {{-- <td>
-                            <a href="{{route('editproduction',$value->id)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
-                            
-                            <a delete-text="Hapus data pembelian ?"
-                             class="btn btn-danger btn-sm" 
-                             href="{{ route('deleteproduction',$value->id) }}" 
-                             onclick="javascript:swalDelete(this, event);">
-                            <i class="fas fa-fw fa-trash-alt"></i> 
-                            <form id="deleteMaterial" action="{{route('deleteproduction',$value->id)}}" method="post">
-                                    @method('delete')
-                                    @csrf
-                                </form>
-                        </a>
-
-                        
-                    </td> --}}
-                </tr>
+                <a href="{{route('getProductionData',['id'=>$value->production_id])}}" class="btn btn-info btn-sm buttonProduction" data-toggle="collapse" type="button" aria-expanded="false" aria-controls="collapseExample" ><i class="fas fa-fw fa-edit"></i></a>
+                    </td>
+                    </tr>
+                {{-- <tr class="collapse" id="collapseExample{{$value->periode}}">
+                        <td colspan="5">
+                                @include('production::Partials.collapse')
+                            </td>
+                    
+                </tr> --}}
                 @endforeach
             </tbody>
         </table>
@@ -85,3 +52,6 @@
 <!-- end content -->
 <!-- Right Panel -->
 @stop
+@section('script')
+<script src="{{Module::asset('Production:js/production.js')}}"></script>    
+@endsection

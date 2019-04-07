@@ -22,5 +22,6 @@ Route::prefix('production/production')->group(function () {
         Route::get('/editproduction/{id}', 'ProductionController@editproduction')->name('editproduction');
         Route::patch('/updateproduction/{id}', 'ProductionController@updateproduction')->name('updateproduction');
         Route::get('/processproduction', 'ProductionController@processProduction');
+        Route::get('/getProductionData/{id}', 'ProductionController@getProductionPeriode')->name('getProductionData');
     });
 });
