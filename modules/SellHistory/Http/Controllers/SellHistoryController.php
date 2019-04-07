@@ -7,6 +7,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Inventory\Entities\Products;
 use Modules\SellHistory\Entities\SellHistory;
+use Modules\Forecast\Entities\ForecastAccuracy;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
@@ -19,9 +20,12 @@ class SellHistoryController extends Controller
      */
     public function index()
     {
+        // return $this->getConstraint('multiplicative', 1, ['a' => 0, 'b' => 0, 'c' => 1]);
+        // die;
+        // die(var_dump(SellHistory::avgLastAmount(['product_id' => 1], 3)));
         Cache::flush();
         $data['title'] = ucwords('data penjualan');
-        $data['products'] = Products::select('product_id', 'product_name')->get();
+        $data['products'] = Products::select('id', 'product_name')->get();
         $data['sell_histories'] = Cache::rememberForever('CacheSellHistory',  function () {
             // return SellHistory::select('product_id', 'period', 'amount')->get();
             return SellHistory::productSellHistory();
@@ -37,8 +41,8 @@ class SellHistoryController extends Controller
     public function create()
     {
         $data['title'] = ucwords('tambah data penjualan');
-        $data['products'] = Products::select('product_id', 'product_name')->get();
-        $data['last_period'] = SellHistory::getLastPeriod();
+        $data['products'] = Products::select('id', 'product_name')->get();
+        // $data['last_period'] = SellHistory::getPeriod();
         // dd($data);
         return view('sellhistory::create', $data);
     }
@@ -53,6 +57,7 @@ class SellHistoryController extends Controller
         $request = $request->sh;
         $validator = Validator::make($request, [
             "period" => "required|numeric",
+            "quarter" => "required|numeric",
             "amount" => "required",
             "product_id" => [
                 "required",
@@ -64,6 +69,7 @@ class SellHistoryController extends Controller
             ]
         ], [
             'period.required'       => 'Kolom periode wajib diisi.',
+            'quarter.required'       => 'Kolom quarter wajib diisi.',
             'period.numeric'        => 'Periode harus berupa angka.',
             'product_id.required' => 'Kolom produk wajib diisi.',
             'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
@@ -114,8 +120,8 @@ class SellHistoryController extends Controller
     public function edit($id)
     {
         $data['title'] = ucwords('ubah data penjualan');
-        $data['products'] = Products::select('product_id', 'product_name')->get();
-        $data['sell_history'] = SellHistory::productSellHistory(['id' => $id]);
+        $data['products'] = Products::select('id', 'product_name')->get();
+        $data['sell_history'] = SellHistory::productSellHistory(['sell_histories.id' => $id]);
         return view('sellhistory::edit', $data);
     }
 
@@ -142,6 +148,7 @@ class SellHistoryController extends Controller
             ]
         ], [
             'period.required'       => 'Kolom periode wajib diisi.',
+            'quarter.required'       => 'Kolom quarter wajib diisi.',
             'period.numeric'        => 'Periode harus berupa angka.',
             'product_id.required' => 'Kolom produk wajib diisi.',
             'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
@@ -150,6 +157,7 @@ class SellHistoryController extends Controller
         if (!$validator->fails()) {
             $sh = SellHistory::find($id);
             $sh->period = $request['period'];
+            $sh->period = $request['quarter'];
             $sh->product_id = $request['product_id'];
             $sh->amount = $request['amount'];
 
@@ -192,8 +200,7 @@ class SellHistoryController extends Controller
         return redirect()->route('sh.index');
     }
 
-    public function getLastPeroidOfProduct(Request $request, $product)
-    {
-        return SellHistory::getLastPeriod(['product_id' => $product]);
+    public function getLastPeroidOfProduct(Request $request, $product) {
+        return SellHistory::getPeriod(['product_id' => $product], 1, true);
     }
 }

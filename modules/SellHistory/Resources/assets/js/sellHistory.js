@@ -6,8 +6,8 @@ getLastPeriodOfProduct = function(trigger, period, quarter, baseUri) {
 		type: 'get',
 		url: url,
 		success: function(response) {
-			$(period).val(response.period);
-			$(quarter).val(response.quarter);
+			$(period).val(response[0].period);
+			$(quarter).val(response[0].quarter);
 		},
 		error: function(response) {
 			console.log(response);

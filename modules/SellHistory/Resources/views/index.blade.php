@@ -14,6 +14,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Periode</th>
+                                <th>Quarter</th>
                                 <th>Kode Produk</th>
                                 <th>Nama Produk</th>
                                 <th>Jumlah Penjualan</th>
@@ -27,15 +28,16 @@
 
                                         <td>{{$key+=1}}</td>
                                         <td>{{$sh->period}}</td>
+                                        <td>{{$sh->quarter}}</td>
                                         <td>{{$sh->product_code}}</td>
                                         <td>{{$sh->product_name}}</td>
                                         <td>{{$sh->amount}}</td>
                                         <td>
-                                            <a href="{{route('sh.edit', ["id" => $sh->id])}}" class="btn btn-sm btn-info"><i class="fas fa-fw fa-edit text-white"></i></a>
+                                            <a href="{{route('sh.edit', ["id" => $sh->id])}}" class="btn btn-sm btn-info {{$sh->forecasted ? 'disabled' : ''}}" {{$sh->forecasted ? 'disabled' : ''}}><i class="fas fa-fw fa-edit text-white"></i></a>
                                             <a 
                                                 delete-text="Hapus data penjualan ?" 
                                                 href="{{route('sh.delete', ["id" => $sh->id])}}" 
-                                                class="btn btn-sm btn-danger" 
+                                                class="btn btn-sm btn-danger {{$sh->forecasted ? 'disabled' : ''}}" {{$sh->forecasted ? 'disabled' : ''}} 
                                                 onclick="javascript:swalDelete(this, event);">
                                                 <i class="fas fa-fw fa-trash-alt text-white"></i>
                                                 <form method="post" action="{{route('sh.delete', ["id" => $sh->id])}}" >

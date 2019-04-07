@@ -68758,6 +68758,7 @@ $(document).ready(function () {
   // });
 
   $('.table').DataTable();
+  $('.select2').select2();
 });
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
@@ -68766,7 +68767,8 @@ $(function () {
 isNumberKey = function isNumberKey(evt) {
   var charCode = evt.which ? evt.which : event.keyCode;
   if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
-  return true;
+  return true; // let regex = new RegExp("^\d{1,2}(?:\.\d{1,9})?$");
+  // console.log($(evt.target).val());
 };
 
 swalDelete = function swalDelete(trigger, e) {
@@ -68806,6 +68808,29 @@ confirmLogout = function confirmLogout(trigger, e) {
   }).then(function (result) {
     if (result.value) {
       form.submit();
+    }
+  });
+};
+
+chainSelect = function chainSelect(trigger, target, baseUri) {
+  var source = $(trigger).val();
+  var url = baseUri + "/" + source;
+  $.ajax({
+    type: "get",
+    url: url,
+    success: function success(res) {
+      var innerHtml = "<option value='0'>-- Pilih Periode Penjualan --</option>";
+
+      if (res instanceof Array && res.length > 0) {
+        $.each(res, function (index, value) {
+          innerHtml += "<option value=\"".concat(value.period, "\">").concat(value.period, "</option>");
+        });
+      }
+
+      $(target).html(innerHtml);
+    },
+    error: function error(res) {
+      console.log(res);
     }
   });
 };

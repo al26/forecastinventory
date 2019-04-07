@@ -18,11 +18,15 @@ class CreateForecastAccuracy extends Migration
             $table->bigInteger('sell_history_id')->unsigned();
             $table->foreign('sell_history_id')->references('id')->on('sell_histories')->onDelete('cascade');
             $table->string('method');
-            $table->float('error', 8, 2);
-            $table->float('error_abs', 8, 2);
-            $table->float('error_square', 8, 2);
-            $table->float('error_percentage', 8, 2);
-            $table->float('error_abs_percent', 8, 2);
+            $table->float('st', 8, 2)->default(0);
+            $table->float('at', 8, 2)->default(0);
+            $table->float('bt', 8, 2)->default(0);
+            $table->float('ft', 8, 2)->default(0);
+            $table->float('error', 8, 2)->default(0);
+            $table->float('error_abs', 8, 2)->default(0);
+            $table->float('error_square', 8, 2)->default(0);
+            $table->float('error_percentage', 8, 2)->default(0);
+            $table->float('error_abs_percent', 8, 2)->default(0);
             $table->timestamps();
         });
     }
