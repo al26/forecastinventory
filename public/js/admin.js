@@ -68880,6 +68880,28 @@ chainSelect = function chainSelect(trigger, target, baseUri) {
   });
 };
 
+swalGetdata = function swalGetdata(trigger, e) {
+  var uri = $(trigger).attr('href');
+  var title = $(trigger).attr('get-title');
+  var text = $(trigger).attr('get-text');
+  var form = $(trigger).find('form');
+  e.preventDefault();
+  swal({
+    title: title,
+    text: text,
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#e3342f',
+    cancelButtonColor: '#3490dc',
+    confirmButtonText: 'Ya',
+    cancelButtonText: 'Tidak'
+  }).then(function (result) {
+    if (result.value) {
+      form.submit();
+    }
+  });
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

@@ -168,3 +168,25 @@ chainSelect = function(trigger, target, baseUri) {
 	})
 	
 }
+
+swalGetdata = function (trigger, e) {
+	let uri = $(trigger).attr('href');
+	let title = $(trigger).attr('get-title');
+	let text = $(trigger).attr('get-text');
+	let form = $(trigger).find('form');
+	e.preventDefault();
+	swal({
+		title: title,
+		text: text,
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#e3342f',
+		cancelButtonColor: '#3490dc',
+		confirmButtonText: 'Ya',
+		cancelButtonText: 'Tidak'
+	}).then((result) => {
+		if (result.value) {
+			form.submit();
+		}
+	})
+}

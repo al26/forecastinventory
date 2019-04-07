@@ -44,8 +44,9 @@ Route::prefix('logistic/inventory')->group(function () {
     Route::group(['middleware' => ['role:logistic']], function () {
         Route::get('/', 'MaterialController@purchasedata');
 
-        Route::get('/materialstock', 'MaterialController@materialstock');
-
+        Route::get('/materialstock', 'MaterialController@materialstock')->name('materialstock');
+        Route::get('/reducematerial/{id}','MaterialController@getmaterialstock')->name('reducematerial');
+        Route::patch('/updatematerial/{id}','MaterialController@updatematerial')->name('updatematerial');
         Route::get('/purchasedata', 'MaterialController@purchasedata')->name('purchasedata');
         Route::get('/purchasingmaterial', 'MaterialController@formpurchasingmaterial')->name('purchasingmaterial');
         Route::post('/savepurchase', 'MaterialController@savepurchase')->name('savepurchase');
