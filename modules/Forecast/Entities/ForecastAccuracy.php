@@ -22,8 +22,6 @@ class ForecastAccuracy extends Model
                                 ->where('sell_histories.id', $sh)
                                 ->first();
 
-        // dd($current_period->period);
-
         $current_period = intval($current_period->period);
 
         $xt = floatval($xt);
