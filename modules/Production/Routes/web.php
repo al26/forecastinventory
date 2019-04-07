@@ -21,7 +21,9 @@ Route::prefix('production/production')->group(function () {
         Route::delete('/deleteproduction/{id}', 'ProductionController@deleteproduction')->name('deleteproduction');
         Route::get('/editproduction/{id}', 'ProductionController@editproduction')->name('editproduction');
         Route::patch('/updateproduction/{id}', 'ProductionController@updateproduction')->name('updateproduction');
-        Route::get('/processproduction', 'ProductionController@processProduction');
+        Route::get('/runningproduction', 'ProductionController@runningProduction');
+        Route::get('/finishproduction', 'ProductionController@finishProduction');
         Route::get('/getProductionData/{id}', 'ProductionController@getProductionPeriode')->name('getProductionData');
+        Route::patch('/productionstatus/{id}', 'ProductionController@changeProductionStatus')->name('productionstatus');
     });
 });

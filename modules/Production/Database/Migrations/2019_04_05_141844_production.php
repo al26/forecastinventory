@@ -19,6 +19,7 @@ class Production extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('jumlah_product')->unsigned();
+            $table->enum('status', ['selesai', 'berjalan']);
         });
     }
 

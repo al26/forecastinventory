@@ -18,13 +18,13 @@ class MaterialTableSeeder extends Seeder
 
         Model::unguard();
         DB::table('materials')->insert([
-            ['material_name' => "Kain Katun", 'material_type' => 'Kain', 'material_stock' => 10, 'Unit' => 'Meter'],
-            ['material_name' => "Kain Primissima", 'material_type' => 'Kain', 'material_stock' => 10, 'Unit' => 'Meter'],
-            ['material_name' => "Kain Prima", 'material_type' => 'Kain', 'material_stock' => 10, 'Unit' => 'Meter'],
-            ['material_name' => "Kain Sutra", 'material_type' => 'Kain', 'material_stock' => 10, 'Unit' => 'Meter'],
-            ['material_name' => "Lilin", 'material_type' => 'Lilin', 'material_stock' => 10, 'Unit' => 'Kg'],
-            ['material_name' => "Benang", 'material_type' => 'Benang', 'material_stock' => 10, 'Unit' => 'Roll'],
-            ['material_name' => "Pewarna", 'material_type' => 'Pewarna', 'material_stock' => 10, 'Unit' => 'Liter'],
+            ['material_name' => "Kain Katun", 'material_type' => 'Kain', 'material_stock' => 10000, 'Unit' => 'Meter'],
+            ['material_name' => "Kain Primissima", 'material_type' => 'Kain', 'material_stock' => 10000, 'Unit' => 'Meter'],
+            ['material_name' => "Kain Prima", 'material_type' => 'Kain', 'material_stock' => 10000, 'Unit' => 'Meter'],
+            ['material_name' => "Kain Sutra", 'material_type' => 'Kain', 'material_stock' => 10000, 'Unit' => 'Meter'],
+            ['material_name' => "Lilin", 'material_type' => 'Lilin', 'material_stock' => 10000, 'Unit' => 'Kg'],
+            ['material_name' => "Benang", 'material_type' => 'Benang', 'material_stock' => 10000, 'Unit' => 'Roll'],
+            ['material_name' => "Pewarna", 'material_type' => 'Pewarna', 'material_stock' => 10000, 'Unit' => 'Liter'],
         ]);
     }
 }

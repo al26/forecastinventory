@@ -19,6 +19,7 @@
                     <th>Periode</th>
                     <th>Product</th>
                     <th>Jumlah Product</th>
+                    <th>Status</th>
                     <th>Options</th>
                 </tr>
             </thead>
@@ -30,6 +31,7 @@
                     <td>{{$value->periode}}</td>
                     <td>{{$value->product_name}}</td>
                     <td>{{$value->jumlah_product}}</td>
+                <td>{!!$value->status=="berjalan" ? "<span class='badge badge-info'>$value->status</span>":"<span class='badge badge-danger'>$value->status</span>" !!}</td>
                     <td>
                             <a href="{{route('editproduction',$value->id)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                             
@@ -40,6 +42,16 @@
                             <i class="fas fa-fw fa-trash-alt"></i> 
                             <form id="deleteMaterial" action="{{route('deleteproduction',$value->id)}}" method="post">
                                     @method('delete')
+                                    @csrf
+                                </form>
+                        </a>
+                        <a update-title="Stop Proses Produksi {{$value->product_name}} Periode {{$value->periode}}?" update-text="Produksi yang dihentikan tidak dapat dikembalikan"
+                             class="btn btn-danger btn-sm" 
+                             href="{{ route('productionstatus',$value->id) }}" 
+                             onclick="javascript:swalUpdateStatus(this, event);">
+                            <i class="fas fa-fw fa-power-off"></i> 
+                            <form id="swalUpdateStatus" action="{{route('productionstatus',$value->id)}}" method="post">
+                                    @method('patch')
                                     @csrf
                                 </form>
                         </a>

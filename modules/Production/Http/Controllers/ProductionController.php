@@ -16,7 +16,7 @@ class ProductionController extends Controller
     {
         $dataproduct = Cache::rememberForever('productiondata',  function () {
             return DB::table('production as prd')
-                ->select('prd.id', 'prd.periode', 'prd.jumlah_product', 'p.product_name')
+                ->select('prd.id', 'prd.periode', 'prd.jumlah_product', 'prd.status', 'p.product_name')
                 ->join('products AS p', 'prd.product_id', 'p.id')
                 ->get();
         });
@@ -133,15 +133,61 @@ class ProductionController extends Controller
             return redirect()->route('production');
         }
     }
-    public function processProduction()
+
+    public function runningProduction()
     {
-        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product', 'pro.product_name')->join('products as pro', 'prd.product_id', '=', 'pro.id')->get();
+        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product', 'pro.product_name')->join('products as pro', 'prd.product_id', '=', 'pro.id')->where('prd.status', '=', 'berjalan')->get();
+
+        // $productionToProduct = DB::table('production as prd')
+        //     ->join('products as pro', 'prd.product_id', '=', 'pro.id')
+        //     ->select('prd.id as id_production', 'prd.jumlah_product as jumlah_production', 'prd.periode as periode_production', 'pro.product_name as product_name', 'pro.id as product_id');
+
+        // $productionToMaterialneed = DB::table('productmaterialneed as pmn')->select('pmn.material_need as kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'productionToProduct.product_id', 'pmn.material_code as kode_material')
+        //     ->leftJoinSub($productionToProduct, 'productionToProduct', function ($join) {
+        //         $join->on('pmn.product_id', '=', 'productionToProduct.product_id');
+        //     });
+
+        // $MaterialneedToMaterial = DB::table('materials as mtr')->select('kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'product_id', 'kode_material', 'mtr.unit as unit', 'mtr.material_name as material_name', 'mtr.material_stock as stock_material')
+        //     ->joinSub($productionToMaterialneed, 'ProductionToMaterialneed', function ($join) {
+        //         $join->on('mtr.material_code', '=', 'ProductionToMaterialneed.kode_material');
+        //     })->get();
+        $data['production'] = $periodeProduksi;
+        $data['title'] = ucwords("Data Kebutuhan material Produksi Berjalan");
+        return view('production::Production.ProductionMaterial', $data);
+        // return $periodeProduksi;
+    }
+    public function finishProduction()
+    {
+        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product', 'pro.product_name')->where('prd.status', '=', 'selesai')->join('products as pro', 'prd.product_id', '=', 'pro.id')->get();
+
+        // $productionToProduct = DB::table('production as prd')
+        //     ->join('products as pro', 'prd.product_id', '=', 'pro.id')
+        //     ->select('prd.id as id_production', 'prd.jumlah_product as jumlah_production', 'prd.periode as periode_production', 'pro.product_name as product_name', 'pro.id as product_id');
+
+        // $productionToMaterialneed = DB::table('productmaterialneed as pmn')->select('pmn.material_need as kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'productionToProduct.product_id', 'pmn.material_code as kode_material')
+        //     ->leftJoinSub($productionToProduct, 'productionToProduct', function ($join) {
+        //         $join->on('pmn.product_id', '=', 'productionToProduct.product_id');
+        //     });
+
+        // $MaterialneedToMaterial = DB::table('materials as mtr')->select('kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'product_id', 'kode_material', 'mtr.unit as unit', 'mtr.material_name as material_name', 'mtr.material_stock as stock_material')
+        //     ->joinSub($productionToMaterialneed, 'ProductionToMaterialneed', function ($join) {
+        //         $join->on('mtr.material_code', '=', 'ProductionToMaterialneed.kode_material');
+        //     })->get();
+        $data['production'] = $periodeProduksi;
+        // $data['data'] = $MaterialneedToMaterial;
+        $data['title'] = ucwords("Data Kebutuhan material Produksi Selesai");
+        return view('production::Production.ProductionMaterial', $data);
+        // return $periodeProduksi;
+    }
+
+    public function getProductionPeriode($id)
+    {
 
         $productionToProduct = DB::table('production as prd')
             ->join('products as pro', 'prd.product_id', '=', 'pro.id')
             ->select('prd.id as id_production', 'prd.jumlah_product as jumlah_production', 'prd.periode as periode_production', 'pro.product_name as product_name', 'pro.id as product_id');
 
-        $productionToMaterialneed = DB::table('productmaterialneed as pmn')->select('pmn.material_need as kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'productionToProduct.product_id', 'pmn.material_code as kode_material')
+        $productionToMaterialneed = DB::table('productmaterialneed as pmn')->where('id_production', '=', $id)->select('pmn.material_need as kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'productionToProduct.product_id', 'pmn.material_code as kode_material')
             ->leftJoinSub($productionToProduct, 'productionToProduct', function ($join) {
                 $join->on('pmn.product_id', '=', 'productionToProduct.product_id');
             });
@@ -149,31 +195,44 @@ class ProductionController extends Controller
         $MaterialneedToMaterial = DB::table('materials as mtr')->select('kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'product_id', 'kode_material', 'mtr.unit as unit', 'mtr.material_name as material_name', 'mtr.material_stock as stock_material')
             ->joinSub($productionToMaterialneed, 'ProductionToMaterialneed', function ($join) {
                 $join->on('mtr.material_code', '=', 'ProductionToMaterialneed.kode_material');
-            })->get();
-        $data['production'] = $periodeProduksi;
-        $data['data'] = $MaterialneedToMaterial;
-        $data['title'] = ucwords("Data Kebutuhan material Produksi");
-        return view('production::Production.ProductionMaterial', $data);
-        // return $periodeProduksi;
-    }
-    public function getProductionPeriode($id)
-    {
-        $productionToProduct = DB::table('production as prd')
-            ->join('products as pro', 'prd.product_id', '=', 'pro.id')
-            ->select('prd.id as id_production', 'prd.jumlah_product as jumlah_production', 'prd.periode as periode_production', 'pro.product_name as product_name', 'pro.id as product_id')
-            ->where('prd.id', '=', $id);
-
-        $productionToMaterialneed = DB::table('productmaterialneed as pmn')->select('pmn.material_need as kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'productionToProduct.product_id', 'pmn.material_code as kode_material')
-            ->leftJoinSub($productionToProduct, 'productionToProduct', function ($join) {
-                $join->on('pmn.product_id', '=', 'productionToProduct.product_id');
-            });
-
-        $MaterialneedToMaterial = DB::table('materials as mtr')->select('kebutuhan_material', 'id_production', 'jumlah_production', 'periode_production', 'product_name', 'product_id', 'kode_material', 'mtr.unit as unit', 'mtr.material_name as material_name', 'mtr.material_stock as stock_material')
-            ->joinSub($productionToMaterialneed, 'ProductionToMaterialneed', function ($join) {
-                $join->on('mtr.material_code', '=', 'ProductionToMaterialneed.kode_material');
-            })->get();
-
+            })
+            ->get();
         return $MaterialneedToMaterial;
+    }
+    public function changeProductionStatus($id)
+    {
+
+        if ($this->handleStatus($id)) {
+            Session::flash('message', ucwords('Berhasil Mengubah status production'));
+            Session::flash('type', 'info');
+            DB::commit();
+            Cache::flush();
+            return redirect()->route('production');
+        } else {
+            DB::rollBack();
+            Session::flash('message', ucwords('Gagal Mengubah Status production'));
+            Session::flash('type', 'danger');
+            Cache::flush();
+            return redirect()->route('production');
+        }
+    }
+    private function handleStatus($id)
+    {
+        DB::beginTransaction();
+        $dataProduction = $this->getProductionPeriode($id);
+        foreach ($dataProduction as $key => $value) {
+            $kodeMaterial = $value->kode_material;
+            $newStock = $value->stock_material - ($value->jumlah_production * $value->kebutuhan_material);
+            DB::table('materials')->where('material_code', '=', $kodeMaterial)->update([
+                'material_stock' => $newStock
+            ]);
+        }
+        $updateStatusProduction = DB::table('production')->where('id', '=', $id)->update([
+            'status' => ucwords("selesai"),
+        ]);
+
+        // dd($dataProduction);
+        return ($updateStatusProduction ? true : false);
     }
     private function handleUpdate($request, $id)
     {
@@ -191,7 +250,8 @@ class ProductionController extends Controller
         $insertToProduction = DB::table('production')->insert([
             'periode' => $request->periode,
             'product_id' => $request->product,
-            'jumlah_product' => $request->jumlah
+            'jumlah_product' => $request->jumlah,
+            'status' => ucwords("berjalan"),
         ]);
         return ($insertToProduction ? true : false);
     }

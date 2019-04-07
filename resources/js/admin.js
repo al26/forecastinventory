@@ -50,7 +50,7 @@ isNumberKey = function (evt) {
 	return true;
 }
 
-swalDelete = function(trigger, e) {
+swalDelete = function (trigger, e) {
 	let uri = $(trigger).attr('href');
 	let text = $(trigger).attr('delete-text');
 	let form = $(trigger).find('form');
@@ -66,12 +66,33 @@ swalDelete = function(trigger, e) {
 		cancelButtonText: 'Batal'
 	}).then((result) => {
 		if (result.value) {
-			form.submit(); 
+			form.submit();
+		}
+	})
+}
+swalUpdateStatus = function (trigger, e) {
+	let uri = $(trigger).attr('href');
+	let title = $(trigger).attr('update-title');
+	let text = $(trigger).attr('update-text');
+	let form = $(trigger).find('form');
+	e.preventDefault();
+	swal({
+		title: title,
+		text: text,
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#e3342f',
+		cancelButtonColor: '#3490dc',
+		confirmButtonText: 'Ya',
+		cancelButtonText: 'Tidak'
+	}).then((result) => {
+		if (result.value) {
+			form.submit();
 		}
 	})
 }
 
-confirmLogout = function(trigger, e) {
+confirmLogout = function (trigger, e) {
 	let uri = $(trigger).attr('href');
 	let text = $(trigger).attr('confirmation-text');
 	let form = $(trigger).find('form');
@@ -86,7 +107,7 @@ confirmLogout = function(trigger, e) {
 		cancelButtonText: 'Batal'
 	}).then((result) => {
 		if (result.value) {
-			form.submit(); 
+			form.submit();
 		}
 	})
 }
