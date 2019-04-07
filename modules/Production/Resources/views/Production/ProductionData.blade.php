@@ -1,23 +1,24 @@
 @extends('layouts.admin')
-@section('title','Data Persediaan Bahan Baku')
+@section('title',$title)
 @section('content')
 <!-- Right Panel -->
 <!-- begin content -->
 
 
-
 <div class="card">
     <div class="card-header">
-        <strong class="card-title">Data Product</strong>
-    <a href="{{route('adddataproduct')}}" class="btn btn-primary btn-sm float-right">Tambah Data Baru</a>
+    <strong class="card-title">{{$title}}</strong>
+    <a href="{{route('addproduction')}}" class="btn btn-primary btn-sm float-right">Tambah Data
+            Baru</a>
     </div>
     <div class="card-body">
         <table id="bootstrap-data-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Product</th>
-                    <th>Jenis Product</th>
+                    <th>Periode</th>
+                    <th>Product</th>
+                    <th>Jumlah Product</th>
                     <th>Options</th>
                 </tr>
             </thead>
@@ -26,20 +27,24 @@
                 @foreach ($data as $key => $value)
                 <tr>
                     <td>{{++$key}}</td>
+                    <td>{{$value->periode}}</td>
                     <td>{{$value->product_name}}</td>
-                    <td>{{$value->product_type}}</td>
+                    <td>{{$value->jumlah_product}}</td>
                     <td>
-                    <a href="{{route('editproduct',$value->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-fw fa-edit"></i></a>
-                        <a delete-text="Hapus data pembelian ?"
+                            <a href="{{route('editproduction',$value->id)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
+                            
+                            <a delete-text="Hapus data pembelian ?"
                              class="btn btn-danger btn-sm" 
-                             href="{{ route('deletedataproduct',$value->id) }}" 
+                             href="{{ route('deleteproduction',$value->id) }}" 
                              onclick="javascript:swalDelete(this, event);">
                             <i class="fas fa-fw fa-trash-alt"></i> 
-                            <form id="deleteMaterial" action="{{route('deletedataproduct',$value->id)}}" method="post">
+                            <form id="deleteMaterial" action="{{route('deleteproduction',$value->id)}}" method="post">
                                     @method('delete')
                                     @csrf
                                 </form>
                         </a>
+
+                        
                     </td>
                 </tr>
                 @endforeach

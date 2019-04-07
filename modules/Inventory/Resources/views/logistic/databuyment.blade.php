@@ -31,7 +31,7 @@
                     <td>{{date('d-M-y',strtotime($value->tanggal_beli))}}</td>
                     <td>{{$value->bahan_baku}}</td>
                     <td>{{$value->Jumlah}}</td>
-                    <td>{{$value->Nominal}}</td>
+                    <td>Rp{{number_format($value->Nominal,2,",",".")}}</td>
                     <td>
                             <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                             

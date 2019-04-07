@@ -19,7 +19,7 @@
                     <th>Bahan Baku</th>
                     <th>Jenis Bahan Baku</th>
                     <th>Jumlah Stock</th>
-                    <th>Options</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -30,10 +30,8 @@
                     <td>{{$value->material_name}}</td>
                     <td>{{$value->material_type}}</td>
                     <td>{{$value->material_stock}}</td>
-                    <td>
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i></a>
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i></a>
-                    </td>
+                    
+
                 </tr>
                 @endforeach
             </tbody>

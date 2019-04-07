@@ -55,7 +55,7 @@ class SellHistoryController extends Controller
     public function store(Request $request)
     {
         $request = $request->sh;
-        $validator = Validator::make($request,[
+        $validator = Validator::make($request, [
             "period" => "required|numeric",
             "quarter" => "required|numeric",
             "amount" => "required",
@@ -75,25 +75,15 @@ class SellHistoryController extends Controller
             'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
         ]);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
             $sh = new SellHistory;
             $sh->period = $request['period'];
             $sh->quarter = $request['quarter'];
             $sh->product_id = $request['product_id'];
             $sh->amount = $request['amount'];
-    
+
             // DB::beginTransaction();
-            if($sh->save()) {
-                
-
-                // if (intval($sh->period) >= 4) {
-                //     $constraint = $this->getConstraint('multiplicative', $sh_id, ['a' => 0, 'b' => 0, 'c' => 1]);
-
-                //     ForecastAccuracy::addLog('multiplicative', $sh_id, $ft_mva, $xt, ['st' => $constraint["st"], 'at' => $constraint["at"], 'bt' => $constraint["bt"]]);
-                // }
-
-
-
+            if ($sh->save()) {
                 // DB::commit();
                 Cache::flush();
                 Session::flash('type', 'success');
@@ -108,8 +98,8 @@ class SellHistoryController extends Controller
 
         // dd($validator->errors());
         return redirect()->back()
-                         ->withErrors($validator->errors())
-                         ->withInput();
+            ->withErrors($validator->errors())
+            ->withInput();
     }
 
     /**
@@ -144,7 +134,7 @@ class SellHistoryController extends Controller
     public function update(Request $request, $id)
     {
         $request = $request->sh;
-        $validator = Validator::make($request,[
+        $validator = Validator::make($request, [
             "period" => "required|numeric",
             "quarter" => "required|numeric",
             "amount" => "required",
@@ -164,15 +154,15 @@ class SellHistoryController extends Controller
             'amount.required'       => 'Kolom jumlah penjualan wajib diisi.'
         ]);
 
-        if(!$validator->fails()) {
+        if (!$validator->fails()) {
             $sh = SellHistory::find($id);
             $sh->period = $request['period'];
             $sh->period = $request['quarter'];
             $sh->product_id = $request['product_id'];
             $sh->amount = $request['amount'];
-    
+
             // DB::beginTransaction();
-            if($sh->save()) {
+            if ($sh->save()) {
                 // DB::commit();
                 Cache::flush();
                 Session::flash('type', 'success');
@@ -187,8 +177,8 @@ class SellHistoryController extends Controller
 
         // dd($validator->errors());
         return redirect()->back()
-                         ->withErrors($validator->errors())
-                         ->withInput();
+            ->withErrors($validator->errors())
+            ->withInput();
     }
 
     /**

@@ -10,11 +10,14 @@
     <div class="card-header">
         <strong>Penambahan Product Baru</strong>
     </div>
-    @if (isset($dataBuyment))
-    <form action="{{route('updateproduct')}}" method="post" class="form-horizontal">
+
+    @if (isset($dataedit))
+    <form action="{{route('updateproduct',$dataedit[0]->id)}}" method="post" class="form-horizontal">
         @method('patch')
+        
     @else
     <form action="{{route('savedataproduct')}}" method="post" class="form-horizontal">
+        
     @endif
         @csrf
             <div class="card-body card-block">
@@ -49,19 +52,19 @@
             </div>
             <div class="card-body card-block">
                 {{-- form kebutuhan material --}}
-                <?php $i=0; ?>
+                
                 @foreach ($datamaterial as $item => $value)
                 <div class="row form-group"> 
                 <div class="col col-md-2">
                 <label for="select" class=" form-control-label">{{$value->material_name}}</label>
                 </div>
                 <div class="col-12 col-md-3">
-                    <input type="text" id="text-input" value="{{ isset($materialneed[$item]) && !is_null($value->material_code) && ($value->material_code === $materialneed[$item]->material_code) ? $materialneed[$item]->material_need  : ""}}" placeholder="{{$value->unit}}" name="{{$value->material_code}}" class="form-control">
-                        <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
+                    <input type="text" id="text-input" value="{{ isset($value->material_need) ? $value->material_need : ""}}" placeholder="{{$value->unit}}" name="{{$value->material_code}}" class="form-control">
+                    <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
                         {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
                     </div>
                 </div>
-                <?php $i++; ?>
+                
                 @endforeach
                 {{-- end form kebutuhan material --}}
             </div>
