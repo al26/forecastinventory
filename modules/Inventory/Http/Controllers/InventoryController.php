@@ -76,4 +76,21 @@ class InventoryController extends Controller
     {
         //
     }
+
+    public function forcasting(){
+        return view('inventory::administrator.forecasting');
+    }
+    public function materialneeds(){
+        return view('inventory::production.materialneeds');
+    }
+    public function persediaanbahanbaku(){
+        return view('inventory::production.materialstock');
+    }
+    public function forcastingresult(){
+        return view('inventory::production.forcastingresult');
+    }
+    public function pembelianbahanbaku(){
+        return view('inventory::logistic.datamaterialbuyment');
+    }
+    
 }

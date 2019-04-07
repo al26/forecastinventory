@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title','Data Hasil Forcasting')
 @section('content')
 <!-- Right Panel -->
 <!-- begin content -->

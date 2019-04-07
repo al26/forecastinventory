@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title')</title>
+    <title>@yield('title', @$title)</title>
     <meta name="description" content="Sufee Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -39,13 +39,12 @@
 
     <div id="right-panel" class="right-panel">
     @include('layouts.partials.admin.navbar')
-    @include('layouts.partials.admin.breadcrumb')
+    @includeWhen(@$breadcrumb, 'layouts.partials.admin.breadcrumb')
         <div class="content mt-3">
-    @include('layouts.partials.admin.alert')
-    @yield('content')
+            @include('layouts.partials.admin.alert') 
+            @yield('content')
         </div>
     </div>
-
 
     <script src="{{ asset('js/admin.js') }}"></script>
     @yield('script')

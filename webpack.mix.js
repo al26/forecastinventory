@@ -16,4 +16,6 @@ mix.react('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/vendor/sufee/scss/admin.scss', 'public/css')
     .options({ processCssUrls: false })
+    .copyDirectory('resources/images', 'public/img', false)
+    .copyDirectory('resources/vendor/fontawesome', 'public', false)
     .copyDirectory('resources/vendor/sufee/images', 'public/img', false);

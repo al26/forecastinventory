@@ -12,3 +12,41 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
+
+.bg-overlay {
+  // background: #3f2a56;
+  // background-image: -webkit-linear-gradient(197deg,#7a4183,#3f2a56);
+  // background-image: -o-linear-gradient(197deg,#7a4183,#3f2a56);
+  // background-image: linear-gradient(287deg,#7a4183,#3f2a56);
+  // background-image: -ms-linear-gradient(197deg,#7a4183,#3f2a56);
+  background: $indigo;
+  background-image: -webkit-linear-gradient(197deg,darken($blue, 5%),$indigo);
+  background-image: -o-linear-gradient(197deg,darken($blue, 5%),$indigo);
+  background-image: linear-gradient(287deg,darken($blue, 5%),$indigo);
+  background-image: -ms-linear-gradient(197deg,darken($blue, 5%),$indigo);
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 0;
+
+  @include media-breakpoint-up(md) { 
+    height: 40% !important;  
+    min-height: 40vh !important;
+  }
+
+}
+
+.bg-pattern {
+  background-image: url('../img/pattern.svg?v=1551732242573');
+  background-repeat: no-repeat;
+  position: absolute;
+  height: 100%;
+  width: inherit;
+  background-position: 0;
+  z-index: 0;
+  opacity: .1;
+}

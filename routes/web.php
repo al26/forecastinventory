@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Cache;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,9 +14,25 @@
 */
 
 Route::get('/', function () {
-    return view('layouts.admin');
+    return redirect()->route('login');
+    // Cache::flush();
 });
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+    if (\App\Role::getNames()) {
+        foreach (\App\Role::getNames() as $key => $value) {
+            $role = $value['name'];
+            Route::group(
+                ['middleware' => ['role:' . $role]],
+                function () use ($role) {
+                    Route::get($role, "UserController@" . $role)->name($role . ".dashboard");
+                }
+            );
+        }
+    }
+});

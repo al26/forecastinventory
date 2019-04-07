@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/sellhistory",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\SellHistory\\Providers\\SellHistoryServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SellHistory\\": ""
+        }
+    }
+}
