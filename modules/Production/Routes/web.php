@@ -14,6 +14,9 @@
 
 
 Route::prefix('production/production')->group(function () {
+    Route::group(['middleware' => ['role:production|administrator|logistic']], function () {
+        Route::get('/getProductionData/{id}', 'ProductionController@getProductionPeriode')->name('getProductionData');
+    });
     Route::group(['middleware' => ['role:production']], function () {
         Route::get('/dataproduction', 'ProductionController@production')->name('production');
         Route::get('/addproduction', 'ProductionController@addProduction')->name('addproduction');
@@ -23,7 +26,6 @@ Route::prefix('production/production')->group(function () {
         Route::patch('/updateproduction/{id}', 'ProductionController@updateproduction')->name('updateproduction');
         Route::get('/runningproduction', 'ProductionController@runningProduction');
         Route::get('/finishproduction', 'ProductionController@finishProduction');
-        Route::get('/getProductionData/{id}', 'ProductionController@getProductionPeriode')->name('getProductionData');
         Route::patch('/productionstatus/{id}', 'ProductionController@changeProductionStatus')->name('productionstatus');
     });
 });
