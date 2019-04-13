@@ -16,7 +16,7 @@
                                 <label for="select" class=" form-control-label">Produk</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <select name="fc[product_id]" id="select" class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}">
+                                <select name="fc[product_id]" id="select" class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}" onchange='javascript:getNextYear(this, "#year", "{{URL::to("ajax/sell-history")}}")'>
                                     <option value="0">-- Pilih Produk --</option>
                                     @foreach ($products as $product)
                                         <option value="{{$product->id}}" {{is_null($product->rows) || intval($product->rows) < 12 ? "disabled" : ""}}>{{$product->product_name}}</option>
@@ -29,6 +29,7 @@
                                 @endif
                             </div>
                         </div>
+                        <input type="hidden" name="fc[year]" value="" id="year">
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="alpha" class=" form-control-label">Variabel</label>
@@ -111,4 +112,8 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript" src="{{Module::asset('sellHistory:js/sellHistory.js')}}"></script>
 @endsection
