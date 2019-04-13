@@ -8,11 +8,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class ProductionController extends Controller
 {
 
-    public function production()
+    public function production($role =null)
     {
         $dataproduct = Cache::rememberForever('productiondata',  function () {
             return DB::table('production as prd')
@@ -59,32 +60,32 @@ class ProductionController extends Controller
             Session::flash('type', 'info');
             DB::commit();
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             DB::rollBack();
             Session::flash('message', ucwords('Gagal Menambah data production'));
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
-    public function deleteproduction($id)
+    public function deleteproduction($role = null,$id)
     {
         if ($this->handleDelete($id)) {
             Session::flash('message', 'Berhasil Menghapus data production');
             Session::flash('type', 'info');
             DB::commit();
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             DB::rollBack();
             Session::flash('message', 'Gagal Menghapus data production');
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
-    public function editproduction($id)
+    public function editproduction($role =null, $id)
     {
         $dataedit = DB::table('production as prd')
             ->select('prd.id', 'prd.periode', 'prd.jumlah_product', 'p.id as product_id')
@@ -100,7 +101,7 @@ class ProductionController extends Controller
 
         return view('production::Production.CreateProduction', $data);
     }
-    public function updateproduction(Request $request, $id)
+    public function updateproduction(Request $request, $role =null, $id)
     {
         $validator = Validator::make($request->all(), [
             "periode" => "required|numeric",
@@ -124,13 +125,13 @@ class ProductionController extends Controller
             Session::flash('type', 'info');
             DB::commit();
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             DB::rollBack();
             Session::flash('message', ucwords('Gagal Mengubah data production'));
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
 
@@ -168,7 +169,7 @@ class ProductionController extends Controller
             ->get();
         return $MaterialneedToMaterial;
     }
-    public function changeProductionStatus($id)
+    public function changeProductionStatus($role=null,$id)
     {
 
         if ($this->handleStatus($id)) {
@@ -176,13 +177,13 @@ class ProductionController extends Controller
             Session::flash('type', 'info');
             DB::commit();
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             DB::rollBack();
             Session::flash('message', ucwords('Gagal Mengubah Status production'));
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('production');
+            return redirect()->route('production',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
     private function handleStatus($id)

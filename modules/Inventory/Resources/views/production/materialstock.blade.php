@@ -33,10 +33,10 @@
                     <td>
                         <a get-title="Kurangi Bahanbaku {{$value->material_name}}?" get-text="Bahanbaku yang manipulasi dapat menyebabkan pencatatan tidak valid dan tidak dapat dikembalikan"
                             class="btn btn-danger btn-sm" 
-                            href="{{ route('reducematerial',$value->material_code) }}" 
+                            href="{{ route('reducematerial',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->material_code]) }}" 
                             onclick="javascript:swalGetdata(this, event);">
                            <i class="fas fa-fw fa-arrow-down"></i> 
-                           <form id="swalGetdata" action="{{route('reducematerial',$value->material_code)}}" method="get">
+                           <form id="swalGetdata" action="{{route('reducematerial',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->material_code])}}" method="get">
                                </form>
                        </a>
                     </td>

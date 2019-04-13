@@ -12,10 +12,10 @@
     </div>
     
     @if (isset($edit))
-    <form action="{{route('updateproduction',$edit[0]->id)}}" method="post" class="form-horizontal">
+    <form action="{{route('updateproduction',['role'=>Auth::user()->getRoleNames()[0],'id'=>$edit[0]->id])}}" method="post" class="form-horizontal">
         @method('patch')    
     @else
-    <form action="{{route('saveproduction')}}" method="post" class="form-horizontal">
+    <form action="{{route('saveproduction',['role'=>Auth::user()->getRoleNames()[0]])}}" method="post" class="form-horizontal">
     @endif
             @csrf
             <div class="card-body card-block">

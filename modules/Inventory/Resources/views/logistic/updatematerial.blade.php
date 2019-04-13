@@ -10,7 +10,7 @@
     <div class="card-header">
     <strong>{{$title}}</strong>
     </div>
-    <form action="{{route('updatematerial',$material[0]->material_code)}}" method="post" class="form-horizontal">
+    <form action="{{route('updatematerial',['role'=>Auth::user()->getRoleNames()[0],'id'=>$material[0]->material_code])}}" method="post" class="form-horizontal">
         @method('patch')
         
         @csrf

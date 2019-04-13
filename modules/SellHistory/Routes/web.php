@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['middleware' => ['auth', 'role:administrator']], function () {
+Route::group(['middleware' => ['auth', 'role:administrator|production']], function () {
     Route::group(['prefix' => 'administrator'], function () {
         Route::prefix('sell-history')->group(function() {
             Route::get('/', 'SellHistoryController@index')->name('sh.index');

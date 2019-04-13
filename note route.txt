@@ -1,0 +1,31 @@
+logistic
+
+    = Bahanbaku =
+    == Data Persediaan Bahanbaku
+    == Data Kebutuhan Material
+
+    = Pengadaan Material =
+    == Data Pembelian Bahanbaku
+    == Pengadaan Material
+
+Production 
+
+    = Production =
+    == Data Production
+    == Produksi Berjalan
+    == Produksi Selesai
+
+    = Bahanbaku =
+    == Data Persediaan Bahanbaku
+
+    = Product =
+    == Data Product
+
+    = sell History =
+    == Data Penjualan
+
+Admin
+    = Forcase = 
+    == Ramal
+    = sell History =
+    == Data Penjualan

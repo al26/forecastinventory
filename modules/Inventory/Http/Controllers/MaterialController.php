@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 
 class MaterialController extends Controller
 {
@@ -26,7 +27,7 @@ class MaterialController extends Controller
         return view('inventory::production.materialstock',$data);
     }
 
-    public function formpurchasingmaterial()
+    public function formpurchasingmaterial($role=null)
     {
         $datamaterial = Cache::rememberForever('CacheMaterialsForInput',  function () {
             return DB::table('materials')->select('material_code', 'material_name')->get();
@@ -35,7 +36,7 @@ class MaterialController extends Controller
         return view('inventory::logistic.formmaterialbuyment',$data);
     }
 
-    public function savepurchase(Request $request)
+    public function savepurchase(Request $request,$role=null)
     {
 
         $validator = Validator::make($request->all(), [
@@ -63,18 +64,18 @@ class MaterialController extends Controller
             Session::flash('message', 'Berhasil memasukan data pembelian');
             Session::flash('type', 'info');
             Cache::flush();
-            return redirect()->route('purchasedata');
+            return redirect()->route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             // Else commit the queries
             DB::rollBack();
             Session::flash('message', 'Gagal memasukan data pembelian');
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('purchasedata');
+            return redirect()->route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
 
-    public function purchasedata()
+    public function purchasedata($role=null)
     {
         $databuyment = Cache::rememberForever('CacheForPurchaseDataMaterial',  function () {
             return  DB::table('materials_buyment')
@@ -85,7 +86,7 @@ class MaterialController extends Controller
         return view('inventory::logistic.databuyment')->with('data', $databuyment);
     }
 
-    public function purchasedelete($id)
+    public function purchasedelete($role=null,$id)
     {
 
         if ($this->HandlePurchaseDelete($id)) {
@@ -93,27 +94,28 @@ class MaterialController extends Controller
             Session::flash('type', 'info');
             Cache::flush();
             DB::commit();
-            return redirect()->route('purchasedata');
+            return redirect()->route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             Session::flash('message', 'Gagal menghapus data pembelian');
             Session::flash('type', 'danger');
             Cache::flush();
             DB::rollBack();
-            return redirect()->route('purchasedata');
+            return redirect()->route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
 
-    public function editpurchase($id)
+    public function editpurchase($role=null,$id)
     {
         $datamaterial = Cache::rememberForever('CacheMaterialsForInput',  function () {
             return DB::table('materials')->select('material_code', 'material_name')->get();
         });
         $dataBuymentEdit = DB::table('materials_buyment')->select('*')->where('buyment_code', '=', $id)->get();
-
-        return view('inventory::logistic.formmaterialbuyment')->with('data', $datamaterial)->with('dataBuyment', $dataBuymentEdit);
+        $data['data']=$datamaterial;
+        $data['dataBuyment']=$dataBuymentEdit;
+        return view('inventory::logistic.formmaterialbuyment',$data);
     }
 
-    public function updatepurchase(Request $request, $id)
+    public function updatepurchase($role=null,Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'tanggal_beli' => 'required|date',
@@ -140,25 +142,25 @@ class MaterialController extends Controller
             Session::flash('message', 'Berhasil mengubah data pembelian');
             Session::flash('type', 'info');
             Cache::flush();
-            return redirect()->route('purchasedata');
+            return redirect()->route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             // Else commit the queries
             DB::rollBack();
             Session::flash('message', 'Gagal mengubah data pembelian');
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('purchasedata');
+            return redirect()->route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
 
-    public function getmaterialstock($id){
+    public function getmaterialstock($role=null,$id){
         $material_type = DB::table('materials')->select('material_type')->groupBy('material_type')->get()->toArray();
         $data['material'] = DB::table('materials')->select('material_type','material_code','material_name','material_stock','unit')->where('material_code','=',$id)->get();
         $data['title'] = ucwords("ubah stock material");
         return view('inventory::logistic.updatematerial',$data)->with('material_type',$material_type);
     }
 
-    public function updatematerial(Request $request, $id){
+    public function updatematerial($role=null, Request $request, $id){
         $validator = Validator::make($request->all(), [
             "nama_material" => "required",
             "tipe_material" => "required",
@@ -183,13 +185,13 @@ class MaterialController extends Controller
             Session::flash('type', 'info');
             DB::commit();
             Cache::flush();
-            return redirect()->route('materialstock');
+            return redirect()->route('materialstock',['role'=>Auth::user()->getRoleNames()[0]]);
         } else {
             DB::rollBack();
             Session::flash('message', ucwords('Gagal Mengubah data Bahanbaku'));
             Session::flash('type', 'danger');
             Cache::flush();
-            return redirect()->route('materialstock');
+            return redirect()->route('materialstock',['role'=>Auth::user()->getRoleNames()[0]]);
         }
     }
 
