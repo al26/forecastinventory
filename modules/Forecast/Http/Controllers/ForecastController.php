@@ -55,11 +55,13 @@ class ForecastController extends Controller
             "alpha"         => "required",
             "beta"          => "required",
             "gamma"         => "required",
+            "year"          => "required"
         ], [
             "product_id.required" => "Mohon pilih produk yang tersedia",
-            "alpha.required"      => "Semua kolom variabel waji diisi",
-            "beta.required"       => "Semua kolom variabel waji diisi",
-            "gamma.required"      => "Semua kolom variabel waji diisi",
+            "alpha.required"      => "Semua kolom variabel wajib diisi",
+            "beta.required"       => "Semua kolom variabel wajib diisi",
+            "gamma.required"      => "Semua kolom variabel wajib diisi",
+            "year.required"       => "Mohon sertakan tahun",
         ]);
 
         if($validator->fails()) {
@@ -91,8 +93,9 @@ class ForecastController extends Controller
         for ($i=0; $i < 12; $i++) { 
             $quarter_ins = $i % 4;
             array_push($data_insert, [
-                'periode'            => $period[$i],
+                'periode'           => $period[$i],
                 'quarter'           => $quarter_ins+1,
+                'year'              => $request['year'],
                 'product_id'        => $product,
                 'jumlah_product'    => count($suggestion) > 1 && $quarter_ins < 4 ? $suggestion[$quarter_ins] : $suggestion[0],
                 'status'            => 'berjalan',
