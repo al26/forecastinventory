@@ -121,7 +121,7 @@ class ForecastController extends Controller
 
         } else { DB::rollback(); }
 
-        return redirect()->route('forecast.result', ['product' => $request["product_id"]]);
+        return redirect()->route('forecast.result', ['product' => $request["product_id"], 'year' => $request["year"]]);
 
     }
 
@@ -299,6 +299,7 @@ class ForecastController extends Controller
 
     public function result(Request $request) {
         $product = $request->product;
+        $year    = $request->year;
         $data['title'] = ucwords("hasil peramalan");
         $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product));
         $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product));
@@ -307,4 +308,14 @@ class ForecastController extends Controller
         return view('forecast::result', $data);
     }
 
+    public function history (Request $request) {
+        $data['title'] = ucwords("hasil peramalan");
+
+        if ( !is_null($request->get('product')) && !is_null($request->get('product')) ) {
+            $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product));
+            $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product));
+            $data['calc']['hwm'] = ForecastAccuracy::getCalculation('multiplicative', intval($product));
+            $data['calc']['mva'] = ForecastAccuracy::getCalculation('moving-average', intval($product));
+        }
+    }
 }

@@ -15,7 +15,7 @@
         <table id="bootstrap-data-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>#</th>
                     <th>Tanggal Beli</th>
                     <th>Bahan Baku</th>
                     <th>Jumlah</th>

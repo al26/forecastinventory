@@ -15,10 +15,13 @@ class ProductionController extends Controller
 
     public function production($role =null)
     {
+        // Cache::flush();
         $dataproduct = Cache::rememberForever('productiondata',  function () {
             return DB::table('production as prd')
-                ->select('prd.id', 'prd.periode', 'prd.year','prd.jumlah_product', 'prd.status', 'p.product_name')
+                ->select('prd.id', 'prd.periode', 'prd.year', 'prd.jumlah_product', 'prd.status', 'p.product_name')
                 ->join('products AS p', 'prd.product_id', 'p.id')
+                ->orderBy('prd.year', 'desc')
+                ->orderBy('prd.id', 'asc')
                 ->get();
         });
         $data['data'] = $dataproduct;

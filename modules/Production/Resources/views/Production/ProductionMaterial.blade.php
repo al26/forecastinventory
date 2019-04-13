@@ -17,11 +17,12 @@
         <table id="production-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Periode Produksi</th>
+                    <th>#</th>
+                    <th>Periode</th>
+                    <th>Tahun</th>
                     <th>Nama Produk</th>
                     <th>Jumlah Produksi</th>
-                    <th>Status</th>
+                    <th>Opsi</th>
                     
                 </tr>
             </thead>
@@ -30,13 +31,14 @@
                 @foreach ($production as $key => $value)
                 <tr>
                     <td>{{++$key}}</td>
-                    <td>{{$value->periode}}</td>
+                    <td>{{ucfirst($value->periode)}}</td>
+                    <td>{{$value->year}}</td>
                     <td>{{$value->product_name}}</td>
                     <td>{{$value->jumlah_product}}</td>
-                <td>
-                <a href="{{route('getProductionData',['id'=>$value->production_id])}}" class="btn btn-info btn-sm buttonProduction" data-toggle="collapse" type="button" aria-expanded="false" aria-controls="collapseExample" ><i class="fas fa-fw fa-edit text-white"></i></a>
+                    <td>
+                        <a href="{{route('getProductionData',['id'=>$value->production_id])}}" class="btn btn-info btn-sm buttonProduction" data-toggle="collapse" type="button" aria-expanded="false" aria-controls="collapseExample" ><i class="far fa-fw fa-eye text-white"></i></a>
                     </td>
-                    </tr>
+                </tr>
                 {{-- <tr class="collapse" id="collapseExample{{$value->periode}}">
                         <td colspan="5">
                                 @include('production::Partials.collapse')
