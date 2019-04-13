@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -11,30 +12,22 @@
 |
 */
 
-Route::prefix('administrator/inventory')->group(function () {
-    Route::group(['middleware' => ['role:administrator']], function () {
+
+    Route::middleware(['role:administrator'])->group(function () {
         Route::get('/forecast', 'InventoryController@forcasting');
     });
-});
-Route::prefix('production/inventory')->group(function () {
-    Route::group(['middleware' => ['role:production']], function () {
-        // belom dibuat result forcastin
-        Route::get('/forcastingresult', 'InventoryController@forcastingresult');
-        Route::get('/materialstock', 'MaterialController@materialstock');
-
-        // Route For Product
-        Route::get('/product', 'ProductsController@getDataProduct')->name('productview');
-        Route::get('/adddataproduct', 'ProductsController@addDataProduct')->name('adddataproduct');
-        Route::post('/saveproduct', 'ProductsController@saveproduct')->name('savedataproduct');
-        Route::get('/editproduct/{id}', 'ProductsController@editproduct')->name('editproduct');
-        Route::patch('/updateproduct/{id}', 'ProductsController@updateproduct')->name('updateproduct');
-        Route::delete('/deleteproduct/{id}', 'ProductsController@deleteproduct')->name('deletedataproduct');
+    
+    // route('someRoute', [$user->role])
+    
+    Route::prefix('{role}/inventory')->group(function () {
+        Route::middleware(['role:logistic|production|administrator'])->group(function () {
+            Route::get('/materialneeds', 'MaterialController@materialNeedProduction')->name('materialneeds');
+        });
     });
-});
+
+
 Route::prefix('logistic/inventory')->group(function () {
-    Route::group(['middleware' => ['role:logistic']], function () {
-        // kebutuhan material belum dibuat MENGARAH KE METHOD YANG SAMA DENGAN PRODUKSI
-        Route::get('/materialneeds', 'MaterialController@materialNeedProduction');
+    Route::middleware(['role:logistic|administrator'])->group(function () {
         Route::get('/materialstock', 'MaterialController@materialstock')->name('materialstock');
         Route::get('/reducematerial/{id}','MaterialController@getmaterialstock')->name('reducematerial');
         Route::patch('/updatematerial/{id}','MaterialController@updatematerial')->name('updatematerial');
@@ -45,4 +38,19 @@ Route::prefix('logistic/inventory')->group(function () {
         Route::patch('/updatepurchase/{id}', 'MaterialController@updatepurchase')->name('updatepurchase');
         Route::delete('/purchasedelete/{id}', 'MaterialController@purchasedelete')->name('purchasedelete');
     });
+});
+
+Route::prefix('production/inventory')->group(function () {
+    Route::middleware(['role:production|administrator'])->group(function () {
+        // Route::get('/forcastingresult', 'InventoryController@forcastingresult');
+        Route::get('/materialstock', 'MaterialController@materialstock');
+        // Route For Product
+        Route::get('/product', 'ProductsController@getDataProduct')->name('productview');
+        Route::get('/adddataproduct', 'ProductsController@addDataProduct')->name('adddataproduct');
+        Route::post('/saveproduct', 'ProductsController@saveproduct')->name('savedataproduct');
+        Route::get('/editproduct/{id}', 'ProductsController@editproduct')->name('editproduct');
+        Route::patch('/updateproduct/{id}', 'ProductsController@updateproduct')->name('updateproduct');
+        Route::delete('/deleteproduct/{id}', 'ProductsController@deleteproduct')->name('deletedataproduct');
+    });
+
 });
