@@ -8,7 +8,7 @@ use DB;
 class SellHistory extends Model
 {
     protected $table = "sell_histories";
-    protected $fillable = ['period', 'quarter', 'product_id', 'amount'];
+    protected $fillable = ['period', 'quarter', 'product_id', 'amount', 'forecasted'];
     public $timestamps = false;
 
     public function products() {
@@ -20,12 +20,12 @@ class SellHistory extends Model
     }
 
     public function scopeProductSellHistory($query, &$where = []) {
-        $query->select('forecast_accuracy.sell_history_id as forecasted','sell_histories.*', 'products.product_name', 'products.product_code')
+        $query->select('sell_histories.*', 'products.product_name', 'products.product_code')
               ->join('products', 'sell_histories.product_id', '=', 'products.id')
               ->leftJoin('forecast_accuracy', 'forecast_accuracy.sell_history_id', '=', 'sell_histories.id')
               ->distinct()
-              ->orderBy('id', 'asc')
-              ->orderBy('year', 'desc');
+              ->orderBy('year', 'desc')
+              ->orderBy('id', 'asc');
         
         if ($where && count($where) > 0) {
             $query->where(key($where), '=', $where[key($where)]);

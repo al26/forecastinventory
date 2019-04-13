@@ -28,55 +28,41 @@
                 @endhasrole
                 @hasrole('administrator|production')
                 {{-- Sell History --}}
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-chart-line"></i> Data Penjualan</a>
-                    <ul class="sub-menu children dropdown-menu">
-                    <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('sh.index')}}">Lihat Data Penjualan</a></li>
-                        {{-- <li><i class="menu-icon fas fa-poll"></i><a href="">Hasil Peramalan</a></li> --}}
-                    </ul>
+                <li class="">
+                    <a href="{{route('sh.index')}}"><i class="menu-icon fas fa-chart-bar"></i> Data Penjualan</a>
                 </li>
                 @endhasrole
                 {{-- production --}}
                 @hasrole('administrator|production')
                 <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-box"></i>Production</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-warehouse"></i>Produksi</a>
                     <ul class="sub-menu children dropdown-menu fa-ul">
-                        <li><i class="fas fa-puzzle-piece"></i><a href="{{route('production',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Produksi</a></li>
-                        <li><i class="fa fa-id-badge"></i><a href="{{route('runningproduction',['role'=>Auth::user()->getRoleNames()[0]])}}">Produksi Berjalan</a></li>
-                        <li><i class="fa fa-id-badge"></i><a href="{{route('finishproduction',['role'=>Auth::user()->getRoleNames()[0]])}}">Produksi Selesai</a></li>
+                        <li><i class="fas fa-tasks"></i><a href="{{route('production',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Produksi</a></li>
+                        <li><i class="fa fa-hourglass-half"></i><a href="{{route('runningproduction',['role'=>Auth::user()->getRoleNames()[0]])}}">Produksi Berjalan</a></li>
+                        <li><i class="fa fa-hourglass-end"></i><a href="{{route('finishproduction',['role'=>Auth::user()->getRoleNames()[0]])}}">Produksi Selesai</a></li>
                     </ul>
                 </li>
                 @endhasrole
                 {{-- bahan baku --}}
                 @hasrole('administrator|production|logistic')
                 <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-box-open"></i> Bahan Baku</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-boxes"></i> Bahan Baku</a>
                     <ul class="sub-menu children dropdown-menu fa-ul">
-                        <li><i class="fas fa-puzzle-piece"></i><a href="{{route('materialstock',['role'=>Auth::user()->getRoleNames()[0]])}}">Stock Bahanbaku</a></li>
+                        <li><i class="fas fa-layer-group"></i><a href="{{route('materialstock',['role'=>Auth::user()->getRoleNames()[0]])}}">Stok Bahan Baku</a></li>
                         @hasrole('administrator|logistic')
-                        <li><i class="fas fa-puzzle-piece"></i><a href="{{route('materialneeds.logistic',['role'=>Auth::user()->getRoleNames()[0]])}}">Kebutuhan Bahanbaku</a></li>
+                        <li><i class="fas fa-shopping-basket"></i><a href="{{route('materialneeds.logistic',['role'=>Auth::user()->getRoleNames()[0]])}}">Kebutuhan Bahan Baku</a></li>
+                        <li><i class="fas fa-shopping-cart"></i><a href="{{route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]])}}">Pembelian Bahan Baku</a></li>
                         @endhasrole
                     </ul>
                 </li>
                 @endhasrole
-                @hasrole('administrator|logistic')
-                {{-- pengadaan bahan baku --}}
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-boxes"></i>Restock Bahan Baku</a>
-                    <ul class="sub-menu children dropdown-menu fa-ul">
-                    <li><i class="fas fa-puzzle-piece"></i><a href="{{route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Pembelian</a></li>
-                        
-                    </ul>
-                </li> 
-                @endhasrole
                 {{-- product --}}
                 @hasrole('administrator|production')
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-tshirt"></i>Product</a>
-                    <ul class="sub-menu children dropdown-menu fa-ul">
-                    <li><i class="fas fa-puzzle-piece"></i><a href="{{route('productview',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Product</a></li>
-                        
-                    </ul>
+                <li class="">
+                    <a href="{{route('productview',['role'=>Auth::user()->getRoleNames()[0]])}}">
+                        <i class="menu-icon fas fa-box-open"></i> 
+                        Data Produk
+                    </a>
                 </li>
                 @endhasrole
                 {{-- <h3 class="menu-title">Forecasting</h3> --}}

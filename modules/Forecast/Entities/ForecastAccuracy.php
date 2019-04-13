@@ -97,7 +97,7 @@ class ForecastAccuracy extends Model
         
         // dd(["method" => $method, "id" => $id]);
 
-        $query = $query->select('forecast_accuracy.id', 'sell_history_id', 'sell_histories.amount as xt', 'ft', 'at', 'bt', 'st', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent')->join('sell_histories', 'sell_histories.id', '=', 'forecast_accuracy.sell_history_id');
+        $query = $query->select('forecast_accuracy.id', 'sell_history_id', 'sell_histories.amount as xt', 'ft', 'at', 'bt', 'st', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent')->join('sell_histories', 'sell_histories.id', '=', 'forecast_accuracy.sell_history_id')->take(12)->orderBy('sell_histories.year', 'desc')->orderBy('sell_histories.id', 'asc');
         if($method && $id) {
             $return = $query->where('method', $method)
                             ->where('sell_histories.product_id', $id)
