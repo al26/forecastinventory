@@ -17,10 +17,13 @@ class CreateSellHistoriesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->string('period')->default("0");
+            $table->enum('period', [
+                'januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'
+            ]);
+            $table->string('year');
             $table->string('quarter')->default("0");
             $table->bigInteger('amount');
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

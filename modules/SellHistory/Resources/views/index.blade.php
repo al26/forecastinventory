@@ -12,29 +12,31 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Periode</th>
-                                <th>Quarter</th>
-                                <th>Kode Produk</th>
-                                <th>Nama Produk</th>
-                                <th>Jumlah Penjualan</th>
-                                <th>Opsi</th>
+                                <th class="no-sort">#</th>
+                                <th class="no-sort">Periode</th>
+                                <th class="no-sort">Tahun</th>
+                                <th class="no-sort">Kode Produk</th>
+                                <th class="no-sort">Nama Produk</th>
+                                <th class="">Jumlah Penjualan</th>
+                                <th class="no-sort">Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (@$sell_histories)    
+                            @if (@$sell_histories)
+                                @php
+                                    $no = 1;
+                                @endphp    
                                 @foreach ($sell_histories as $key => $sh)
                                     <tr>
-
-                                        <td>{{$key+=1}}</td>
-                                        <td>{{$sh->period}}</td>
-                                        <td>{{$sh->quarter}}</td>
+                                        <td>{{$no}}</td>
+                                        <td>{{ucfirst($sh->period)}}</td>
+                                        <td>{{$sh->year}}</td>
                                         <td>{{$sh->product_code}}</td>
                                         <td>{{$sh->product_name}}</td>
                                         <td>{{$sh->amount}}</td>
                                         <td>
                                             <a href="{{route('sh.edit', ["id" => $sh->id])}}" class="btn btn-sm btn-info {{$sh->forecasted ? 'disabled' : ''}}" {{$sh->forecasted ? 'disabled' : ''}}><i class="fas fa-fw fa-edit text-white"></i></a>
-                                            <a 
+                                            {{-- <a 
                                                 delete-text="Hapus data penjualan ?" 
                                                 href="{{route('sh.delete', ["id" => $sh->id])}}" 
                                                 class="btn btn-sm btn-danger {{$sh->forecasted ? 'disabled' : ''}}" {{$sh->forecasted ? 'disabled' : ''}} 
@@ -44,9 +46,12 @@
                                                     @csrf
                                                     @method('delete')
                                                 </form>
-                                            </a>
+                                            </a> --}}
                                         </td>
                                     </tr>
+                                    @php
+                                        $no++;
+                                    @endphp
                                 @endforeach
                             @endif
                         </tbody>

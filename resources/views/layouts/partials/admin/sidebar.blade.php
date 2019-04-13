@@ -21,7 +21,7 @@
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-chart-line"></i> Peramalan</a>
                     <ul class="sub-menu children dropdown-menu">
-                    <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('forecast.index')}}">Ramal</a></li>
+                    <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('forecast.define')}}">Ramal</a></li>
                         {{-- <li><i class="menu-icon fas fa-poll"></i><a href="">Hasil Peramalan</a></li> --}}
                     </ul>
                 </li>
