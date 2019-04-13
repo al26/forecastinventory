@@ -14,7 +14,7 @@ class MaterialTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    { 
 
         Model::unguard();
         DB::table('materials')->insert([

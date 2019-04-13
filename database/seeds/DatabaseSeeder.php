@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Modules\Inventory\Database\Seeders\MaterialTableSeeder;
 use Modules\Inventory\Database\Seeders\ProductTableSeeder;
+use Modules\Inventory\Database\Seeders\MaterialproductTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,5 +22,6 @@ class DatabaseSeeder extends Seeder
         // $this->call(pembelian_bahanbaku::class);
         $this->call(ProductTableSeeder::class);
         $this->call(MaterialTableSeeder::class);
+        $this->call(MaterialproductTableSeeder::class);
     }
 }
