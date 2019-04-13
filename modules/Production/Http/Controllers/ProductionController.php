@@ -17,7 +17,7 @@ class ProductionController extends Controller
     {
         $dataproduct = Cache::rememberForever('productiondata',  function () {
             return DB::table('production as prd')
-                ->select('prd.id', 'prd.periode', 'prd.jumlah_product', 'prd.status', 'p.product_name')
+                ->select('prd.id', 'prd.periode', 'prd.year','prd.jumlah_product', 'prd.status', 'p.product_name')
                 ->join('products AS p', 'prd.product_id', 'p.id')
                 ->get();
         });
@@ -135,14 +135,14 @@ class ProductionController extends Controller
 
     public function runningProduction()
     {
-        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product', 'pro.product_name')->join('products as pro', 'prd.product_id', '=', 'pro.id')->where('prd.status', '=', 'berjalan')->get();
+        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product','prd.year',  'pro.product_name')->join('products as pro', 'prd.product_id', '=', 'pro.id')->where('prd.status', '=', 'berjalan')->get();
         $data['production'] = $periodeProduksi;
         $data['title'] = ucwords("Data Kebutuhan material Produksi Berjalan");
         return view('production::Production.ProductionMaterial', $data);
     }
     public function finishProduction()
     {
-        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product', 'pro.product_name')->where('prd.status', '=', 'selesai')->join('products as pro', 'prd.product_id', '=', 'pro.id')->get();
+        $periodeProduksi = DB::table('production as prd')->select('prd.periode', 'prd.id as production_id', 'prd.jumlah_product','prd.year', 'pro.product_name')->where('prd.status', '=', 'selesai')->join('products as pro', 'prd.product_id', '=', 'pro.id')->get();
         $data['production'] = $periodeProduksi;
         $data['title'] = ucwords("Data Kebutuhan material Produksi Selesai");
         return view('production::Production.ProductionMaterial', $data);
