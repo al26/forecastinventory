@@ -9,22 +9,23 @@ class SellHistory extends Model
 {
     protected $table = "sell_histories";
     protected $fillable = ['period', 'quarter', 'product_id', 'amount'];
+    public $timestamps = false;
 
     public function products() {
         return $this->belongsTo('Modules\Inventory\Entities\Products');
     }
 
-    public function forecastAccuracies()
-    {
+    public function forecastAccuracies(){
         return $this->hasMany('Modules\Inventory\Entities\Products');
     }
 
     public function scopeProductSellHistory($query, &$where = []) {
-        $query->select('forecast_accuracy.sell_history_id as forecasted','sell_histories.id','sell_histories.period', 'sell_histories.quarter', 'sell_histories.product_id', 'products.product_name', 'sell_histories.amount', 'products.product_code')
+        $query->select('forecast_accuracy.sell_history_id as forecasted','sell_histories.*', 'products.product_name', 'products.product_code')
               ->join('products', 'sell_histories.product_id', '=', 'products.id')
               ->leftJoin('forecast_accuracy', 'forecast_accuracy.sell_history_id', '=', 'sell_histories.id')
               ->distinct()
-              ->orderBy('id', 'desc');
+              ->orderBy('id', 'asc')
+              ->orderBy('year', 'desc');
         
         if ($where && count($where) > 0) {
             $query->where(key($where), '=', $where[key($where)]);
@@ -94,5 +95,33 @@ class SellHistory extends Model
 
         // dd($am);
         return floatval($am->avg('amount'));
+    }
+
+    public function scopeGetNextYear($query, $product_id = null) {
+        $query->select('year')
+                      ->orderBy('id', 'desc');
+        if ( !is_null($product_id) ) {
+            $query->where('product_id', $product_id);
+        }
+        $year = $query->first();
+        $year = isset($year->year) ? $year->year : null;
+                    
+        $year = !is_null($year) ? intval($year)+1 : date('Y');
+        
+        return $year;
+    }
+
+    public function scopeGetYearHistory($query, $product_id = null) {
+        $query->select(DB::raw('distinct year'));
+        if (!is_null($product_id)) {
+            $query->where('product_id', $product_id);
+        }
+
+        $years = $query->get()->toArray();
+        $years = array_map(function($val){
+            return $val['year'];
+        }, $years);
+
+        return $years;
     }
 }

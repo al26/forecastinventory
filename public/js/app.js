@@ -93562,9 +93562,9 @@ if (document.getElementById('example')) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! G:\Laravel\forecastinventory\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! G:\Laravel\forecastinventory\resources\sass\app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! G:\Laravel\forecastinventory\resources\vendor\sufee\scss\admin.scss */"./resources/vendor/sufee/scss/admin.scss");
+__webpack_require__(/*! C:\laragon\www\forecastinventory\resources\js\app.js */"./resources/js/app.js");
+__webpack_require__(/*! C:\laragon\www\forecastinventory\resources\sass\app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! C:\laragon\www\forecastinventory\resources\vendor\sufee\scss\admin.scss */"./resources/vendor/sufee/scss/admin.scss");
 
 
 /***/ })

@@ -27,7 +27,7 @@ class CreateForecastAccuracy extends Migration
             $table->float('error_square', 8, 2)->default(0);
             $table->float('error_percentage', 8, 2)->default(0);
             $table->float('error_abs_percent', 8, 2)->default(0);
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 

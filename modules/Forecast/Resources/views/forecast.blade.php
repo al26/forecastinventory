@@ -19,7 +19,7 @@
                                 <select name="fc[product_id]" id="select" class="form-control{{ $errors->has('product_id') ? ' is-invalid' : '' }}">
                                     <option value="0">-- Pilih Produk --</option>
                                     @foreach ($products as $product)
-                                        <option value="{{$product->id}}" {{is_null($product->rows) || intval($product->rows) < 3 ? "disabled" : ""}}>{{$product->product_name}}</option>
+                                        <option value="{{$product->id}}" {{is_null($product->rows) || intval($product->rows) < 12 ? "disabled" : ""}}>{{$product->product_name}}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('product_id'))
@@ -35,7 +35,14 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="col-md-4 px-md-0 pr-md-2">
-                                    <input type="text" id="alpha" name="fc[alpha]" placeholder="nilai alpha" class="form-control{{ $errors->has('alpha') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);" value="0">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white">
+                                                <img src="{{asset('images/alfa.png')}}" alt="alfa" class="img-fluid" width="15">
+                                            </span>
+                                        </div>
+                                        <input type="text" id="alpha" name="fc[alpha]" placeholder="nilai alpha" class="form-control{{ $errors->has('alpha') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);" value="0">
+                                    </div>
                                     @if ($errors->has('alpha'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('alpha') }}</strong>
@@ -43,7 +50,14 @@
                                     @endif
                                 </div>
                                 <div class="col-md-4 px-md-1">
-                                    <input type="text" id="beta" name="fc[beta]" placeholder="nilai beta" class="form-control{{ $errors->has('beta') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);" value="0">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white">
+                                                <img src="{{asset('images/beta.png')}}" alt="alfa" class="img-fluid" width="13">
+                                            </span>
+                                        </div>
+                                        <input type="text" id="beta" name="fc[beta]" placeholder="nilai beta" class="form-control{{ $errors->has('beta') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);" value="0">
+                                    </div>
                                     @if ($errors->has('beta'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('beta') }}</strong>
@@ -51,7 +65,14 @@
                                     @endif
                                 </div>
                                 <div class="col-md-4 px-md-0 pl-md-2">
-                                    <input type="text" id="gamma" name="fc[gamma]" placeholder="nilai gamma" class="form-control{{ $errors->has('gamma') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);" value="0">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white" id="basic-addon1">
+                                                <img src="{{asset('images/gama.png')}}" alt="alfa" class="img-fluid" width="20">
+                                            </span>
+                                        </div>
+                                        <input type="text" id="gamma" name="fc[gamma]" placeholder="nilai gamma" class="form-control{{ $errors->has('gamma') ? ' is-invalid' : '' }}"  onkeypress="javascript:return isNumberKey(event);" value="1">
+                                    </div>
                                     @if ($errors->has('gamma'))
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $errors->first('gamma') }}</strong>

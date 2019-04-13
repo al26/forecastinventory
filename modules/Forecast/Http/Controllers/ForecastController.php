@@ -9,6 +9,7 @@ use Modules\Forecast\Entities\ForecastAccuracy;
 use Illuminate\Support\Facades\Session;
 use Modules\SellHistory\Entities\SellHistory;
 use Modules\Inventory\Entities\Products;
+use Modules\Production\Entities\Production;
 use Illuminate\Support\Facades\DB;
 use Validator;
 
@@ -65,13 +66,45 @@ class ForecastController extends Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-        $this->doForecast($request['product_id'], 12, [
-            'a' => $request["alpha"], 
-            'b' => $request["beta"], 
-            'c' => $request["gamma"]
-        ]);
+        // $this->doForecast($request['product_id'], 12, [
+        //     'a' => $request["alpha"], 
+        //     'b' => $request["beta"], 
+        //     'c' => $request["gamma"]
+        // ]);
+        $product = $request['product_id'];
+        
+        $suggestion = $this->getSuggestionForProduction(
+            $this->getUsedMethod($product), 
+            $product,
+            [
+                'a' => $request["alpha"], 
+                'b' => $request["beta"], 
+                'c' => $request["gamma"]
+            ]
+        );
+        
+        $data_insert = [];
+        $period = [
+            'januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'
+        ];
 
-        return redirect()->route('forecast.result', ['product' => $product]);
+        for ($i=0; $i < 12; $i++) { 
+            $quarter_ins = $i % 4;
+            array_push($data_insert, [
+                'period'            => $period[$i],
+                'quarter'           => $quarter_ins+1,
+                'product_id'        => $product,
+                'jumlah_product'    => count($suggestion) > 1 && $quarter_ins < 4 ? $suggestion[$quarter_ins] : $suggestion[0],
+                'status'            => 'berjalan',
+            ]);
+        }
+
+        DB::beginTransaction();
+        $ins = Production::query()->insert($data_insert);
+        DB::commit();
+
+        return redirect()->route('forecast.result', ['product' => $request["product_id"]]);
+
     }
 
     private function doForecast($product, $n_last_period = 3, $variable = ['a' => 0, 'b' => 0, 'c' => 0]) {
@@ -105,11 +138,28 @@ class ForecastController extends Controller
         }
     }
 
-    // private function multiplicative()
+    public function getConstraint($sh = null, $variable = ['a' => 0, 'b' => 0, 'c' => 0], $quarter = null) {
+        $period_map = [
+            'januari'   => 1,
+            'februari'  => 2,
+            'maret'     => 3,
+            'april'     => 4,
+            'mei'       => 5,
+            'juni'      => 6,
+            'juli'      => 7,
+            'agustus'   => 8,
+            'september' => 9,
+            'oktober'   => 10,
+            'november'  => 11,
+            'desember'  => 12,
+        ];
 
-    public function getConstraint($sh, $variable = ['a' => 0, 'b' => 0, 'c' => 0]) {
-        $current_period = intval($sh->period);
-        $current_quarter = intval($sh->quarter);
+        if (is_null($sh) && is_null($quarter)) {
+            throw new \Exception("This method require at least one between sh and quarter parameter is not null");
+        }
+
+        $current_period = !is_null($sh) ? intval($period_map[$sh->period]) : 13;
+        $current_quarter = !is_null($sh) ? intval($sh->quarter) : $quarter;
         if ($current_period <= 4) {
             $avg = SellHistory::avgLastAmount([
                 [
@@ -157,7 +207,7 @@ class ForecastController extends Controller
             $c = floatval($variable['c']);
             $lastXt = floatval($l['xt']);
             $lastBt = floatval($l['bt']);
-            $xt = $sh->amount;
+            $xt = !is_null($sh) ? $sh->amount : 0;
             $lastAt = floatval($l['at']);
             
             $at = ( $a*($lastXt/$lastStQuarter) ) + ( (1-$a)*($lastAt+$lastBt) );
@@ -175,7 +225,52 @@ class ForecastController extends Controller
         ];
     }
 
-    public function result(Request $request, $product) {
+    public function getUsedMethod($product, $n_limit = 12) {
+        $hwm = ForecastAccuracy::getCalculation('multiplicative', intval($product), $n_limit, true);
+        $mva = ForecastAccuracy::getCalculation('moving-average', intval($product), $n_limit, true);
+        $mins = min($hwm, $mva);
+        $count_hwm = count(array_diff($hwm, $mins));
+        $count_mva = count(array_diff($mva, $mins));
+        
+        return $count_hwm < $count_mva ? "multiplicative" : "moving-average";
+    }
+
+    public function getSuggestionForProduction($used_method, $product, $variable = ['a' => 0, 'b' => 0, 'c' => 0]) {
+        $res = [];
+        if ( $used_method === 'multiplicative' ) {
+            for ($i=1; $i <= 4; $i++) { 
+                array_push($res, $this->getConstraint(null, $variable, $i)['ft']);
+            }
+        } else {
+            $sh = SellHistory::select('id')->where('product_id', $product)
+                        ->orderBy('id', 'desc')
+                        ->first();
+        
+            $ft_mva = SellHistory::avgLastAmount([
+                [
+                    'key' => 'product_id',
+                    'operand' => '=',
+                    'value' => $product
+                ],
+                [
+                    'key' => 'id',
+                    'operand' => '<=',
+                    'value' => $sh->id
+                ],   
+            ], 3);
+
+            array_push($res, $ft_mva);
+        }
+        
+        $res = array_map(function($val){
+            return intval(ceil($val));
+        }, $res);
+        
+        return $res;
+    }
+
+    public function result(Request $request) {
+        $product = 1;
         $data['title'] = ucwords("hasil peramalan");
         $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product));
         $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product));

@@ -13,9 +13,9 @@
 
 Route::group(['middleware' => ['auth', 'role:administrator']], function () {
     Route::prefix('administrator/forecast')->group(function() {
-        Route::get('/', 'ForecastController@index');
-        Route::post('/calculate', 'ForecastController@calculate')->name('forecast');
-        Route::get('{product}/result', 'ForecastController@result')->name('forecast.result');
+        Route::get('/', 'ForecastController@index')->name('forecast.define');
+        Route::post('calculate', 'ForecastController@calculate')->name('forecast');
+        Route::get('result', 'ForecastController@result')->name('forecast.result');
     });
 
     Route::get('ajax/sell-history/get-period/{product}', function ($product) {

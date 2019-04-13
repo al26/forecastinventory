@@ -9,6 +9,7 @@ class ForecastAccuracy extends Model
     protected $table = 'forecast_accuracy';
     protected $primaryKey = 'id';
     protected $fillable = ['sell_history_id', 'method', 'st', 'at', 'bt', 'ft', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent'];
+    public $timestamps = false;
 
 
     public function sellHistory() {
@@ -16,13 +17,26 @@ class ForecastAccuracy extends Model
     }
 
     public function scopeAddLog($query, $method, $sh, $ft, $xt, &$additional = ['st' => 0, 'at' => 0, 'bt' => 0], &$obj_return = false) {
-
+        $period_map = [
+            'januari'   => 1,
+            'februari'  => 2,
+            'maret'     => 3,
+            'april'     => 4,
+            'mei'       => 5,
+            'juni'      => 6,
+            'juli'      => 7,
+            'agustus'   => 8,
+            'september' => 9,
+            'oktober'   => 10,
+            'november'  => 11,
+            'desember'  => 12,
+        ];
         $current_period = $query->select('sell_histories.period')
                                 ->rightJoin('sell_histories', 'sell_histories.id', '=', 'forecast_accuracy.sell_history_id')
                                 ->where('sell_histories.id', $sh)
                                 ->first();
 
-        $current_period = intval($current_period->period);
+        $current_period = intval($period_map[$current_period->period]);
 
         $xt = floatval($xt);
         if ( $current_period < 4 || ($method === 'multiplicative' && $current_period === 4) ) {
