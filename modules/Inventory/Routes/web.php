@@ -22,13 +22,13 @@ use Illuminate\Support\Facades\Auth;
     Route::prefix('{role}/inventory')->group(function () {
         Route::middleware(['role:logistic|production|administrator'])->group(function () {
             Route::get('/materialneeds', 'MaterialController@materialNeedProduction')->name('materialneeds');
+            Route::get('/materialstock', 'MaterialController@materialstock')->name('materialstock');
         });
     });
 
 
-Route::prefix('logistic/inventory')->group(function () {
+Route::prefix('{role}/inventory')->group(function () {
     Route::middleware(['role:logistic|administrator'])->group(function () {
-        Route::get('/materialstock', 'MaterialController@materialstock')->name('materialstock');
         Route::get('/reducematerial/{id}','MaterialController@getmaterialstock')->name('reducematerial');
         Route::patch('/updatematerial/{id}','MaterialController@updatematerial')->name('updatematerial');
         Route::get('/purchasedata', 'MaterialController@purchasedata')->name('purchasedata');
@@ -40,10 +40,9 @@ Route::prefix('logistic/inventory')->group(function () {
     });
 });
 
-Route::prefix('production/inventory')->group(function () {
+Route::prefix('{role}/inventory')->group(function () {
     Route::middleware(['role:production|administrator'])->group(function () {
         // Route::get('/forcastingresult', 'InventoryController@forcastingresult');
-        Route::get('/materialstock', 'MaterialController@materialstock');
         // Route For Product
         Route::get('/product', 'ProductsController@getDataProduct')->name('productview');
         Route::get('/adddataproduct', 'ProductsController@addDataProduct')->name('adddataproduct');

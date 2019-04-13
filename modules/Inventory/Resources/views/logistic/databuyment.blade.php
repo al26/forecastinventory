@@ -8,7 +8,7 @@
 <div class="card">
     <div class="card-header">
         <strong class="card-title">Data Pembelian Bahan Baku</strong>
-        <a href="{{route('purchasingmaterial')}}" class="btn btn-primary btn-sm float-right">Tambah Data
+        <a href="{{route('purchasingmaterial',['role'=>Auth::user()->getRoleNames()[0]])}}" class="btn btn-primary btn-sm float-right">Tambah Data
             Baru</a>
     </div>
     <div class="card-body">
@@ -33,14 +33,14 @@
                     <td>{{$value->Jumlah}}</td>
                     <td>Rp{{number_format($value->Nominal,2,",",".")}}</td>
                     <td>
-                            <a href="{{route('editpurchase',$value->kode_pembelian)}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
+                            <a href="{{route('editpurchase',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->kode_pembelian])}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
                             
                             <a delete-text="Hapus data pembelian ?"
                              class="btn btn-danger btn-sm" 
-                             href="{{ route('purchasedelete',$value->kode_pembelian) }}" 
+                             href="{{ route('purchasedelete',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->kode_pembelian]) }}" 
                              onclick="javascript:swalDelete(this, event);">
                             <i class="fas fa-fw fa-trash-alt"></i> 
-                            <form id="deleteMaterial" action="{{route('purchasedelete',$value->kode_pembelian)}}" method="post">
+                            <form id="deleteMaterial" action="{{route('purchasedelete',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->kode_pembelian])}}" method="post">
                                     @method('delete')
                                     @csrf
                                 </form>

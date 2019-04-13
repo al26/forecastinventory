@@ -15,30 +15,72 @@
                     <a href=""> <i class="menu-icon fas fa-tachometer-alt"></i> Dasbor </a>
                 </li>
                 {{-- <h3 class="menu-title">Kelola Bahan Baku</h3> --}}
-                <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-box-open"></i> Bahan Baku</a>
-                    {{-- <ul class="sub-menu children dropdown-menu fa-ul">
-                        <li><i class="fas fa-puzzle-piece"></i><a href="ui-buttons.html">Inventory List</a></li>
-                        <li><i class="fa fa-id-badge"></i><a href="ui-badges.html">Badges</a></li>
-                        <li><i class="fa fa-bars"></i><a href="ui-tabs.html">Tabs</a></li>
-                        <li><i class="fa fa-share-square-o"></i><a href="ui-social-buttons.html">Social Buttons</a></li>
-                        <li><i class="fa fa-id-card-o"></i><a href="ui-cards.html">Cards</a></li>
-                        <li><i class="fa fa-exclamation-triangle"></i><a href="ui-alerts.html">Alerts</a></li>
-                        <li><i class="fa fa-spinner"></i><a href="ui-progressbar.html">Progress Bars</a></li>
-                        <li><i class="fa fa-fire"></i><a href="ui-modals.html">Modals</a></li>
-                        <li><i class="fa fa-book"></i><a href="ui-switches.html">Switches</a></li>
-                        <li><i class="fa fa-th"></i><a href="ui-grids.html">Grids</a></li>
-                        <li><i class="fa fa-file-word-o"></i><a href="ui-typgraphy.html">Typography</a></li>
-                    </ul> --}}
-                </li>
-                {{-- <h3 class="menu-title">Forecasting</h3> --}}
+                
+                @hasrole('administrator')
+                {{-- peramalan --}}
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-chart-line"></i> Peramalan</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="">Ramal</a></li>
-                        <li><i class="menu-icon fas fa-poll"></i><a href="">Hasil Peramalan</a></li>
+                    <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('forecast.index')}}">Ramal</a></li>
+                        {{-- <li><i class="menu-icon fas fa-poll"></i><a href="">Hasil Peramalan</a></li> --}}
                     </ul>
                 </li>
+                @endhasrole
+                @hasrole('administrator|production')
+                {{-- Sell History --}}
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-chart-line"></i> Data Penjualan</a>
+                    <ul class="sub-menu children dropdown-menu">
+                    <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('sh.index')}}">Lihat Data Penjualan</a></li>
+                        {{-- <li><i class="menu-icon fas fa-poll"></i><a href="">Hasil Peramalan</a></li> --}}
+                    </ul>
+                </li>
+                @endhasrole
+                {{-- production --}}
+                @hasrole('administrator|production')
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-box"></i>Production</a>
+                    <ul class="sub-menu children dropdown-menu fa-ul">
+                        <li><i class="fas fa-puzzle-piece"></i><a href="{{route('production',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Produksi</a></li>
+                        <li><i class="fa fa-id-badge"></i><a href="{{route('runningproduction',['role'=>Auth::user()->getRoleNames()[0]])}}">Produksi Berjalan</a></li>
+                        <li><i class="fa fa-id-badge"></i><a href="{{route('finishproduction',['role'=>Auth::user()->getRoleNames()[0]])}}">Produksi Selesai</a></li>
+                    </ul>
+                </li>
+                @endhasrole
+                {{-- bahan baku --}}
+                @hasrole('administrator|production|logistic')
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-box-open"></i> Bahan Baku</a>
+                    <ul class="sub-menu children dropdown-menu fa-ul">
+                        <li><i class="fas fa-puzzle-piece"></i><a href="{{route('materialstock',['role'=>Auth::user()->getRoleNames()[0]])}}">Stock Bahanbaku</a></li>
+                        @hasrole('administrator|logistic')
+                        <li><i class="fas fa-puzzle-piece"></i><a href="{{route('materialneeds.logistic',['role'=>Auth::user()->getRoleNames()[0]])}}">Kebutuhan Bahanbaku</a></li>
+                        @endhasrole
+                    </ul>
+                </li>
+                @endhasrole
+                @hasrole('administrator|logistic')
+                {{-- pengadaan bahan baku --}}
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-boxes"></i>Restock Bahan Baku</a>
+                    <ul class="sub-menu children dropdown-menu fa-ul">
+                    <li><i class="fas fa-puzzle-piece"></i><a href="{{route('purchasedata',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Pembelian</a></li>
+                        
+                    </ul>
+                </li> 
+                @endhasrole
+                {{-- product --}}
+                @hasrole('administrator|production')
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-tshirt"></i>Product</a>
+                    <ul class="sub-menu children dropdown-menu fa-ul">
+                    <li><i class="fas fa-puzzle-piece"></i><a href="{{route('productview',['role'=>Auth::user()->getRoleNames()[0]])}}">Data Product</a></li>
+                        
+                    </ul>
+                </li>
+                @endhasrole
+                {{-- <h3 class="menu-title">Forecasting</h3> --}}
+               
                 <li class="">
                     <a class="" href="{{ route('logout') }}" onclick="javascript:confirmLogout(this, event);" confirmation-text="Anda yakin akan keluar dari aplikasi ?">
                         <i class="menu-icon fas fa-sign-out-alt"></i>

@@ -13,7 +13,7 @@
 
 Route::group(['middleware' => ['auth', 'role:administrator']], function () {
     Route::prefix('administrator/forecast')->group(function() {
-        Route::get('/', 'ForecastController@index');
+        Route::get('/', 'ForecastController@index')->name('forecast.index');
         Route::post('/calculate', 'ForecastController@calculate')->name('forecast');
         Route::get('{product}/result', 'ForecastController@result')->name('forecast.result');
     });
