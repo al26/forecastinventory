@@ -39,12 +39,11 @@ class ProductionController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            "periode" => "required|numeric",
+            "periode" => "required",
             "jumlah" => "required",
             "product" => "required"
         ], [
             'periode.required'  => ucwords('Kolom periode wajib diisi.'),
-            'periode.numeric'   => ucwords('Periode harus berupa angka.'),
             'jumlah.required'   => ucwords('Kolom jumlah wajib diisi.'),
             'product.required'  => ucwords('Kolom produk wajib diisi.')
         ]);
@@ -104,12 +103,11 @@ class ProductionController extends Controller
     public function updateproduction(Request $request, $role =null, $id)
     {
         $validator = Validator::make($request->all(), [
-            "periode" => "required|numeric",
+            "periode" => "required",
             "jumlah" => "required",
             "product" => "required"
         ], [
             'periode.required'  => ucwords('Kolom periode wajib diisi.'),
-            'periode.numeric'   => ucwords('Periode harus berupa angka.'),
             'jumlah.required'   => ucwords('Kolom jumlah wajib diisi.'),
             'product.required'  => ucwords('Kolom produk wajib diisi.')
         ]);

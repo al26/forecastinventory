@@ -15,7 +15,7 @@ class Production extends Migration
     {
         Schema::create('production', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('period', [
+            $table->enum('periode', [
                 'januari', 'februari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember'
             ]);
             $table->string('quarter')->default("0");

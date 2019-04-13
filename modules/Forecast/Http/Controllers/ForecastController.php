@@ -66,11 +66,11 @@ class ForecastController extends Controller
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-        // $this->doForecast($request['product_id'], 12, [
-        //     'a' => $request["alpha"], 
-        //     'b' => $request["beta"], 
-        //     'c' => $request["gamma"]
-        // ]);
+        $this->doForecast($request['product_id'], 12, [
+            'a' => $request["alpha"], 
+            'b' => $request["beta"], 
+            'c' => $request["gamma"]
+        ]);
         $product = $request['product_id'];
         
         $suggestion = $this->getSuggestionForProduction(
@@ -91,7 +91,7 @@ class ForecastController extends Controller
         for ($i=0; $i < 12; $i++) { 
             $quarter_ins = $i % 4;
             array_push($data_insert, [
-                'period'            => $period[$i],
+                'periode'            => $period[$i],
                 'quarter'           => $quarter_ins+1,
                 'product_id'        => $product,
                 'jumlah_product'    => count($suggestion) > 1 && $quarter_ins < 4 ? $suggestion[$quarter_ins] : $suggestion[0],
