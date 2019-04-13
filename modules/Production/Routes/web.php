@@ -12,18 +12,25 @@
 */
 
 
+    Route::group(['middleware' => ['role:production|administrator|logistic']], function () {
+        Route::get('/getProductionData/{id}', 'ProductionController@getProductionPeriode')->name('getProductionData');
+    });
 
-Route::prefix('production/production')->group(function () {
-    Route::group(['middleware' => ['role:production']], function () {
+Route::prefix('{role}/production')->group(function () {
+    Route::group(['middleware' => ['role:production|administrator']], function () {
         Route::get('/dataproduction', 'ProductionController@production')->name('production');
         Route::get('/addproduction', 'ProductionController@addProduction')->name('addproduction');
         Route::post('/saveproduction', 'ProductionController@saveProduction')->name('saveproduction');
         Route::delete('/deleteproduction/{id}', 'ProductionController@deleteproduction')->name('deleteproduction');
         Route::get('/editproduction/{id}', 'ProductionController@editproduction')->name('editproduction');
         Route::patch('/updateproduction/{id}', 'ProductionController@updateproduction')->name('updateproduction');
-        Route::get('/runningproduction', 'ProductionController@runningProduction');
-        Route::get('/finishproduction', 'ProductionController@finishProduction');
-        Route::get('/getProductionData/{id}', 'ProductionController@getProductionPeriode')->name('getProductionData');
+        Route::get('/runningproduction', 'ProductionController@runningProduction')->name('runningproduction');
+        Route::get('/finishproduction', 'ProductionController@finishProduction')->name('finishproduction');
         Route::patch('/productionstatus/{id}', 'ProductionController@changeProductionStatus')->name('productionstatus');
+    });
+});
+Route::prefix('{role}/production')->group(function(){
+    Route::group(['middleware' => ['role:administrator|logistic']], function () {
+        Route::get('/productionneeds', 'ProductionController@runningProduction')->name('materialneeds.logistic');
     });
 });

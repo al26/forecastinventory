@@ -11,10 +11,10 @@
         <strong> Pembelian Bahan Baku</strong>
     </div>
     @if (isset($dataBuyment))
-    <form action="{{route('updatepurchase',$dataBuyment[0]->buyment_code)}}" method="post" class="form-horizontal">
+    <form action="{{route('updatepurchase',['role'=>Auth::user()->getRoleNames()[0],'id'=>$dataBuyment[0]->buyment_code])}}" method="post" class="form-horizontal">
         @method('patch')
         @else
-        <form action="{{route('savepurchase')}}" method="post" class="form-horizontal">
+        <form action="{{route('savepurchase',['role'=>Auth::user()->getRoleNames()[0]])}}" method="post" class="form-horizontal">
 
 
             @endif
