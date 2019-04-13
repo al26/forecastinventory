@@ -15,7 +15,7 @@ class ProductTableSeeder extends Seeder
      */
     public function run()
     {
-
+ 
         Model::unguard();
         DB::table('products')->insert([
             ['product_code' => 'KB01','product_name' => "Kain Batik", 'product_type' => 'Kain'],

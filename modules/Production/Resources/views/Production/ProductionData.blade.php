@@ -29,7 +29,7 @@
                 <tr>
                     <td>{{++$key}}</td>
                     <td>{{ucfirst($value->periode)}}</td>
-                    <td>{{$value->periode}}</td>
+                    <td>{{$value->year}}</td>
                     <td>{{$value->product_name}}</td>
                     <td>{{$value->jumlah_product}}</td>
                 <td>{!!$value->status=="berjalan" ? "<span class='badge badge-info'>$value->status</span>":"<span class='badge badge-danger'>$value->status</span>" !!}</td>

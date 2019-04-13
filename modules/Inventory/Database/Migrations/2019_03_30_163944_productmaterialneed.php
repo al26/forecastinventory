@@ -14,7 +14,7 @@ class Productmaterialneed extends Migration
     public function up()
     {
         Schema::create('productmaterialneed', function (Blueprint $table) {
-            $table->primary(['material_code', 'product_id']);
+            // $table->primary(['material_code', 'product_id']);
             $table->bigInteger('material_code')->unsigned();
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('material_code')->references('material_code')->on('materials')->onDelete('cascade');
