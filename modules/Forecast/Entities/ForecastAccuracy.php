@@ -78,41 +78,57 @@ class ForecastAccuracy extends Model
         return false;
     }
 
-    public function scopeGetRaw($query) {
-        $numArgs = func_num_args();
-        $method = null; $id = null; $needs_array = false;
-        if($numArgs > 1 && $numArgs < 5) {
-            for ($i = 1; $i < $numArgs; $i++) {
-                if(gettype(func_get_arg($i)) === "string") {
-                    $method = func_get_arg($i);
-                }
-                if(gettype(func_get_arg($i)) === "integer") {
-                    $id = func_get_arg($i);
-                }
-                if(gettype(func_get_arg($i)) === "boolean") {
-                    $needs_array = func_get_arg($i);
-                }
-            }   
-        }
+    public function scopeGetRaw($query, $method = null, $id = null, $needs_array = false, $year = null) {
+        // $numArgs = func_num_args();
+        // $method = null; $id = null; $needs_array = false;
+        // if($numArgs > 1 && $numArgs < 5) {
+        //     for ($i = 1; $i < $numArgs; $i++) {
+        //         if(gettype(func_get_arg($i)) === "string") {
+        //             $method = func_get_arg($i);
+        //         }
+        //         if(gettype(func_get_arg($i)) === "integer") {
+        //             $id = func_get_arg($i);
+        //         }
+        //         if(gettype(func_get_arg($i)) === "boolean") {
+        //             $needs_array = func_get_arg($i);
+        //         }
+        //     }   
+        // }
         
         // dd(["method" => $method, "id" => $id]);
 
         $query = $query->select('forecast_accuracy.id', 'sell_history_id', 'sell_histories.amount as xt', 'ft', 'at', 'bt', 'st', 'error', 'error_abs', 'error_square', 'error_percentage', 'error_abs_percent')->join('sell_histories', 'sell_histories.id', '=', 'forecast_accuracy.sell_history_id')->take(12)->orderBy('sell_histories.year', 'desc')->orderBy('sell_histories.id', 'asc');
-        if($method && $id) {
-            $return = $query->where('method', $method)
-                            ->where('sell_histories.product_id', $id)
-                            ->get();
-        }
-        elseif($method) {
-            $return = $query->where('method', $method)->get();
-        } 
-        elseif($id) {
-            $return = $query->where('sell_histories.product_id', $id)->get();
-        } 
-        else {
-            $return = $query->get();
+        
+        // if($method && $id) {
+        //     $return = $query->where('method', $method)
+        //                     ->where('sell_histories.product_id', $id)
+        //                     ->get();
+        // }
+        // elseif($method) {
+        //     $return = $query->where('method', $method)->get();
+        // } 
+        // elseif($id) {
+        //     $return = $query->where('sell_histories.product_id', $id)->get();
+        // } 
+        // else {
+        //     $return = $query->get();
+        // }
+
+        if ( !is_null($method) ) {
+            $return = $query->where('method', $method);
         }
 
+        if ( !is_null($id) ) {
+            $return = $query->where('sell_histories.product_id', $id);
+        }
+
+        if ( !is_null($year) ) {
+            $return = $query->where('sell_histories.year', $year);
+        }
+
+        $return = $query->get();
+
+        dd($return);
         return $needs_array ? $return->toArray() : $return;
     }
 

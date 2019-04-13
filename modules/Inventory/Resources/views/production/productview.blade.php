@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Data Persediaan Bahan Baku')
+@section('title','Data Produk')
 @section('content')
 <!-- Right Panel -->
 <!-- begin content -->
@@ -8,17 +8,17 @@
 
 <div class="card">
     <div class="card-header">
-        <strong class="card-title">Data Product</strong>
+        <strong class="card-title">Data Produk</strong>
     <a href="{{route('adddataproduct',['role'=>Auth::user()->getRoleNames()[0]])}}" class="btn btn-primary btn-sm float-right">Tambah Data Baru</a>
     </div>
     <div class="card-body">
         <table id="bootstrap-data-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Nama Product</th>
-                    <th>Jenis Product</th>
-                    <th>Options</th>
+                    <th>#</th>
+                    <th>Nama Produk</th>
+                    <th>Jenis Produk</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>

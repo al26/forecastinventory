@@ -15,11 +15,11 @@
         <table id="bootstrap-data-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
-                    <th>Bahan Baku</th>
-                    <th>Jenis Bahan Baku</th>
-                    <th>Jumlah Stock</th>
-                    <th>Options</th>
+                    <th>#</th>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Stok</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +31,11 @@
                     <td>{{$value->material_type}}</td>
                     <td>{{$value->material_stock}}</td>
                     <td>
-                        <a get-title="Kurangi Bahanbaku {{$value->material_name}}?" get-text="Bahanbaku yang manipulasi dapat menyebabkan pencatatan tidak valid dan tidak dapat dikembalikan"
-                            class="btn btn-danger btn-sm" 
+                        <a get-title="Kurangi Stok {{$value->material_name}} ?" get-text="Manupulasi data bahan baku dapat menyebabkan pencatatan tidak valid. Data yang telah dihapus tidak dapat dikembalikan"
+                            class="btn btn-danger btn-sm text-white" 
                             href="{{ route('reducematerial',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->material_code]) }}" 
                             onclick="javascript:swalGetdata(this, event);">
-                           <i class="fas fa-fw fa-arrow-down"></i> 
+                           <i class="fas fa-fw fa-angle-double-down"></i> 
                            <form id="swalGetdata" action="{{route('reducematerial',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->material_code])}}" method="get">
                                </form>
                        </a>

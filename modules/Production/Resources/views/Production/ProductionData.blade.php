@@ -14,13 +14,13 @@
         <table id="bootstrap-data-table" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>No</th>
+                    <th>#</th>
                     <th>Periode</th>
                     <th>Tahun</th>
-                    <th>Product</th>
-                    <th>Jumlah Product</th>
+                    <th>Produk</th>
+                    <th>Jumlah Produk</th>
                     <th>Status</th>
-                    <th>Options</th>
+                    <th>Opsi</th>
                 </tr>
             </thead>
             <tbody>
