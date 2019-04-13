@@ -23,6 +23,7 @@ class CreateSellHistoriesTable extends Migration
             $table->string('year');
             $table->string('quarter')->default("0");
             $table->bigInteger('amount');
+            $table->boolean('forecasted')->default(0);
             // $table->timestamps();
         });
     }

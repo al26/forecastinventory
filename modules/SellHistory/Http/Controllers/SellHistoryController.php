@@ -104,13 +104,13 @@ class SellHistoryController extends Controller
                 DB::commit();
                 Cache::flush();
                 Session::flash('type', 'success');
-                Session::flash('message', 'Berhasil menambah data penjualan tahun'.$year);
+                Session::flash('message', 'Berhasil menambah data penjualan');
                 return redirect()->route('sh.index');
             } 
                 
             DB::rollback();
             Session::flash('type', 'danger');
-            Session::flash('message', 'Gagal menambah data penjualan tahun'.$year);
+            Session::flash('message', 'Gagal menambah data penjualan');
             return redirect()->back();
         }
 

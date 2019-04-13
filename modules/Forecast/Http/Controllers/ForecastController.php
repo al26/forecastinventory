@@ -33,12 +33,12 @@ class ForecastController extends Controller
         $data['products'] = $products;
 
         $check = array_filter($products->toArray(), function($product) {
-            return intval($product["rows"]) > 3;
+            return intval($product["rows"]) >= 12;
         });
 
         if (count($check) < 1) {
             Session::forget(['message', 'type']);
-            Session::flash('message', "Belum dapat dilakukan peramalan. Belum ada produk dengan riwayat penjualan minimal 3 periode.");
+            Session::flash('message', "Belum dapat dilakukan peramalan. Belum ada produk dengan riwayat penjualan minimal 12 periode.");
             Session::flash('type', "warning");
         }
 
@@ -51,7 +51,14 @@ class ForecastController extends Controller
         $request = $request->fc;
 
         $validator = Validator::make($request, [
-            "product_id"    => "required",
+            "product_id"    => [
+                "required",
+                function ($attribute, $value, $fail) {
+                    if ($value === '0') {
+                        $fail('Silahkah pilih produk yang tersedia.');
+                    }
+                },
+            ],
             "alpha"         => "required",
             "beta"          => "required",
             "gamma"         => "required",
@@ -74,6 +81,7 @@ class ForecastController extends Controller
             'c' => $request["gamma"]
         ]);
         $product = $request['product_id'];
+        $year = $request['year'];
         
         $suggestion = $this->getSuggestionForProduction(
             $this->getUsedMethod($product), 
@@ -95,7 +103,7 @@ class ForecastController extends Controller
             array_push($data_insert, [
                 'periode'           => $period[$i],
                 'quarter'           => $quarter_ins+1,
-                'year'              => $request['year'],
+                'year'              => $year,
                 'product_id'        => $product,
                 'jumlah_product'    => count($suggestion) > 1 && $quarter_ins < 4 ? $suggestion[$quarter_ins] : $suggestion[0],
                 'status'            => 'berjalan',
@@ -104,7 +112,14 @@ class ForecastController extends Controller
 
         DB::beginTransaction();
         $ins = Production::query()->insert($data_insert);
-        DB::commit();
+        if ( $ins ) { 
+            DB::commit(); 
+            DB::beginTransaction();
+            $update = SellHistory::where('product_id', $product)->where('year', intval($year)-1)->update(['forecasted' => true]);
+
+            if( $update ) { DB::commit(); } else { DB::rollback(); }
+
+        } else { DB::rollback(); }
 
         return redirect()->route('forecast.result', ['product' => $request["product_id"]]);
 
@@ -130,14 +145,24 @@ class ForecastController extends Controller
                 ],   
             ], 3);            
 
-            ForecastAccuracy::addLog('moving-average', $sh->id, $ft_mva, $sh->amount);
-            
-            $constraint = $this->getConstraint($sh, $variable);
-            ForecastAccuracy::addLog('multiplicative', $sh->id, $constraint['ft'], $sh->amount, [
-                'st' => $constraint["st"], 
-                'at' => $constraint["at"], 
-                'bt' => $constraint["bt"]
-            ]);
+            DB::beginTransaction();
+            $add_mv = ForecastAccuracy::addLog('moving-average', $sh->id, $ft_mva, $sh->amount);
+            if( $add_mv ) {
+                DB::commit();
+                DB::beginTransaction();
+                $constraint = $this->getConstraint($sh, $variable);
+                $add_m = ForecastAccuracy::addLog('multiplicative', $sh->id, $constraint['ft'], $sh->amount,[
+                    'st' => $constraint["st"], 
+                    'at' => $constraint["at"], 
+                    'bt' => $constraint["bt"]
+                ]);
+
+                if ($add_m) { DB::commit(); } else { DB::rollback(); }
+
+            } else {
+                DB::rollback();
+            }
+
         }
     }
 
@@ -273,7 +298,7 @@ class ForecastController extends Controller
     }
 
     public function result(Request $request) {
-        $product = 1;
+        $product = $request->product;
         $data['title'] = ucwords("hasil peramalan");
         $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product));
         $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product));
