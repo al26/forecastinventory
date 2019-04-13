@@ -8,8 +8,7 @@
 <div class="card">
     <div class="card-header">
     <strong class="card-title">{{$title}}</strong>
-    <a href="{{route('addproduction',['role'=>Auth::user()->getRoleNames()[0]])}}" class="btn btn-primary btn-sm float-right">Tambah Data
-            Baru</a>
+    {{-- <a href="{{route('addproduction',['role'=>Auth::user()->getRoleNames()[0]])}}" class="btn btn-primary btn-sm float-right">Tambah Data Baru</a> --}}
     </div>
     <div class="card-body">
         <table id="bootstrap-data-table" class="table table-striped table-bordered">
@@ -17,6 +16,7 @@
                 <tr>
                     <th>No</th>
                     <th>Periode</th>
+                    <th>Tahun</th>
                     <th>Product</th>
                     <th>Jumlah Product</th>
                     <th>Status</th>
@@ -28,6 +28,7 @@
                 @foreach ($data as $key => $value)
                 <tr>
                     <td>{{++$key}}</td>
+                    <td>{{ucfirst($value->periode)}}</td>
                     <td>{{$value->periode}}</td>
                     <td>{{$value->product_name}}</td>
                     <td>{{$value->jumlah_product}}</td>
