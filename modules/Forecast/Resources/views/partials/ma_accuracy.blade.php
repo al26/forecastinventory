@@ -13,18 +13,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($moving_avg as $key => $item)
-                <tr>
-                    <td>{{$key+=1}}</td>
-                    <td>{{$item->xt}}</td>
-                    <td>{{$item->ft}}</td>
-                    <td>{{$item->error}}</td>
-                    <td>{{$item->error_abs}}</td>
-                    <td>{{$item->error_square}}</td>
-                    <td>{{$item->error_percentage}}</td>
-                    <td>{{$item->error_abs_percent}}</td>
-                </tr>
-            @endforeach
+            @if (@$moving_avg)
+                @foreach ($moving_avg as $key => $item)
+                    <tr>
+                        <td>{{$key+=1}}</td>
+                        <td>{{$item->xt}}</td>
+                        <td>{{$item->ft}}</td>
+                        <td>{{$item->error}}</td>
+                        <td>{{$item->error_abs}}</td>
+                        <td>{{$item->error_square}}</td>
+                        <td>{{$item->error_percentage}}</td>
+                        <td>{{$item->error_abs_percent}}</td>
+                    </tr>
+                @endforeach
+            @endif
         </tbody>
     </table>
 </div>

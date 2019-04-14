@@ -22,7 +22,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-chart-line"></i> Peramalan</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('forecast.define')}}">Ramal</a></li>
-                        <li><i class="menu-icon fas fa-calculator"></i><a href="{{route('forecast.history')}}">Riwayat Perhitungan Peramalan</a></li>
+                        <li><i class="menu-icon fas fa-calculator"></i><a href="{{route('forecast.history')}}">Riwayat Perhitungan</a></li>
                     </ul>
                 </li>
                 @endhasrole
@@ -47,7 +47,7 @@
                 @hasrole('administrator|production|logistic')
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-boxes"></i> Bahan Baku</a>
-                    <ul class="sub-menu children dropdown-menu fa-ul">
+                    <ul class="sub-menu children dropdown-menu">
                         <li><i class="fas fa-layer-group"></i><a href="{{route('materialstock',['role'=>Auth::user()->getRoleNames()[0]])}}">Stok Bahan Baku</a></li>
                         @hasrole('administrator|logistic')
                         <li><i class="fas fa-shopping-basket"></i><a href="{{route('materialneeds.logistic',['role'=>Auth::user()->getRoleNames()[0]])}}">Kebutuhan Bahan Baku</a></li>
