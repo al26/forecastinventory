@@ -34,10 +34,10 @@
                     <td>{{$value->jumlah_product}}</td>
                 <td>{!!$value->status=="berjalan" ? "<span class='badge badge-info'>$value->status</span>":"<span class='badge badge-danger'>$value->status</span>" !!}</td>
                     <td>
-                            <a href="{{route('editproduction',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id])}}" class="btn btn-info btn-sm"><i class="fas fa-fw fa-edit"></i></a>
+                            <a href="{{route('editproduction',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id])}}" class="btn btn-info btn-sm text-white"><i class="fas fa-fw fa-edit"></i></a>
                             
                             <a delete-text="Hapus data pembelian ?"
-                             class="btn btn-danger btn-sm" 
+                             class="btn btn-danger btn-sm text-white" 
                              href="{{ route('deleteproduction',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id]) }}" 
                              onclick="javascript:swalDelete(this, event);">
                             <i class="fas fa-fw fa-trash-alt"></i> 
@@ -47,7 +47,7 @@
                                 </form>
                         </a>
                         <a update-title="Stop Proses Produksi {{$value->product_name}} Periode {{$value->periode}}?" update-text="Produksi yang dihentikan tidak dapat dikembalikan"
-                             class="btn btn-danger btn-sm" 
+                             class="btn btn-danger btn-sm text-white" 
                              href="{{ route('productionstatus',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id]) }}" 
                              onclick="javascript:swalUpdateStatus(this, event);">
                             <i class="fas fa-fw fa-power-off"></i> 

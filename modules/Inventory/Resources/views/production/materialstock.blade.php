@@ -19,7 +19,9 @@
                     <th>Nama</th>
                     <th>Jenis</th>
                     <th>Stok</th>
+                    @hasrole('logistic|administrator')
                     <th>Opsi</th>
+                    @endhasrole
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +32,7 @@
                     <td>{{$value->material_name}}</td>
                     <td>{{$value->material_type}}</td>
                     <td>{{$value->material_stock}}</td>
+                    @hasrole('logistic|administrator')
                     <td>
                         <a get-title="Kurangi Stok {{$value->material_name}} ?" get-text="Manupulasi data bahan baku dapat menyebabkan pencatatan tidak valid. Data yang telah dihapus tidak dapat dikembalikan"
                             class="btn btn-danger btn-sm text-white" 
@@ -40,6 +43,7 @@
                                </form>
                        </a>
                     </td>
+                    @endhasrole
                 </tr>
                 @endforeach
             </tbody>
