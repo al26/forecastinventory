@@ -6,7 +6,9 @@
             <div class="card">
                 <div class="card-header">
                     <strong class="card-title">{{@$title}}</strong>
+                    @hasrole('administrator')
                     <a href="{{route('sh.create')}}" class="btn btn-sm btn-primary float-right">Tambah Data Penjualan</a>
+                    @endhasrole
                 </div>
                 <div class="card-body table-responsive">
                     <table class="table">
@@ -18,7 +20,9 @@
                                 <th class="no-sort">Kode Produk</th>
                                 <th class="no-sort">Nama Produk</th>
                                 <th class="">Jumlah Penjualan</th>
+                                @hasrole('administrator')
                                 <th class="no-sort">Opsi</th>
+                                @endhasrole
                             </tr>
                         </thead>
                         <tbody>
@@ -34,6 +38,7 @@
                                         <td>{{$sh->product_code}}</td>
                                         <td>{{$sh->product_name}}</td>
                                         <td>{{$sh->amount}}</td>
+                                        @hasrole('administrator')
                                         <td>
                                             <a href="{{route('sh.edit', ["id" => $sh->id])}}" class="btn btn-sm btn-info {{$sh->forecasted ? 'disabled' : ''}}" {{$sh->forecasted ? 'disabled' : ''}}><i class="fas fa-fw fa-edit text-white"></i></a>
                                             {{-- <a 
@@ -48,6 +53,7 @@
                                                 </form>
                                             </a> --}}
                                         </td>
+                                        @endhasrole
                                     </tr>
                                     @php
                                         $no++;
