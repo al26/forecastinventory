@@ -78,10 +78,10 @@
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary btn-sm">
-                    simpan
+                    Simpan
                 </button>
                 <button type="reset" class="btn btn-danger btn-sm">
-                     Ulangi
+                    Atur Ulang
                 </button>
             </div>
         </form>

@@ -121,7 +121,7 @@ class ForecastController extends Controller
 
         } else { DB::rollback(); }
 
-        return redirect()->route('forecast.result', ['product' => $request["product_id"], 'year' => $request["year"]]);
+        return redirect()->route('forecast.result', ['product' => $request["product_id"], 'year' => intval($year)-1]);
 
     }
 
