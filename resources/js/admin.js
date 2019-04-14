@@ -173,18 +173,20 @@ swalUpdateStatus = function (trigger, e) {
 	})
 }
 
-chainSelect = function(trigger, target, baseUri) {
+chainSelect = function(trigger, target, baseUri, chain_query_param = null) {
 	let source = $(trigger).val();
 	let url = baseUri +"/"+ source;
-
+	let compare_againts = chain_query_param !== null 
+							? getParameterByName(chain_query_param)
+							: 0;
 	$.ajax({
 		type: "get",
 		url: url,
 		success: function(res) {
-			let innerHtml = "<option value='0'>-- Pilih Periode Penjualan --</option>";
-			if (res instanceof Array && res.length > 0) {
-				$.each(res, function(index, value) {
-					innerHtml += `<option value="${value.period}">${value.period}</option>`;
+			let innerHtml = `<option value='0'>-- ${res.text} --</option>`;
+			if (res.data instanceof Array && res.data.length > 0) {
+				$.each(res.data, function(index, value) {
+					innerHtml += `<option value="${value.option_id}" ${value.option_id === compare_againts ? "selected" : ""}>${value.option_text}</option>`;
 				});
 			} 
 
@@ -195,6 +197,16 @@ chainSelect = function(trigger, target, baseUri) {
 		}
 	})
 	
+}
+
+getParameterByName = function (name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
 swalGetdata = function (trigger, e) {

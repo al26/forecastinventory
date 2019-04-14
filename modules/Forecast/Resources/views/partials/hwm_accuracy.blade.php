@@ -16,21 +16,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($multiplicative as $key => $item)
-                <tr>
-                    <td>{{$key+=1}}</td>
-                    <td>{{$item->xt}}</td>
-                    <td>{{$item->st}}</td>
-                    <td>{{$item->at}}</td>
-                    <td>{{$item->bt}}</td>
-                    <td>{{$item->ft}}</td>
-                    <td>{{$item->error}}</td>
-                    <td>{{$item->error_abs}}</td>
-                    <td>{{$item->error_square}}</td>
-                    <td>{{$item->error_percentage}}</td>
-                    <td>{{$item->error_abs_percent}}</td>
-                </tr>
-            @endforeach
+            @if (@$multiplicative)
+                @foreach ($multiplicative as $key => $item)
+                    <tr>
+                        <td>{{$key+=1}}</td>
+                        <td>{{$item->xt}}</td>
+                        <td>{{$item->st}}</td>
+                        <td>{{$item->at}}</td>
+                        <td>{{$item->bt}}</td>
+                        <td>{{$item->ft}}</td>
+                        <td>{{$item->error}}</td>
+                        <td>{{$item->error_abs}}</td>
+                        <td>{{$item->error_square}}</td>
+                        <td>{{$item->error_percentage}}</td>
+                        <td>{{$item->error_abs_percent}}</td>
+                    </tr>
+                @endforeach    
+            @endif
         </tbody>
     </table>
 </div>

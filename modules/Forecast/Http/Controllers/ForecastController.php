@@ -301,21 +301,30 @@ class ForecastController extends Controller
         $product = $request->product;
         $year    = $request->year;
         $data['title'] = ucwords("hasil peramalan");
-        $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product));
-        $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product));
-        $data['calc']['hwm'] = ForecastAccuracy::getCalculation('multiplicative', intval($product));
-        $data['calc']['mva'] = ForecastAccuracy::getCalculation('moving-average', intval($product));
+        $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product), false, $year);
+        $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product), false, $year);
+        $data['calc']['hwm'] = ForecastAccuracy::getCalculation('multiplicative', intval($product), 12, false, $year);
+        $data['calc']['mva'] = ForecastAccuracy::getCalculation('moving-average', intval($product), 12, false, $year);
         return view('forecast::result', $data);
     }
 
     public function history (Request $request) {
-        $data['title'] = ucwords("hasil peramalan");
-
-        if ( !is_null($request->get('product')) && !is_null($request->get('product')) ) {
-            $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product));
-            $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product));
-            $data['calc']['hwm'] = ForecastAccuracy::getCalculation('multiplicative', intval($product));
-            $data['calc']['mva'] = ForecastAccuracy::getCalculation('moving-average', intval($product));
+        $data['title'] = ucwords("Riwayat perhitungan peramalan");
+        $data['products'] = Products::select('products.id', 'products.product_code', 'products.product_name')
+                    ->join('sell_histories', 'sell_histories.product_id', '=', 'products.id')
+                    ->where('sell_histories.forecasted', true)
+                    ->distinct()
+                    ->get();
+        // dd($data['products']->toArray());    
+        if ( !is_null($request->get('product')) && !is_null($request->get('year')) ) {
+            $product = $request->get('product');
+            $year    = $request->get('year');
+            $data['moving_avg'] = ForecastAccuracy::getRaw('moving-average', intval($product), false, $year);
+            $data['multiplicative'] = ForecastAccuracy::getRaw('multiplicative', intval($product), false, $year);
+            $data['calc']['hwm'] = ForecastAccuracy::getCalculation('multiplicative', intval($product), 12, false, $year);
+            $data['calc']['mva'] = ForecastAccuracy::getCalculation('moving-average', intval($product), 12, false, $year);
         }
+
+        return view('forecast::history', $data);
     }
 }
