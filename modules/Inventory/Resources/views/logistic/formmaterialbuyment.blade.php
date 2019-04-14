@@ -25,7 +25,7 @@
                     <div class="col col-md-2"><label for="text-input" class=" form-control-label">Tanggal
                             beli</label></div>
 
-                    <div class="col-12 col-md-3"><input type="date" id="text-input"
+                    <div class="col-12 col-md-3"><input type="date" id="text-input" {{isset($dataBuyment[0]->buyment_date) ? "readonly":""}}
                             value="<?php echo (isset($dataBuyment[0]->buyment_date) ? \Carbon\Carbon::createFromDate($dataBuyment[0]->buyment_date)->format('Y-m-d'):"") ?>"
                             name="tanggal_beli" class="form-control">
                         <small class="form-text text-danger">{{ $errors->error->first('tanggal_beli') }}</small>
@@ -37,7 +37,7 @@
                     <div class="col col-md-2"><label for="select" class=" form-control-label">Bahan Baku</label>
                     </div>
                     <div class="col-12 col-md-10">
-                        <select name="bahanbaku" id="select" class="form-control">
+                        <select name="bahanbaku" id="select"  {{isset($dataBuyment[0]->material_code) ? "disabled":""}} class="form-control">
                             <option value="">Pilih Bahan Baku</option>
                             @foreach ($data as $item)
                             <option value="{{$item->material_code}}" <?php echo(isset($dataBuyment[0]->material_code) ? ($item->material_code === $dataBuyment[0]->material_code ? 'selected'  :'' ) : "")?>>{{$item->material_name}}</option>
