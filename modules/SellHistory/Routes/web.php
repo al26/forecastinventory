@@ -25,4 +25,5 @@ Route::group(['middleware' => ['auth', 'role:administrator|production']], functi
 
     Route::get('ajax/sell-history/last-period-of/{product}', 'SellHistoryController@getLastPeroidOfProduct');
     Route::get('ajax/sell-history/next-year/{product?}', 'SellHistoryController@getNextYear');
+    Route::get('ajax/sell-history/year-history/{product?}', 'SellHistoryController@getYearHistory');
 });

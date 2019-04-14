@@ -128,21 +128,26 @@ class ForecastAccuracy extends Model
 
         $return = $query->get();
 
-        dd($return);
+        // dd($return->toArray());
         return $needs_array ? $return->toArray() : $return;
     }
 
-    public function scopeGetCalculation($query, $method, $product_id, $limit = 12, &$needs_array = false) {
-        $a = $query->select('sell_histories.period','error_abs', 'error_square', 'error_abs_percent')
+    public function scopeGetCalculation($query, $method, $product_id, $limit = 12, &$needs_array = false, $year = null) {
+        $query->select('sell_histories.period','error_abs', 'error_square', 'error_abs_percent')
                              ->join('sell_histories', 'forecast_accuracy.sell_history_id', '=', 'sell_histories.id')
                              ->where('method', $method)
                              ->where('sell_histories.product_id', $product_id)
                              ->orderBy('sell_histories.id', 'desc')
-                             ->take($limit)->get();
+                             ->take($limit);
+        if ( !is_null($year) ) {
+            $query->where('sell_histories.year', $year);
+        }
+        $a = $query->get();
 
         $data['mad'] = $a->avg('error_abs');
         $data['mse'] = $a->avg('error_square');
         $data['mape'] = $a->avg('error_abs_percent');
+        // dd($data);
 
         return $needs_array ? $data : (object)$data;
     }

@@ -227,4 +227,19 @@ class SellHistoryController extends Controller
     public function getNextYear($product = null) {
         return SellHistory::getNextYear($product);
     }
+
+    public function getYearHistory($product = null) {
+        $years = SellHistory::getYearHistory($product);
+        $temp = [];
+        foreach ($years as $key => $year) {
+            array_push($temp, [
+                'option_text' => $year,
+                'option_id'   => $year
+            ]);
+        }
+        $data['text'] = "Pilih Tahun";
+        $data['data'] = $temp;
+
+        return $data;
+    }
 }

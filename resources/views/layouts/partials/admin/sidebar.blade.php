@@ -22,7 +22,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fas fa-chart-line"></i> Peramalan</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('forecast.define')}}">Ramal</a></li>
-                        <li><i class="menu-icon fas fa-calculator"></i><a href="route('forecast.history')">Riwayat Perhitungan Peramalan</a></li>
+                        <li><i class="menu-icon fas fa-calculator"></i><a href="{{route('forecast.history')}}">Riwayat Perhitungan</a></li>
                     </ul>
                 </li>
                 @endhasrole

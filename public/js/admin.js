@@ -68884,17 +68884,19 @@ swalUpdateStatus = function swalUpdateStatus(trigger, e) {
 };
 
 chainSelect = function chainSelect(trigger, target, baseUri) {
+  var chain_query_param = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
   var source = $(trigger).val();
   var url = baseUri + "/" + source;
+  var compare_againts = chain_query_param !== null ? getParameterByName(chain_query_param) : 0;
   $.ajax({
     type: "get",
     url: url,
     success: function success(res) {
-      var innerHtml = "<option value='0'>-- Pilih Periode Penjualan --</option>";
+      var innerHtml = "<option value='0'>-- ".concat(res.text, " --</option>");
 
-      if (res instanceof Array && res.length > 0) {
-        $.each(res, function (index, value) {
-          innerHtml += "<option value=\"".concat(value.period, "\">").concat(value.period, "</option>");
+      if (res.data instanceof Array && res.data.length > 0) {
+        $.each(res.data, function (index, value) {
+          innerHtml += "<option value=\"".concat(value.option_id, "\" ").concat(value.option_id === compare_againts ? "selected" : "", ">").concat(value.option_text, "</option>");
         });
       }
 
@@ -68904,6 +68906,16 @@ chainSelect = function chainSelect(trigger, target, baseUri) {
       console.log(res);
     }
   });
+};
+
+getParameterByName = function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
 swalGetdata = function swalGetdata(trigger, e) {
