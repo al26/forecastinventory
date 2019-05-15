@@ -6,16 +6,22 @@
                 <i class="fas fa-bars text-white"></i>
             </button> {{-- <a class="navbar-brand" href="./"><img src="{{asset('img/logo.png')}}" alt="Logo"></a>
             <a class="navbar-brand hidden" href="./"><img src="{{asset('img/logo2.png')}}" alt="Logo"></a> --}}
-            <a class="navbar-brand font-weight-bolder" href="./">Forecastinventory</a>
-            <a class="navbar-brand font-weight-bolder hidden" href="./">FI</a>
+            <a class="navbar-brand font-weight-bolder" href="./">{{config('app.sort_name')}}</a>
+            <a class="navbar-brand font-weight-bolder hidden" href="./">{{config('app.name')[0]}}</a>
         </div>
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href=""> <i class="menu-icon fas fa-tachometer-alt"></i> Dasbor </a>
+                    <a href="/{{auth()->user()->roles[0]->name}}"> <i class="menu-icon fas fa-tachometer-alt"></i> Dasbor </a>
                 </li>
                 {{-- <h3 class="menu-title">Kelola Bahan Baku</h3> --}}
                 
+                @hasrole('administrator|production')
+                {{-- Sell History --}}
+                <li class="">
+                    <a href="{{route('sh.index')}}"><i class="menu-icon fas fa-chart-bar"></i> Data Penjualan</a>
+                </li>
+                @endhasrole
                 @hasrole('administrator')
                 {{-- peramalan --}}
                 <li class="menu-item-has-children dropdown">
@@ -24,12 +30,6 @@
                         <li><i class="menu-icon fas fa-history fa-flip-horizontal"></i><a href="{{route('forecast.define')}}">Ramal</a></li>
                         <li><i class="menu-icon fas fa-calculator"></i><a href="{{route('forecast.history')}}">Riwayat Perhitungan</a></li>
                     </ul>
-                </li>
-                @endhasrole
-                @hasrole('administrator|production')
-                {{-- Sell History --}}
-                <li class="">
-                    <a href="{{route('sh.index')}}"><i class="menu-icon fas fa-chart-bar"></i> Data Penjualan</a>
                 </li>
                 @endhasrole
                 {{-- production --}}
