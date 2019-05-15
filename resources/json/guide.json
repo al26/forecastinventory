@@ -1,0 +1,48 @@
+{
+    "administrator": [
+        {
+            "menu": "Menu Data Penjualan",
+            "desc": "Merupakan menu yang digunakan untuk menginput data penjualan tahunan. Klik menu untuk melihat riwayat data yang sudah pernah dimasukkan, atau klik tombol <b>\"tambah data penjualan\"</b> untuk menginput data baru."
+        },
+        {
+            "menu": "Menu Peramalan",
+            "desc": "Merupakan menu yang digunakan untuk melakukan perhitungan perkiraan permintaan produk di periode mendatang. Pilih menu <b>ramal</b> untuk melakukan peramalan dan menu <b>riwayat peramalan</b> untuk melihat data permalan yang sudah pernah dilakukan."
+        },
+        {
+            "menu": "Menu Produksi",
+            "desc": "Merupakan menu yang digunakan untuk mengakses fungsi-fungsi yang terkait dengan proses produksi. Pilih menu <b>data produksi</b> untuk melihat kebutuhan produk berdasarkan hasil peramalan, menu <b>produksi berjalan</b> untuk melihat kuantitas produksi yang belum / sedang dikerjakan, dan menu <b>produksi selesai</b> untuk melihat kuantitas produk yang sudah selesai dikerjakan."
+        },
+        {
+            "menu": "Menu Bahan Baku",
+            "desc": "Merupakan menu yang digunakan untuk mengakses fungsi-fungsi yang berkaitan dengan pengelolaan persediaan. Pilih menu <b>stok bahan baku</b> untuk melihat stok bahan baku yang tersedia dan dapat digunakan, menu <b>kebutuhan bahan baku</b> untuk melihat kecukupan stok untuk digunakan dalam produksi per periode, dan menu <b>pembelian bahan baku</b> untuk memasukkan data pembelian bahan baku."
+        },
+        {
+            "menu": "Menu Data Produk",
+            "desc": "Merupakan menu yang digunakan untuk melihat maupun mengganti kebutuhan material setiap produk."
+        }
+    ],
+    "production": [
+        {
+            "menu": "Menu Data Penjualan",
+            "desc": "Merupakan menu yang digunakan untuk menginput data penjualan tahunan. Klik menu untuk melihat riwayat data yang sudah pernah dimasukkan, atau klik tombol <b>\"tambah data penjualan\"</b> untuk menginput data baru."
+        },
+        {
+            "menu": "Menu Produksi",
+            "desc": "Merupakan menu yang digunakan untuk mengakses fungsi-fungsi yang terkait dengan proses produksi. Pilih menu <b>data produksi</b> untuk melihat kebutuhan produk berdasarkan hasil peramalan, menu <b>produksi berjalan</b> untuk melihat kuantitas produksi yang belum / sedang dikerjakan, dan menu <b>produksi selesai</b> untuk melihat kuantitas produk yang sudah selesai dikerjakan."
+        },
+        {
+            "menu": "Menu Bahan Baku",
+            "desc": "Merupakan menu yang digunakan untuk mengakses fungsi-fungsi yang berkaitan dengan pengelolaan persediaan. Pilih menu <b>stok bahan baku</b> untuk melihat stok bahan baku yang tersedia dan dapat digunakan, menu <b>kebutuhan bahan baku</b> untuk melihat kecukupan stok untuk digunakan dalam produksi per periode, dan menu <b>pembelian bahan baku</b> untuk memasukkan data pembelian bahan baku."
+        },
+        {
+            "menu": "Menu Data Produk",
+            "desc": "Merupakan menu yang digunakan untuk melihat maupun mengganti kebutuhan material setiap produk."
+        }
+    ],
+    "logistic": [
+        {
+            "menu": "Menu Bahan Baku",
+            "desc": "Merupakan menu yang digunakan untuk mengakses fungsi-fungsi yang berkaitan dengan pengelolaan persediaan. Pilih menu <b>stok bahan baku</b> untuk melihat stok bahan baku yang tersedia dan dapat digunakan, menu <b>kebutuhan bahan baku</b> untuk melihat kecukupan stok untuk digunakan dalam produksi per periode, dan menu <b>pembelian bahan baku</b> untuk memasukkan data pembelian bahan baku."
+        }
+    ]
+}

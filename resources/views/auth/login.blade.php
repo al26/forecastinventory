@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
-            <h2 class="text-center m-3 text-white font-weight-bolder">Forcastinventory</h2>
+            <h2 class="text-center m-3 text-white font-weight-bolder">{{config('app.name')}}</h2>
             <div class="card">
                 <div class="card-body bg-white p-3">
                     <h3 class="text-center m-3 font-weight-bolder"><i class="fas fa-door-open text-primary mx-2"></i>Silahkan Masuk</h3>
