@@ -50,6 +50,9 @@ Route::prefix('{role}/inventory')->group(function () {
         Route::get('/editproduct/{id}', 'ProductsController@editproduct')->name('editproduct');
         Route::patch('/updateproduct/{id}', 'ProductsController@updateproduct')->name('updateproduct');
         Route::delete('/deleteproduct/{id}', 'ProductsController@deleteproduct')->name('deletedataproduct');
+        Route::get('/getDataMaterial', 'ProductsController@getDataMaterial')->name('getdatamaterial');
+        Route::post('/adddatamaterial', 'ProductsController@addDataMaterial')->name('adddatamaterial');
+        Route::post('/getmaterialselected','ProductsController@getMaterialSelected')->name('getmaterialselected');
     });
 
 });

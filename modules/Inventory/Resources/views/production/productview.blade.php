@@ -29,7 +29,7 @@
                     <td>{{$value->product_name}}</td>
                     <td>{{$value->product_type}}</td>
                     <td>
-                    <a href="{{route('editproduct',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id])}}" class="btn btn-primary btn-sm"><i class="fas fa-fw fa-edit"></i></a>
+                    <a href="{{route('editproduct',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id])}}" class="btn btn-primary btn-sm" onclick="updateProductMaterial()"><i class="fas fa-fw fa-edit"></i></a>
                         <a delete-text="Hapus data pembelian ?"
                              class="btn btn-danger btn-sm" 
                              href="{{ route('deletedataproduct',['role'=>Auth::user()->getRoleNames()[0],'id'=>$value->id]) }}" 
