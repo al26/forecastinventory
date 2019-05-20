@@ -53,7 +53,7 @@
                 <strong>Kebutuhan Bahan Baku Product</strong>
             </div>
             <div id="formMaterial" class="card-body card-block">
-                <div id="formAfter"></div>
+                <div id="formAfter">
                     <?php $kode = array();?>
                     @foreach ($datamaterial as $item => $value)
                     <?php 
@@ -74,6 +74,7 @@
                             </div>
                         </div>            
                     @endforeach
+                </div>
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary btn-sm">
@@ -95,6 +96,12 @@
 <!-- end content -->
 <!-- Right Panel -->
 @section('script')
+<script>
+    
+window.onload = function() { 
+    onloadDocument(pickMaterialUrl);
+}
+</script>
     <script type="text/javascript" src="{{Module::asset('inventory:js/update_product.js')}}"></script>
 @endsection
 @stop

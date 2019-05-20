@@ -1,13 +1,62 @@
 var materialCodes = new Array();
+
+$(document).ready(function(){
+    pickMaterial(pickMaterialUrl);
+    // let sessionMaterial = sessionStorage.getItem('prevPickMaterial');
+    // let selectedMaterial = sessionMaterial !== "" ? sessionMaterial.split(",") : null;
+    // setPickedMaterialValues(selectedMaterial);
+    getPickedMaterialValues();
+})
+
 function openModal(url){
+    let sessionMaterial = sessionStorage.getItem('prevPickMaterial');
+    let selectedMaterial = (sessionMaterial !== "" && sessionMaterial !== null) ? sessionMaterial.split(",") : null;
+    getPickedMaterialValues();
+
+    console.log(['selectedOnModalOpen', selectedMaterial]);
     $.ajax({
         type: "GET",
         url: url,
+        data:{selectedMaterial : selectedMaterial},
         success: function(data){
             $('.modal-body').replaceWith(data);
             $("#mediumModal").modal('show');
         },
    });
+}
+
+function setPickedMaterialValues() {
+    let inputVal = [];
+    let sessionMaterial = sessionStorage.getItem('prevPickMaterial');
+    let selectedMaterial = (sessionMaterial !== "" && sessionMaterial !== null) ? sessionMaterial.split(",") : null;
+
+    if(selectedMaterial !== null) {
+        selectedMaterial.forEach(function(val, i) {
+            let materialElement = $(`#inputMaterial${val} input[name=${val}]`);
+            // inputVal["inputMaterial"+val] = $(materialElement).val();
+            inputVal.push({
+                "element" : `#inputMaterial${val} input[name=${val}]`,
+                "value"   : $(materialElement).val()
+            })
+        })
+        sessionStorage.removeItem("pickedMaterialValues");
+        sessionStorage.setItem("pickedMaterialValues", JSON.stringify(inputVal));
+    }
+
+    console.log(["inputVal", JSON.parse(sessionStorage.getItem("pickedMaterialValues"))]);
+}
+
+function getPickedMaterialValues() {
+    let sessionPickedMaterialValues = JSON.parse(sessionStorage.getItem("pickedMaterialValues"));
+    if(Array.isArray(sessionPickedMaterialValues)) {
+        console.log(sessionPickedMaterialValues);
+        sessionPickedMaterialValues.forEach(function(val, i) {
+            let element = val.element;
+            let value = val.hasOwnProperty("value") ? val.value : "";
+            $(element).val(value);
+            console.log([element, value]);
+        })
+    }
 }
 
 function submitMaterial(url){
@@ -25,7 +74,6 @@ function submitMaterial(url){
         url:url,
         data:{material_name:material,material_type:tipe,material_unit:unit},
         success:function(data){
-            console.log(data)
             if(data.status){
                 materialCodes=[];
                 $("#mediumModal").modal('hide');
@@ -37,6 +85,10 @@ function submitMaterial(url){
     });
 }
 
+function clearSession() {
+    sessionStorage.clear();
+}
+
 function selectedMaterial(code){
         materialCodes.push(code);
 }
@@ -46,18 +98,24 @@ function pickMaterial(url){
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }
     });
-    // let material = materialCodes.filter(unique);
+    
     let material = sameValue(materialCodes);
     let uniqueMaterial = Object.keys(material);
+    
+    let sessionMaterial = sessionStorage.getItem('prevPickMaterial');
+    let allCode = (sessionMaterial !== "" && sessionMaterial !== null) ? uniqueMaterial.concat(sessionMaterial.split(",")) : uniqueMaterial ;
+    console.log(['allCode', allCode]);
     $.ajax({
         type:"post",
         url:url,
-        data:{material_code:uniqueMaterial},
-        success:function(data){
-            materialCodes = [];          
-            $('#formAfter').replaceWith(data);
-            $('button[type="submit"]').removeAttr("hidden");
-            $('button[type="reset"]').removeAttr("hidden");
+        data:{material_code:allCode},
+        success:function(res){
+            materialCodes = [];
+            sessionStorage.removeItem('prevPickMaterial');  
+            sessionStorage.setItem('prevPickMaterial',res.data);        
+            $('#formAfter').replaceWith(res.html);
+            $('#btn-reset').show();
+            $('#btn-save').show();
         },
     });
     $("#mediumModal").modal('hide');
@@ -84,4 +142,26 @@ function remove(num, obj){
 function removeInputMaterial(id){
     let param = '#inputMaterial'+id; 
     $(param).remove();
+
+    let sessionMaterial = sessionStorage.getItem('prevPickMaterial');
+    if(sessionMaterial !== "") {
+        let newSessionMaterial = sessionMaterial.split(",");
+        let index = newSessionMaterial.indexOf(id);
+ 
+        console.log('tipe :',typeof newSessionMaterial)
+        if (index > -1) {
+            newSessionMaterial.splice(index, 1);
+        }
+        
+        
+        if(newSessionMaterial == ''){
+            $('#btn-reset').hide();
+            $('#btn-save').hide();
+        }
+        
+        sessionStorage.removeItem('prevPickMaterial');
+        sessionStorage.setItem('prevPickMaterial',newSessionMaterial);   
+        console.log(['onRemove', newSessionMaterial]);
+    }
+
 }
