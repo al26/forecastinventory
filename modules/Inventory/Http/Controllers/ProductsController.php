@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Modules\Inventory\Entities\Materials;
-use Illuminate\Support\Facades\Input;
+
 
 class ProductsController extends Controller
 {
@@ -30,7 +30,14 @@ class ProductsController extends Controller
                 // ->with('dataproduct',$this->dataTypeProduct());
     }
     public function getDataMaterial($role=null,Request $request){
-        $code = $request->material_code;
+        // $code = $request->has("selectedMaterial") ? $request->input("selectedMaterial") : null;
+        if($request->has("selectedMaterial")){
+            $code = $request->input("selectedMaterial");
+        }else if($request->has("material_code")){
+            $code = $request->material_code;
+        }else{
+            $code = null;
+        }
         $datamaterial = $this->dataMaterialProduct($code);
         $view = view("inventory::include.modal-form",compact('datamaterial'))->render();
         return response()->json($view);
@@ -57,14 +64,17 @@ class ProductsController extends Controller
             }
     }
     public function getMaterialSelected(Request $request){
+        
         $datamaterial = Materials::select('material_code', 'material_name','unit')
         ->whereIn('material_code', $request->material_code)
         ->orderByRaw(\DB::raw("FIELD(material_code, ".implode(",",$request->material_code).")"))
         ->get();
+        // $datamaterial = $this->dataMaterialProduct($request->material_code);
         // return response()->json($data);
         
+        $data = $datamaterial->pluck('material_code')->toArray();
         $view = view("inventory::include.form-material",compact('datamaterial'))->render();
-        return response()->json($view);
+        return response()->json(['html'=>$view,'data'=>$data]);
         // return $data;
     }
     private function handleAddMaterial($request){
@@ -143,7 +153,6 @@ class ProductsController extends Controller
         $data['dataproduct']=$this->dataTypeProduct();
         $data['datamaterial']=$dataeditmaterial;
         $data['dataedit']=$dataedit;
-        
         return view('inventory::production.form-update-product',$data);
     }
     public function updateproduct($role=null,Request $request,$id){
@@ -194,7 +203,11 @@ class ProductsController extends Controller
                 ['material_code'=>$value['code_material'], 'product_id'=>$id,'material_need'=>$value['kebutuhan_material']]
             );
         }
-        return ($id && $insertMaterialNeed ? true : false);
+        if(isset($insertMaterialNeed)){
+            return ($id && $insertMaterialNeed ? true : false);
+        }else{
+            redirect()->back();
+        }
     }
     private function Mappingdata($c,$request){
         $arrayMap = [];
@@ -221,20 +234,21 @@ class ProductsController extends Controller
         return $dataTypeProduct;
     }
     private function dataMaterialProduct($code = null){
-
-            if(isset($code)){
-                $result =  DB::table('materials')
-                ->select('material_code', 'material_name', 'unit')
-                ->whereNotIn('material_code',$code)
-                ->orderByRaw(\DB::raw("FIELD(material_code, ".implode(",",$code).")"))
-                ->get();
-            }else{
-                $result =  DB::table('materials')
+        if($code === null) {
+            return DB::table('materials')
                 ->select('material_code', 'material_name', 'unit')
                 ->get();
-            }
+        }    
+            
+        if($code !== null && is_array($code) && count($code) > 0){
+            return  DB::table('materials')
+            ->select('material_code', 'material_name', 'unit')
+            ->whereNotIn('material_code', $code)
+            ->orderByRaw(\DB::raw("FIELD(material_code, ".implode(",",$code).")"))
+            ->get();
+        }
 
-            return $result;
+        // return $result;
     }
 
     

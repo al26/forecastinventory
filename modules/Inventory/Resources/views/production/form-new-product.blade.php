@@ -60,7 +60,7 @@
             </div>
             <div id="formMaterial" class="card-body card-block">
                     <div id="formAfter">
-                    @foreach ($datamaterial as $item => $value)
+                    {{-- @foreach ($datamaterial as $item => $value)
                         <div class="row form-group" hidden> 
                             <div class="col col-md-2">
                                 <label for="select" class=" form-control-label">{{$value->material_name}}</label>
@@ -68,17 +68,16 @@
                             <div class="col-12 col-md-3">
                                 <input type="text" id="text-input" onkeypress="javascript:return isNumberKey(event);" value="{{ isset($value->material_need) ? $value->material_need : ""}}" placeholder="{{$value->unit}}" name="{{$value->material_code}}" class="form-control">
                                 <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
-                                        {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
                             </div>
                         </div>            
-                    @endforeach
+                    @endforeach --}}
                     </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-sm" hidden>
+                <button type="submit" id="btn-save" class="btn btn-primary btn-sm" onclick="clearSession()" style="display: none;">
                     Simpan
                 </button>
-                <button type="reset" class="btn btn-danger btn-sm" hidden>
+                <button type="reset" id="btn-reset" class="btn btn-danger btn-sm" style="display: none;">
                     Atur Ulang
                 </button>
                 @php
@@ -87,6 +86,7 @@
                 <button type="button" class="btn btn-secondary  btn-sm" onclick='openModal(`{{$url}}`)'>
                     Pilih Material
                 </button>
+
             </div>
         </form>
 </div>

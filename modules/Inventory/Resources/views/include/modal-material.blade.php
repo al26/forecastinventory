@@ -21,3 +21,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    var pickMaterialUrl = "{{$url}}";
+</script>
