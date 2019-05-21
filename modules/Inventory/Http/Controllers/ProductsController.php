@@ -34,10 +34,13 @@ class ProductsController extends Controller
         if($request->has("selectedMaterial")){
             $code = $request->input("selectedMaterial");
         }else if($request->has("material_code")){
-            $code = $request->material_code;
+            $code = is_array($request->material_code) && count($request->material_code) > 0
+                    ? !in_array(null, $request->material_code) ? $request->material_code : null
+                    : null;
         }else{
             $code = null;
         }
+        
         $datamaterial = $this->dataMaterialProduct($code);
         $view = view("inventory::include.modal-form",compact('datamaterial'))->render();
         return response()->json($view);
@@ -64,14 +67,28 @@ class ProductsController extends Controller
             }
     }
     public function getMaterialSelected(Request $request){
-        
+        $code = [];
+        if($request->has("material_code")) {
+            if(!is_array($request->input("material_code"))) {
+                $code = [];
+            } else {
+                $code = $request->input("material_code");
+            }
+        }
+        // dd($code);
         $datamaterial = Materials::select('material_code', 'material_name','unit')
-        ->whereIn('material_code', $request->material_code)
-        ->orderByRaw(\DB::raw("FIELD(material_code, ".implode(",",$request->material_code).")"))
-        ->get();
+        ->whereIn('material_code', $code);
+        if(count($code) > 0) {
+            $datamaterial = $datamaterial->orderByRaw(\DB::raw("FIELD(material_code, ".implode(",",$code).")"));
+        }
+        $datamaterial = $datamaterial->get();
         // $datamaterial = $this->dataMaterialProduct($request->material_code);
         // return response()->json($data);
-        
+        if($request->data_action === "update"){
+            $data = $datamaterial->pluck('material_code')->toArray();
+            $view = view("inventory::include.form-update-material",compact('datamaterial'))->render();
+            return response()->json(['html'=>$view,'data'=>$data]);    
+        }
         $data = $datamaterial->pluck('material_code')->toArray();
         $view = view("inventory::include.form-material",compact('datamaterial'))->render();
         return response()->json(['html'=>$view,'data'=>$data]);
