@@ -93,6 +93,7 @@ function selectedMaterial(code){
         materialCodes.push(code);
 }
 function pickMaterial(url){
+    console.log('masuk ke pickmaterial');
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
@@ -110,6 +111,7 @@ function pickMaterial(url){
         url:url,
         data:{material_code:allCode},
         success:function(res){
+            console.log('masuk ke sini juga pickmaterial');
             materialCodes = [];
             sessionStorage.removeItem('prevPickMaterial');  
             sessionStorage.setItem('prevPickMaterial',res.data);        
@@ -144,6 +146,7 @@ function removeInputMaterial(id){
     $(param).remove();
 
     let sessionMaterial = sessionStorage.getItem('prevPickMaterial');
+
     if(sessionMaterial !== "") {
         let newSessionMaterial = sessionMaterial.split(",");
         let index = newSessionMaterial.indexOf(id);
@@ -154,7 +157,7 @@ function removeInputMaterial(id){
         }
         
         
-        if(newSessionMaterial == ''){
+        if(newSessionMaterial === ''){
             $('#btn-reset').hide();
             $('#btn-save').hide();
         }

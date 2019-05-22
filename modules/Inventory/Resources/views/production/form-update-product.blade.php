@@ -96,12 +96,7 @@
 <!-- end content -->
 <!-- Right Panel -->
 @section('script')
-<script>
-    
-window.onload = function() { 
-    onloadDocument(pickMaterialUrl);
-}
-</script>
+
     <script type="text/javascript" src="{{Module::asset('inventory:js/update_product.js')}}"></script>
 @endsection
 @stop
