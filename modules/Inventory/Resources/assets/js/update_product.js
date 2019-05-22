@@ -7,7 +7,28 @@ $(document).ready(function(){
 })
 $(document).on("change", "#formAfter", function(){
     setAlreadyShowedItem()
+    setMaterialCodeItem()
 })
+
+$(document).on("change", "#input-text", function(){
+    triggerChangeFormAfter()
+})
+
+function triggerChangeFormAfter() {
+    $('#formAfter').trigger("change");
+}
+
+function toggleSaveResetBtn(action) {
+    if(action === "hide") {
+        $('button[type="submit"]').hide();
+        $('button[type="reset"]').hide();
+    }
+
+    if(action === "show") {
+        $('button[type="submit"]').show();
+        $('button[type="reset"]').show();
+    }
+}
 
 function setAlreadyShowedItem() {
     let alreadyShowed = document.querySelectorAll("#formAfter div[id^=inputMaterial]");
@@ -16,6 +37,19 @@ function setAlreadyShowedItem() {
         alreadyShowedArr.push(e.outerHTML);
     })
     sessionStorage.setItem("alreadyShowed", JSON.stringify(alreadyShowedArr));
+}
+
+function setMaterialCodeItem() {
+    let newSessionMaterialCode = [];
+    let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
+    if(alreadyShowed !== null) {
+        alreadyShowed.forEach(function(element, index) {
+            let code = $(element).attr("id").substring("inputMaterial".length);
+            newSessionMaterialCode.push(code);
+        })
+    }
+
+    sessionStorage.setItem("sessionMaterialCode", newSessionMaterialCode);
 }
 // openModal(`http://localhost:8000/administrator/inventory/getDataMaterial`)
 function openModal(url){
@@ -75,28 +109,20 @@ function pickMaterial(url, onload = false){
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }
     });
-    let alreadyShowed = null;
+    
     let material = sameValue(materialCodes);
     let uniqueMaterial = Object.keys(material);
     let sessionMaterialCode = sessionStorage.getItem("sessionMaterialCode");
     sessionMaterialCode = (sessionMaterialCode !== null && sessionMaterialCode !== "" && uniqueMaterial.length > 0) ? uniqueMaterial.concat(sessionMaterialCode.split(",")) : uniqueMaterial;
     let material_code = onload ? sessionMaterialCode : uniqueMaterial;
     if (onload) {
-        let newSessionMaterialCode = [];
-        alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
+        setMaterialCodeItem();
+        let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
         if(alreadyShowed !== null) {
-            alreadyShowed.forEach(function(element, index) {
-                let code = $(element).attr("id").substring("inputMaterial".length);
-                newSessionMaterialCode.push(code);
-            })
+            $('#formAfter').html(alreadyShowed.join(""));
         }
-
-        sessionStorage.removeItem("sessionMaterialCode");
-        sessionStorage.setItem("sessionMaterialCode", newSessionMaterialCode);
-        $('#formAfter').html(alreadyShowed.join(""));
-        $('#formAfter').trigger("change");
-        $('button[type="submit"]').removeAttr("hidden");
-        $('button[type="reset"]').removeAttr("hidden");
+        triggerChangeFormAfter()
+        toggleSaveResetBtn('show')
         // console.log(["showed join", alreadyShowed.join(""), newSessionMaterialCode]);
     } else {
         $.ajax({
@@ -140,7 +166,12 @@ function remove(num, obj){
 function removeInputMaterial(id){
     let param = '#inputMaterial'+id; 
     $(param).remove().fadeOut("slow");
-    $('#formAfter').trigger("change");
+    triggerChangeFormAfter()
+
+    let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
+    if(alreadyShowed === null || alreadyShowed.length <= 0) {
+        toggleSaveResetBtn('hide')
+    }
 }
 
 function arr_diff (a1, a2) {
