@@ -111,13 +111,15 @@ function pickMaterial(url){
         url:url,
         data:{material_code:allCode},
         success:function(res){
-            console.log('masuk ke sini juga pickmaterial');
             materialCodes = [];
             sessionStorage.removeItem('prevPickMaterial');  
             sessionStorage.setItem('prevPickMaterial',res.data);        
             $('#formAfter').replaceWith(res.html);
-            $('#btn-reset').show();
-            $('#btn-save').show();
+            console.log('isi session storage',sessionStorage.getItem('prevPickMaterial'));
+            if(sessionStorage.getItem('prevPickMaterial') !== ''){
+                $('#btn-reset').show();
+                $('#btn-save').show();
+            }
         },
     });
     $("#mediumModal").modal('hide');
@@ -155,16 +157,17 @@ function removeInputMaterial(id){
         if (index > -1) {
             newSessionMaterial.splice(index, 1);
         }
-        
-        
-        if(newSessionMaterial === ''){
-            $('#btn-reset').hide();
+        if(newSessionMaterial == ''){
+            $('#btn-reset').hide(); 
             $('#btn-save').hide();
         }
+
         
         sessionStorage.removeItem('prevPickMaterial');
         sessionStorage.setItem('prevPickMaterial',newSessionMaterial);   
         console.log(['onRemove', newSessionMaterial]);
     }
+
+    
 
 }
