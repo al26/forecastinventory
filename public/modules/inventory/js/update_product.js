@@ -10,6 +10,26 @@ $(document).on("change", "#formAfter", function(){
     setMaterialCodeItem()
 })
 
+$(document).on("change", "#input-text", function(){
+    triggerChangeFormAfter()
+})
+
+function triggerChangeFormAfter() {
+    $('#formAfter').trigger("change");
+}
+
+function toggleSaveResetBtn(action) {
+    if(action === "hide") {
+        $('button[type="submit"]').hide();
+        $('button[type="reset"]').hide();
+    }
+
+    if(action === "show") {
+        $('button[type="submit"]').show();
+        $('button[type="reset"]').show();
+    }
+}
+
 function setAlreadyShowedItem() {
     let alreadyShowed = document.querySelectorAll("#formAfter div[id^=inputMaterial]");
     let alreadyShowedArr = [];
@@ -89,7 +109,7 @@ function pickMaterial(url, onload = false){
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         }
     });
-    let alreadyShowed = null;
+    
     let material = sameValue(materialCodes);
     let uniqueMaterial = Object.keys(material);
     let sessionMaterialCode = sessionStorage.getItem("sessionMaterialCode");
@@ -97,10 +117,12 @@ function pickMaterial(url, onload = false){
     let material_code = onload ? sessionMaterialCode : uniqueMaterial;
     if (onload) {
         setMaterialCodeItem();
-        $('#formAfter').html(alreadyShowed.join(""));
-        $('#formAfter').trigger("change");
-        $('button[type="submit"]').show();
-        $('button[type="reset"]').show();
+        let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
+        if(alreadyShowed !== null) {
+            $('#formAfter').html(alreadyShowed.join(""));
+        }
+        triggerChangeFormAfter()
+        toggleSaveResetBtn('show')
         // console.log(["showed join", alreadyShowed.join(""), newSessionMaterialCode]);
     } else {
         $.ajax({
@@ -144,12 +166,11 @@ function remove(num, obj){
 function removeInputMaterial(id){
     let param = '#inputMaterial'+id; 
     $(param).remove().fadeOut("slow");
-    $('#formAfter').trigger("change");
+    triggerChangeFormAfter()
 
     let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
     if(alreadyShowed === null || alreadyShowed.length <= 0) {
-        $('button[type="submit"]').hide();
-        $('button[type="reset"]').hide();
+        toggleSaveResetBtn('hide')
     }
 }
 
