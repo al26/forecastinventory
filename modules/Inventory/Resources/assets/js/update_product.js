@@ -7,6 +7,7 @@ $(document).ready(function(){
 })
 $(document).on("change", "#formAfter", function(){
     setAlreadyShowedItem()
+    setMaterialCodeItem()
 })
 
 function setAlreadyShowedItem() {
@@ -16,6 +17,19 @@ function setAlreadyShowedItem() {
         alreadyShowedArr.push(e.outerHTML);
     })
     sessionStorage.setItem("alreadyShowed", JSON.stringify(alreadyShowedArr));
+}
+
+function setMaterialCodeItem() {
+    let newSessionMaterialCode = [];
+    let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
+    if(alreadyShowed !== null) {
+        alreadyShowed.forEach(function(element, index) {
+            let code = $(element).attr("id").substring("inputMaterial".length);
+            newSessionMaterialCode.push(code);
+        })
+    }
+
+    sessionStorage.setItem("sessionMaterialCode", newSessionMaterialCode);
 }
 // openModal(`http://localhost:8000/administrator/inventory/getDataMaterial`)
 function openModal(url){
@@ -82,21 +96,11 @@ function pickMaterial(url, onload = false){
     sessionMaterialCode = (sessionMaterialCode !== null && sessionMaterialCode !== "" && uniqueMaterial.length > 0) ? uniqueMaterial.concat(sessionMaterialCode.split(",")) : uniqueMaterial;
     let material_code = onload ? sessionMaterialCode : uniqueMaterial;
     if (onload) {
-        let newSessionMaterialCode = [];
-        alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
-        if(alreadyShowed !== null) {
-            alreadyShowed.forEach(function(element, index) {
-                let code = $(element).attr("id").substring("inputMaterial".length);
-                newSessionMaterialCode.push(code);
-            })
-        }
-
-        sessionStorage.removeItem("sessionMaterialCode");
-        sessionStorage.setItem("sessionMaterialCode", newSessionMaterialCode);
+        setMaterialCodeItem();
         $('#formAfter').html(alreadyShowed.join(""));
         $('#formAfter').trigger("change");
-        $('button[type="submit"]').removeAttr("hidden");
-        $('button[type="reset"]').removeAttr("hidden");
+        $('button[type="submit"]').show();
+        $('button[type="reset"]').show();
         // console.log(["showed join", alreadyShowed.join(""), newSessionMaterialCode]);
     } else {
         $.ajax({
@@ -141,6 +145,12 @@ function removeInputMaterial(id){
     let param = '#inputMaterial'+id; 
     $(param).remove().fadeOut("slow");
     $('#formAfter').trigger("change");
+
+    let alreadyShowed = JSON.parse(sessionStorage.getItem("alreadyShowed"));
+    if(alreadyShowed === null || alreadyShowed.length <= 0) {
+        $('button[type="submit"]').hide();
+        $('button[type="reset"]').hide();
+    }
 }
 
 function arr_diff (a1, a2) {
