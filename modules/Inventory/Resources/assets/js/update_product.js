@@ -4,6 +4,7 @@ var materialCodes = new Array();
 $(document).ready(function(){
     // console.log(sessionMaterialCode)
     pickMaterial(pickMaterialUrl, true);
+
 })
 $(document).on("change", "#formAfter", function(){
     setAlreadyShowedItem()
@@ -122,7 +123,11 @@ function pickMaterial(url, onload = false){
             $('#formAfter').html(alreadyShowed.join(""));
         }
         triggerChangeFormAfter()
-        toggleSaveResetBtn('show')
+        if(alreadyShowed.length >0){
+            toggleSaveResetBtn('show')
+        }else{
+            toggleSaveResetBtn('hide')
+        }
         // console.log(["showed join", alreadyShowed.join(""), newSessionMaterialCode]);
     } else {
         $.ajax({
@@ -135,9 +140,8 @@ function pickMaterial(url, onload = false){
                 sessionStorage.removeItem("sessionMaterialCode");
                 sessionStorage.setItem("sessionMaterialCode", sessionMaterialCode);
                 $('#formAfter').append(res.html);
-                $('#formAfter').trigger("change");
-                $('button[type="submit"]').removeAttr("hidden");
-                $('button[type="reset"]').removeAttr("hidden");
+                triggerChangeFormAfter()
+                toggleSaveResetBtn('show')
             },
         });
     }
@@ -195,4 +199,7 @@ function arr_diff (a1, a2) {
     }
 
     return diff;
+}
+function clearSession() {
+    sessionStorage.clear();
 }

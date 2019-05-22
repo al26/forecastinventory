@@ -8,7 +8,7 @@
 
 <div class="card">
     <div class="card-header">
-        <strong>Penambahan Product Baru</strong>
+        <strong>Ubah Product</strong>
     </div>
 
     <form action="{{route('updateproduct',['role'=>Auth::user()->getRoleNames()[0],'id'=>$dataedit[0]->id])}}" method="post" class="form-horizontal">
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-sm">
+                <button type="submit"  id="btn-save" class="btn btn-primary btn-sm" onclick="clearSession()">
                     Simpan
                 </button>
                 <button type="reset" class="btn btn-danger btn-sm">
