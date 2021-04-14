@@ -1,6 +1,6 @@
 <?php
 
-$HEROKU_PGSQL=parse_url('postgres://yawzxneaycndbe:ff7edebf141a717dbdf4cbfe0e6e4d588bd29dcd309588d11d96278462bab2a5@ec2-18-211-97-89.compute-1.amazonaws.com:5432/d5ptalrfpjjsuc');
+$HEROKU_PGSQL=parse_url('postgres://jnjdaysrondlap:6d043ece821ab12292d2390b9f6e6229298f77fc45dd15fb7c441c899432cfd0@ec2-3-233-43-103.compute-1.amazonaws.com:5432/dda5h7gma9i1kb');
 
 return [
 
