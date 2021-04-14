@@ -14,11 +14,13 @@ class UserController extends Controller
 
     public function production() { 
         $data['title'] = ucwords('Dasbor Produksi'); 
-        return view('layouts.admin');
+        $data['breadcrumb'] = true;
+        return view('layouts.admin', $data);
     }
 
     public function logistic() { 
         $data['title'] = ucwords('Dasbor Logistik'); 
-        return view('layouts.admin');
+        $data['breadcrumb'] = true;
+        return view('layouts.admin', $data);
     }
 }
