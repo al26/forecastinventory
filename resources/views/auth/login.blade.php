@@ -3,13 +3,20 @@
 <div class="bg-overlay">
     <div class="bg-pattern"></div>
 </div>
-<div class="container mt-5">
+<div class="container mt-1">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-4">
             <h2 class="text-center m-3 text-white font-weight-bolder">Forcastinventory</h2>
             <div class="card">
                 <div class="card-body bg-white p-3">
                     <h3 class="text-center m-3 font-weight-bolder"><i class="fas fa-door-open text-primary mx-2"></i>Silahkan Masuk</h3>
+                    <div class="alert-info p-2 mb-2">
+                        <ul class="list-unstyled m-0">
+                            <li>Demo Account:</li>
+                            <li>username: administrator|production|logistic</li>
+                            <li>password: administrator|production|logistic</li>
+                        </ul>
+                    </div>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="form-group">
@@ -59,8 +66,7 @@
             </div>
         </div>
     </div>
-    <br>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-2">
         <div class="col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-body text-center">
