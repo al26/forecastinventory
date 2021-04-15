@@ -25,7 +25,7 @@
                 <div class="row form-group">
                     <div class="col col-md-2"><label for="text-input" class=" form-control-label">Nama Product</label>
                     </div>
-                    <div class="col-12 col-md-3"><input type="text" id="text-input" value="<?php echo (isset($dataedit[0]->product_name)? $dataedit[0]->product_name : "")?>" placeholder="nama produk" name="nama_product"
+                    <div class="col-12 col-md-3"><input type="text" id="text-input" value="<?php echo (isset($dataedit[0]->product_name)? $dataedit[0]->product_name : old('nama_product'))?>" placeholder="nama produk" name="nama_product"
                             class="form-control">
                         <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
                         {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
@@ -34,7 +34,7 @@
                 <div class="row form-group">
                     <div class="col col-md-2"><label for="text-input" class=" form-control-label">Kode Product </label>
                     </div>
-                    <div class="col-12 col-md-3"><input type="text" id="text-input" value="<?php echo (isset($dataedit[0]->product_code)? $dataedit[0]->product_code : "")?>" placeholder="kode product" name="product_code"
+                    <div class="col-12 col-md-3"><input type="text" id="text-input" value="<?php echo (isset($dataedit[0]->product_code)? $dataedit[0]->product_code : old('product_code'))?>" placeholder="kode product" name="product_code"
                             class="form-control">
                         <small class="form-text text-danger">{{ $errors->error->first('product_code') }}</small>
                         {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
@@ -67,7 +67,7 @@
                 <label for="select" class=" form-control-label">{{$value->material_name}}</label>
                 </div>
                 <div class="col-12 col-md-3">
-                    <input type="text" id="text-input" onkeypress="javascript:return isNumberKey(event);" value="{{ isset($value->material_need) ? $value->material_need : ""}}" placeholder="{{$value->unit}}" name="{{$value->material_code}}" class="form-control">
+                    <input type="text" id="text-input" onkeypress="javascript:return isNumberKey(event);" value="{{ isset($value->material_need) ? $value->material_need : old($value->material_code)}}" placeholder="{{$value->unit}}" name="{{$value->material_code}}" class="form-control">
                     <small class="form-text text-danger">{{ $errors->error->first('nama_product') }}</small>
                         {{-- <small class="form-text text-muted">Kolom ini untuk tanggal pembelian bahan baku</small> --}}
                     </div>
