@@ -46,7 +46,7 @@ class ForecastAccuracy extends Model
         } else {
             $ft = floatval($ft);
             $error = $method === 'moving-average' ? $ft-$xt : $xt-$ft;
-            $percentage = ($error/$xt)*100;
+            $percentage = $xt > 0 ? (($error/$xt)*100) : 0;
         }
         
         $error = floatval($error);

@@ -208,7 +208,7 @@ class ForecastController extends Controller
                 $at = floatval(0);
             }
             
-            $st = floatval($sh->amount) / $avg;  
+            $st = $avg ? (floatval($sh->amount) / $avg) : floatval(0);  
             $bt = floatval(0);
             $ft = floatval(0);
         } else {
@@ -238,9 +238,9 @@ class ForecastController extends Controller
             $xt = !is_null($sh) ? $sh->amount : 0;
             $lastAt = floatval($l['at']);
             
-            $at = ( $a*($lastXt/$lastStQuarter) ) + ( (1-$a)*($lastAt+$lastBt) );
+            $at = ( $lastStQuarter ? ($a*($lastXt/$lastStQuarter)) : 0 ) + ( (1-$a)*($lastAt+$lastBt) );
             $bt = ( $b*($at-$lastAt) ) + ( (1-$b)*$lastBt );
-            $st = ( $c*($xt/$at) ) + ( (1-$c)*$lastStQuarter );
+            $st = ( $at ? ($c*($xt/$at)) : 0 ) + ( (1-$c)*$lastStQuarter );
             $ft = ($lastAt+$lastBt)*$lastStQuarter;
         }
     
