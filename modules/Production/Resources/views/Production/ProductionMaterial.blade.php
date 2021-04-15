@@ -55,5 +55,5 @@
 <!-- Right Panel -->
 @stop
 @section('script')
-<script src="{{Module::asset('Production:js/production.js')}}"></script>    
+<script src="{{Module::asset('production:js/production.js')}}"></script>    
 @endsection

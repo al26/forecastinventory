@@ -174,25 +174,41 @@ class SellHistoryController extends Controller
         ]);
 
         if (!$validator->fails()) {
-            $sh = SellHistory::find($id);
-            $sh->period = $request['period'];
-            $sh->quarter = $request['quarter'];
-            $sh->product_id = $request['product_id'];
-            $sh->amount = $request['amount'];
-            $sh->year = $request['year'];
+            // $sh = SellHistory::find($id);
+            // $sh->period = $request['period'];
+            // $sh->quarter = $request['quarter'];
+            // $sh->product_id = $request['product_id'];
+            // $sh->amount = $request['amount'];
+            // $sh->year = $request['year'];
 
-            // DB::beginTransaction();
-            if ($sh->save()) {
-                // DB::commit();
+            // // DB::beginTransaction();
+            // if ($sh->save()) {
+            //     // DB::commit();
+            //     Cache::flush();
+            //     Session::flash('type', 'success');
+            //     Session::flash('message', 'Berhasil mengubah data penjualan');
+            //     return redirect()->route('sh.index');
+            // }
+            // // DB::rollback();
+            // Session::flash('type', 'danger');
+            // Session::flash('message', 'Gagal mengubah data penjualan periode');
+            // return redirect()->back();
+
+            try {
+                SellHistory::where('id', $id)
+                            ->update([
+                                'amount' => $request['amount']
+                            ]);
+                
                 Cache::flush();
                 Session::flash('type', 'success');
                 Session::flash('message', 'Berhasil mengubah data penjualan');
                 return redirect()->route('sh.index');
+            } catch (\Throwable $th) {
+                Session::flash('type', 'danger');
+                Session::flash('message', 'Gagal mengubah data penjualan periode');
+                return redirect()->back();
             }
-            // DB::rollback();
-            Session::flash('type', 'danger');
-            Session::flash('message', 'Gagal mengubah data penjualan periode');
-            return redirect()->back();
         }
 
         // dd($validator->errors());

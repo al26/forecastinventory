@@ -115,5 +115,5 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript" src="{{Module::asset('sellHistory:js/sellHistory.js')}}"></script>
+    <script type="text/javascript" src="{{Module::asset('sellhistory:js/sellHistory.js')}}"></script>
 @endsection
